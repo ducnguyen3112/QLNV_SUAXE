@@ -5,7 +5,7 @@
  */
 package Form;
 
-import XuLiDuLieu.KetNoiDB;
+import Form.Xuli.KetNoiDB;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +13,7 @@ import java.sql.Statement;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -22,8 +23,8 @@ import javax.swing.table.TableRowSorter;
  * @author StarScream
  */
 public class AdminForm extends javax.swing.JFrame {
-
     /** Creates new form AdminForm */
+    public static String maNV="";
     public AdminForm() {
         initComponents();
         setSize(1168, 650);
@@ -34,27 +35,31 @@ public class AdminForm extends javax.swing.JFrame {
     Statement st=null;
     ResultSet rs=null;
     public void loadDB(){
-        String sql="select MaNV,HoTen,NgaySinh,GioiTinh,QueQuan,TrangThai from NHANVIEN";
-        con=KetNoiDB.getConnection();
+        String sql="select MaNV,HoTen,CONVERT(varchar, NgaySinh, 105) as NgaySinh,"
+                + " GioiTinh,ChucVu,TrangThai,TenCV"
+                + " from NHANVIEN,CHUCVU where NHANVIEN.ChucVu=CHUCVU.MaCV";
+        
         //DefaultTableModel model=(DefaultTableModel) tbDsnv.getModel();
         tbDSNV.setDefaultEditor(Object.class, null);
         DefaultTableModel model=(DefaultTableModel) tbDSNV.getModel();
         
         try {
+            con=KetNoiDB.getConnection();
             st=con.createStatement();
             rs=st.executeQuery(sql);
             Vector data;
             while (rs.next()) {                
                 data=new Vector();
-                data.addElement(rs.getString("MaNV"));
+                maNV=rs.getString("MaNV");
+                data.addElement(maNV);
                 data.addElement(rs.getString("HoTen"));
-                data.addElement(rs.getDate("NgaySinh"));
+                data.addElement(rs.getString("NgaySinh"));
                 switch (rs.getInt("GioiTinh")) {
-                    case 0 -> data.addElement("Nam");
-                    case 1 -> data.addElement("Nữ");
+                    case 1 -> data.addElement("Nam");
+                    case 2 -> data.addElement("Nữ");
                     case 3 -> data.addElement("Khác");
                 }
-                data.addElement(rs.getString("QueQuan"));
+                data.addElement(rs.getString("TenCV"));
                 switch(rs.getInt("TrangThai")){
                     case 0 ->data.addElement("Đã nghỉ");
                     case 1 -> data.addElement("Đang làm việc");
@@ -68,6 +73,7 @@ public class AdminForm extends javax.swing.JFrame {
             Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -254,6 +260,11 @@ public class AdminForm extends javax.swing.JFrame {
         btnTTNV.setText("THÔNG TIN NHÂN VIÊN");
         btnTTNV.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnTTNV.setPreferredSize(new java.awt.Dimension(200, 50));
+        btnTTNV.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnTTNVMouseClicked(evt);
+            }
+        });
         jPanel5.add(btnTTNV, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 200, -1));
 
         btnThemNV.setBackground(new java.awt.Color(0, 0, 36));
@@ -298,7 +309,7 @@ public class AdminForm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void btnDSNVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDSNVMouseClicked
        
         pnMenu.setVisible(false);
@@ -312,7 +323,19 @@ public class AdminForm extends javax.swing.JFrame {
         tbDSNV.setRowSorter(tr);
         tr.setRowFilter(RowFilter.regexFilter(txtTimKiem.getText().trim()));
     }//GEN-LAST:event_txtTimKiemKeyReleased
-
+     
+    private void btnTTNVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTTNVMouseClicked
+        int i=tbDSNV.getSelectedRow();
+        if (i<0) {
+            JOptionPane.showMessageDialog(this, "Hãy chọn một nhân viên để xem thông tin");
+        }else{
+            maNV=tbDSNV.getValueAt(i, 0).toString();
+            new TTNV().setVisible(true);
+            
+        }
+        
+    }//GEN-LAST:event_btnTTNVMouseClicked
+        
     /**
      * @param args the command line arguments
      */

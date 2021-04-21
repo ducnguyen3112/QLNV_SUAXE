@@ -5,7 +5,7 @@
  */
 package Form;
 
-import XuLiDuLieu.KetNoiDB;
+import Form.Xuli.KetNoiDB;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
