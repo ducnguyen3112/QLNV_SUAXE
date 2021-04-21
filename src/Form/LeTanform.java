@@ -55,7 +55,6 @@ public class LeTanform extends javax.swing.JFrame {
         tbXe = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1168, 604));
         setSize(getPreferredSize());
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));

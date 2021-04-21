@@ -4,19 +4,80 @@
  * and open the template in the editor.
  */
 package Form;
-
+import Form.Xuli.KetNoiDB;
+import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author StarScream
  */
 public class TTNV extends javax.swing.JFrame {
-
+    
     /** Creates new form TTNV */
     public TTNV() {
         initComponents();
-        setLocationRelativeTo(null);
+        loadDB();
+        btnLuu.setVisible(false);
+        btnHuy.setVisible(false);
+        btnTaiAnh.setVisible(false);
+        txtCMND.setEditable(false);
+        cbChucVu.setEnabled(false);
+        txtDanToc.setEditable(false);
+        txtDiaChi.setEditable(false);
+        txtMaNV.setEditable(false);
+        txtQueQuan.setEditable(false);
+        txtSDT.setEditable(false);
+        txtTen.setEditable(false);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE );
     }
-
+    private void loadDB(){
+        String sql="select MaNV,HoTen,CONVERT(varchar, NgaySinh, 105) as NgaySinh,"
+                + " GioiTinh,ChucVu,TrangThai,TenCV,SDT,CMND,DanToc,DiaChi,QueQuan"
+                + " from NHANVIEN,CHUCVU where NHANVIEN.ChucVu=CHUCVU.MaCV" 
+                + " and NHANVIEN.MaNV= '"+AdminForm.maNV+"'";
+        try {
+           Connection con=KetNoiDB.getConnection();
+            Statement st=con.createStatement();
+            ResultSet rs=st.executeQuery(sql);
+            while(rs.next()){
+                txtMaNV.setText(rs.getString("MaNV"));
+                dcNgaySinh.setDate(new SimpleDateFormat("dd-MM-yyyy").parse(rs.getString("NgaySinh")));
+                txtTen.setText(rs.getString("HoTen"));
+                txtSDT.setText(rs.getString("SDT"));
+                txtCMND.setText(rs.getString("CMND"));
+                txtDanToc.setText(rs.getString("DanToc"));
+                txtDiaChi.setText(rs.getString("DiaChi"));
+                if (rs.getString("TenCV").equals("admin")) {
+                    cbChucVu.setSelectedIndex(0);
+                }else if(rs.getString("TenCV").equals("Lễ Tân")){
+                    cbChucVu.setSelectedIndex(1);
+                }else{
+                    cbChucVu.setSelectedIndex(2);
+                }
+                txtQueQuan.setText(rs.getString("QueQuan"));
+                switch (rs.getInt("GioiTinh")) {
+                    case 1 -> rbtnNam.setSelected(true);
+                    case 2 -> rbtnNu.setSelected(true);
+                    default -> rbtnKhac.setSelected(true);
+                }
+                if (rs.getInt("TrangThai")==0) {
+                    rbtnDaNghi.setSelected(true);
+                }else if (rs.getInt("TrangThai")==1) {
+                    rbtnDangLam.setSelected(true);
+                }
+                rs.close();
+                st.close();
+                con.close();
+          }
+        } catch (SQLException ex) {
+            Logger.getLogger(TTNV.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(TTNV.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -37,14 +98,13 @@ public class TTNV extends javax.swing.JFrame {
         btnBangLuong = new javax.swing.JButton();
         btnHopDong = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
+        pnTT = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         txtMaNV = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtTen = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        dcNgaySinh = new com.toedter.calendar.JDateChooser();
         jLabel5 = new javax.swing.JLabel();
         rbtnNam = new javax.swing.JRadioButton();
         rbtnNu = new javax.swing.JRadioButton();
@@ -55,8 +115,9 @@ public class TTNV extends javax.swing.JFrame {
         txtDanToc = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         txtSDT = new javax.swing.JTextField();
-        txtChucVu = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
+        dcNgaySinh = new com.toedter.calendar.JDateChooser();
+        cbChucVu = new javax.swing.JComboBox<>();
         jPanel7 = new javax.swing.JPanel();
         txtQueQuan = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
@@ -65,65 +126,81 @@ public class TTNV extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         rbtnDangLam = new javax.swing.JRadioButton();
         rbtnDaNghi = new javax.swing.JRadioButton();
+        btnLuu = new javax.swing.JButton();
+        btnHuy = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBackground(new java.awt.Color(51, 51, 0));
+        jPanel1.setBackground(new java.awt.Color(232, 69, 69));
         jPanel1.setForeground(new java.awt.Color(51, 51, 0));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lbAnh.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.add(lbAnh, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 120, 160));
 
-        btnTaiAnh.setBackground(new java.awt.Color(102, 102, 0));
+        btnTaiAnh.setBackground(new java.awt.Color(83, 53, 74));
         btnTaiAnh.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnTaiAnh.setForeground(new java.awt.Color(255, 255, 255));
         btnTaiAnh.setText("Tải ảnh lên");
         jPanel1.add(btnTaiAnh, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 120, 20));
 
-        btnChinhSuaTT.setBackground(new java.awt.Color(102, 102, 0));
+        btnChinhSuaTT.setBackground(new java.awt.Color(83, 53, 74));
         btnChinhSuaTT.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnChinhSuaTT.setForeground(new java.awt.Color(255, 255, 255));
         btnChinhSuaTT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_change_user_50px.png"))); // NOI18N
         btnChinhSuaTT.setText("CHỈNH SỬA");
+        btnChinhSuaTT.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnChinhSuaTTMouseClicked(evt);
+            }
+        });
         jPanel1.add(btnChinhSuaTT, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 190, 50));
 
-        btnQuayLai.setBackground(new java.awt.Color(102, 102, 0));
+        btnQuayLai.setBackground(new java.awt.Color(83, 53, 74));
         btnQuayLai.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnQuayLai.setForeground(new java.awt.Color(255, 255, 255));
         btnQuayLai.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_jog_reverse_50px.png"))); // NOI18N
         btnQuayLai.setText("QUAY LẠI");
         jPanel1.add(btnQuayLai, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 450, 190, 50));
 
-        btnChamCong.setBackground(new java.awt.Color(102, 102, 0));
+        btnChamCong.setBackground(new java.awt.Color(83, 53, 74));
         btnChamCong.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnChamCong.setForeground(new java.awt.Color(255, 255, 255));
         btnChamCong.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_timesheet_50px.png"))); // NOI18N
         btnChamCong.setText("CHẤM CÔNG");
         jPanel1.add(btnChamCong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 190, 50));
 
-        btnBangLuong.setBackground(new java.awt.Color(102, 102, 0));
+        btnBangLuong.setBackground(new java.awt.Color(83, 53, 74));
         btnBangLuong.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnBangLuong.setForeground(new java.awt.Color(255, 255, 255));
         btnBangLuong.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_payroll_50px.png"))); // NOI18N
         btnBangLuong.setText("BẢNG LƯƠNG");
         jPanel1.add(btnBangLuong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 190, 50));
 
-        btnHopDong.setBackground(new java.awt.Color(102, 102, 0));
+        btnHopDong.setBackground(new java.awt.Color(83, 53, 74));
         btnHopDong.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnHopDong.setForeground(new java.awt.Color(255, 255, 255));
         btnHopDong.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_contract_50px.png"))); // NOI18N
         btnHopDong.setText("HỢP ĐỒNG");
         jPanel1.add(btnHopDong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 400, 190, 50));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 600));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 610));
 
         jPanel2.setLayout(new java.awt.CardLayout());
 
-        jPanel4.setBackground(new java.awt.Color(51, 0, 0));
+        pnTT.setBackground(new java.awt.Color(144, 55, 73));
 
-        jPanel3.setBackground(new java.awt.Color(45, 0, 0));
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "THÔNG TIN CÁ NHÂN", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 10), new java.awt.Color(255, 255, 255))); // NOI18N
+        jPanel3.setBackground(new java.awt.Color(144, 55, 73));
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "THÔNG TIN CÁ NHÂN", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel3.setForeground(new java.awt.Color(255, 255, 255));
 
+        txtMaNV.setBackground(new java.awt.Color(144, 55, 73));
         txtMaNV.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        txtMaNV.setForeground(new java.awt.Color(255, 255, 255));
+        txtMaNV.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -133,60 +210,77 @@ public class TTNV extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Họ và tên:");
 
+        txtTen.setBackground(new java.awt.Color(144, 55, 73));
         txtTen.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        txtTen.setForeground(new java.awt.Color(255, 255, 255));
+        txtTen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Ngày sinh:");
 
-        dcNgaySinh.setBackground(new java.awt.Color(51, 0, 0));
-        dcNgaySinh.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Giới tính:");
 
-        rbtnNam.setBackground(new java.awt.Color(51, 0, 0));
+        rbtnNam.setBackground(new java.awt.Color(144, 55, 73));
         btgrGioiTinh.add(rbtnNam);
         rbtnNam.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         rbtnNam.setForeground(new java.awt.Color(255, 255, 255));
         rbtnNam.setText("Nam");
+        rbtnNam.setEnabled(false);
 
-        rbtnNu.setBackground(new java.awt.Color(51, 0, 0));
+        rbtnNu.setBackground(new java.awt.Color(144, 55, 73));
         btgrGioiTinh.add(rbtnNu);
         rbtnNu.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         rbtnNu.setForeground(new java.awt.Color(255, 255, 255));
         rbtnNu.setText("Nữ");
+        rbtnNu.setEnabled(false);
 
-        rbtnKhac.setBackground(new java.awt.Color(51, 0, 0));
+        rbtnKhac.setBackground(new java.awt.Color(144, 55, 73));
         btgrGioiTinh.add(rbtnKhac);
         rbtnKhac.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         rbtnKhac.setForeground(new java.awt.Color(255, 255, 255));
         rbtnKhac.setText("Khác");
+        rbtnKhac.setEnabled(false);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("CMND/CCCD:");
 
+        txtCMND.setBackground(new java.awt.Color(144, 55, 73));
         txtCMND.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        txtCMND.setForeground(new java.awt.Color(255, 255, 255));
+        txtCMND.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Dân tộc:");
 
+        txtDanToc.setBackground(new java.awt.Color(144, 55, 73));
         txtDanToc.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        txtDanToc.setForeground(new java.awt.Color(255, 255, 255));
+        txtDanToc.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("SDT:");
 
+        txtSDT.setBackground(new java.awt.Color(144, 55, 73));
         txtSDT.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-
-        txtChucVu.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        txtSDT.setForeground(new java.awt.Color(255, 255, 255));
+        txtSDT.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("Chức vụ:");
+
+        dcNgaySinh.setDateFormatString("dd-MM-yyyy");
+        dcNgaySinh.setEnabled(false);
+
+        cbChucVu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Lễ Tân", "Nhân viên vảo dưỡng" }));
+        cbChucVu.setSelectedIndex(-1);
+        cbChucVu.setEnabled(false);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -202,29 +296,37 @@ public class TTNV extends javax.swing.JFrame {
                         .addComponent(txtTen, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING))
                     .addComponent(jLabel8))
-                .addGap(73, 73, 73)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtCMND)
-                    .addComponent(dcNgaySinh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtChucVu)
+                .addGap(31, 31, 31)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel12))
-                        .addGap(92, 92, 92)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtDanToc, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtCMND)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel4)
+                                            .addComponent(jLabel6)
+                                            .addComponent(jLabel12))
+                                        .addGap(92, 92, 92)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 199, Short.MAX_VALUE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(dcNgaySinh, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
+                                .addGap(179, 179, 179)))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtDanToc, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(rbtnNam)
+                                .addGap(18, 18, 18)
+                                .addComponent(rbtnNu)
+                                .addGap(18, 18, 18)
+                                .addComponent(rbtnKhac))
+                            .addComponent(jLabel5))
+                        .addGap(37, 37, 37))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(rbtnNam)
-                        .addGap(18, 18, 18)
-                        .addComponent(rbtnNu)
-                        .addGap(18, 18, 18)
-                        .addComponent(rbtnKhac))
-                    .addComponent(jLabel5))
-                .addGap(37, 37, 37))
+                        .addComponent(cbChucVu, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -242,12 +344,9 @@ public class TTNV extends javax.swing.JFrame {
                             .addComponent(jLabel4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(txtMaNV, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(40, 40, 40))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(dcNgaySinh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(37, 37, 37)))
+                            .addComponent(dcNgaySinh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtMaNV))
+                        .addGap(44, 44, 44)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel3)
@@ -256,7 +355,9 @@ public class TTNV extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                                 .addComponent(jLabel8)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtSDT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtSDT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cbChucVu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(jPanel3Layout.createSequentialGroup()
@@ -272,16 +373,18 @@ public class TTNV extends javax.swing.JFrame {
                                         .addComponent(txtCMND, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel12)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtChucVu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(24, 24, 24)))
                         .addContainerGap())))
         );
 
-        jPanel7.setBackground(new java.awt.Color(45, 0, 0));
-        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "LIÊN HỆ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 10), new java.awt.Color(255, 255, 255))); // NOI18N
+        jPanel7.setBackground(new java.awt.Color(144, 55, 73));
+        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "LIÊN HỆ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel7.setForeground(new java.awt.Color(255, 255, 255));
 
+        txtQueQuan.setBackground(new java.awt.Color(144, 55, 73));
         txtQueQuan.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        txtQueQuan.setForeground(new java.awt.Color(255, 255, 255));
+        txtQueQuan.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
@@ -291,7 +394,10 @@ public class TTNV extends javax.swing.JFrame {
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("Địa chỉ:");
 
+        txtDiaChi.setBackground(new java.awt.Color(144, 55, 73));
         txtDiaChi.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        txtDiaChi.setForeground(new java.awt.Color(255, 255, 255));
+        txtDiaChi.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -324,56 +430,74 @@ public class TTNV extends javax.swing.JFrame {
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Trạng thái:");
 
-        rbtnDangLam.setBackground(new java.awt.Color(51, 0, 0));
+        rbtnDangLam.setBackground(new java.awt.Color(144, 55, 73));
         btgrTrangThai.add(rbtnDangLam);
         rbtnDangLam.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         rbtnDangLam.setForeground(new java.awt.Color(255, 255, 255));
         rbtnDangLam.setText("Đang làm");
+        rbtnDangLam.setEnabled(false);
 
-        rbtnDaNghi.setBackground(new java.awt.Color(51, 0, 0));
+        rbtnDaNghi.setBackground(new java.awt.Color(144, 55, 73));
         btgrTrangThai.add(rbtnDaNghi);
         rbtnDaNghi.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         rbtnDaNghi.setForeground(new java.awt.Color(255, 255, 255));
         rbtnDaNghi.setText("Đã nghỉ");
+        rbtnDaNghi.setEnabled(false);
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        btnLuu.setText("Lưu");
+
+        btnHuy.setText("Huỷ");
+        btnHuy.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnHuyMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnTTLayout = new javax.swing.GroupLayout(pnTT);
+        pnTT.setLayout(pnTTLayout);
+        pnTTLayout.setHorizontalGroup(
+            pnTTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnTTLayout.createSequentialGroup()
+                .addGap(63, 63, 63)
+                .addGroup(pnTTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(pnTTLayout.createSequentialGroup()
                         .addComponent(jLabel11)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(rbtnDangLam)
-                        .addGap(18, 18, 18)
-                        .addComponent(rbtnDaNghi))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
-                        .addGap(63, 63, 63)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(69, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(rbtnDaNghi)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnHuy, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(36, 36, 36)
+                        .addComponent(btnLuu, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(15, 15, 15))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(93, Short.MAX_VALUE))
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+        pnTTLayout.setVerticalGroup(
+            pnTTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnTTLayout.createSequentialGroup()
                 .addGap(41, 41, 41)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rbtnDangLam)
-                    .addComponent(rbtnDaNghi)
-                    .addComponent(jLabel11))
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addGroup(pnTTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnTTLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnTTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(rbtnDangLam)
+                            .addComponent(rbtnDaNghi)
+                            .addComponent(jLabel11)))
+                    .addGroup(pnTTLayout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addGroup(pnTTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnLuu)
+                            .addComponent(btnHuy))))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
-        jPanel7.getAccessibleContext().setAccessibleName("LIÊN HỆ");
-
-        jPanel2.add(jPanel4, "card2");
+        jPanel2.add(pnTT, "card2");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -405,6 +529,46 @@ public class TTNV extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnChinhSuaTTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnChinhSuaTTMouseClicked
+       //chucNang.setPanelEnabled(pnTT, true);
+       txtCMND.setEditable(true);
+        cbChucVu.setEnabled(true);
+        txtDanToc.setEditable(true);
+        txtDiaChi.setEditable(true);
+        txtQueQuan.setEditable(true);
+        txtSDT.setEditable(true);
+        txtTen.setEditable(true);
+       dcNgaySinh.setEnabled(true);
+        btnLuu.setVisible(true);
+        btnHuy.setVisible(true);
+        btnTaiAnh.setVisible(true);
+        rbtnDaNghi.setEnabled(true);
+        rbtnDangLam.setEnabled(true);
+        rbtnKhac.setEnabled(true);
+        rbtnNam.setEnabled(true);
+        rbtnNu.setEnabled(true);
+    }//GEN-LAST:event_btnChinhSuaTTMouseClicked
+
+    private void btnHuyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHuyMouseClicked
+        loadDB();
+        //chucNang.setPanelEnabled(pnTT, false);
+        btnLuu.setVisible(false);
+        btnHuy.setVisible(false);
+        txtCMND.setEditable(false);
+        cbChucVu.setEnabled(false);
+        txtDanToc.setEditable(false);
+        txtDiaChi.setEditable(false);
+        txtQueQuan.setEditable(false);
+        txtSDT.setEditable(false);
+        txtTen.setEditable(false);
+        rbtnDaNghi.setEnabled(false);
+        rbtnDangLam.setEnabled(false);
+        rbtnKhac.setEnabled(false);
+        rbtnNam.setEnabled(false);
+        rbtnNu.setEnabled(false);
+        
+    }//GEN-LAST:event_btnHuyMouseClicked
 
     /**
      * @param args the command line arguments
@@ -449,8 +613,11 @@ public class TTNV extends javax.swing.JFrame {
     private javax.swing.JButton btnChamCong;
     private javax.swing.JButton btnChinhSuaTT;
     private javax.swing.JButton btnHopDong;
+    private javax.swing.JButton btnHuy;
+    private javax.swing.JButton btnLuu;
     private javax.swing.JButton btnQuayLai;
     private javax.swing.JButton btnTaiAnh;
+    private javax.swing.JComboBox<String> cbChucVu;
     private com.toedter.calendar.JDateChooser dcNgaySinh;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -466,18 +633,17 @@ public class TTNV extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JLabel lbAnh;
+    private javax.swing.JPanel pnTT;
     private javax.swing.JRadioButton rbtnDaNghi;
     private javax.swing.JRadioButton rbtnDangLam;
     private javax.swing.JRadioButton rbtnKhac;
     private javax.swing.JRadioButton rbtnNam;
     private javax.swing.JRadioButton rbtnNu;
     private javax.swing.JTextField txtCMND;
-    private javax.swing.JTextField txtChucVu;
     private javax.swing.JTextField txtDanToc;
     private javax.swing.JTextField txtDiaChi;
     private javax.swing.JTextField txtMaNV;
