@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 /**
  *
  * @author StarScream
@@ -19,7 +20,7 @@ public class TTNV extends javax.swing.JFrame {
     /** Creates new form TTNV */
     public TTNV() {
         initComponents();
-        loadDB();
+       loadDB();
         btnLuu.setVisible(false);
         btnHuy.setVisible(false);
         btnTaiAnh.setVisible(false);
@@ -33,11 +34,48 @@ public class TTNV extends javax.swing.JFrame {
         txtTen.setEditable(false);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE );
     }
+    private void luuChinhSuaNV(){
+        String sql="update NHANVIEN set HoTen=?,NgaySinh=?,GioiTinh=?,SDT=?,DanToc=?"
+                + " QueQuan=?,CMND=?,DiaChi=?,TrangThai=?,ChucVu=? where MaNV= '2'";
+        Connection con=KetNoiDB.getConnection();
+        try {
+            PreparedStatement ps =con.prepareStatement(sql);
+            ps.setString(1, txtTen.getText());
+            
+            if (rbtnNam.isSelected()) {
+                ps.setInt(3, 1);
+            }else if (rbtnNu.isSelected()) {
+                ps.setInt(3, 2);
+            }else if (rbtnKhac.isSelected()) {
+                 ps.setInt(3, 3);
+            }
+            ps.setString(4, txtSDT.getText());
+            ps.setString(5, txtDanToc.getText());
+            ps.setString(6,txtQueQuan.getText());
+            ps.setString(7,txtCMND.getText());
+            ps.setString(8,txtDiaChi.getText());
+            if (rbtnDangLam.isSelected()) {
+               ps.setInt(9, 1);
+            }else if (rbtnDaNghi.isSelected()) {
+                ps.setInt(9, 0);
+            }
+            ps.setInt(10, cbChucVu.getSelectedIndex());
+            int i=ps.executeUpdate();
+            if (i>0) {
+                JOptionPane.showMessageDialog(this, "Chỉnh sửa thông tin nhân viên thành công.");
+            }else{
+                JOptionPane.showMessageDialog(this, "Lỗi!");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(TTNV.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
     private void loadDB(){
         String sql="select MaNV,HoTen,CONVERT(varchar, NgaySinh, 105) as NgaySinh,"
                 + " GioiTinh,ChucVu,TrangThai,TenCV,SDT,CMND,DanToc,DiaChi,QueQuan"
                 + " from NHANVIEN,CHUCVU where NHANVIEN.ChucVu=CHUCVU.MaCV" 
-                + " and NHANVIEN.MaNV= '"+AdminForm.maNV+"'";
+                + " and NHANVIEN.MaNV= '2'";
         try {
            Connection con=KetNoiDB.getConnection();
             Statement st=con.createStatement();
@@ -68,10 +106,11 @@ public class TTNV extends javax.swing.JFrame {
                 }else if (rs.getInt("TrangThai")==1) {
                     rbtnDangLam.setSelected(true);
                 }
+                
+          }
                 rs.close();
                 st.close();
                 con.close();
-          }
         } catch (SQLException ex) {
             Logger.getLogger(TTNV.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParseException ex) {
@@ -97,6 +136,7 @@ public class TTNV extends javax.swing.JFrame {
         btnChamCong = new javax.swing.JButton();
         btnBangLuong = new javax.swing.JButton();
         btnHopDong = new javax.swing.JButton();
+        lbTieude = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         pnTT = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -139,13 +179,13 @@ public class TTNV extends javax.swing.JFrame {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lbAnh.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel1.add(lbAnh, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 120, 160));
+        jPanel1.add(lbAnh, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 120, 160));
 
         btnTaiAnh.setBackground(new java.awt.Color(83, 53, 74));
         btnTaiAnh.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btnTaiAnh.setForeground(new java.awt.Color(255, 255, 255));
         btnTaiAnh.setText("Tải ảnh lên");
-        jPanel1.add(btnTaiAnh, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 120, 20));
+        jPanel1.add(btnTaiAnh, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 300, 120, 20));
 
         btnChinhSuaTT.setBackground(new java.awt.Color(83, 53, 74));
         btnChinhSuaTT.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -157,35 +197,36 @@ public class TTNV extends javax.swing.JFrame {
                 btnChinhSuaTTMouseClicked(evt);
             }
         });
-        jPanel1.add(btnChinhSuaTT, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 190, 50));
+        jPanel1.add(btnChinhSuaTT, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 330, 190, 50));
 
         btnQuayLai.setBackground(new java.awt.Color(83, 53, 74));
         btnQuayLai.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btnQuayLai.setForeground(new java.awt.Color(255, 255, 255));
         btnQuayLai.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_jog_reverse_50px.png"))); // NOI18N
         btnQuayLai.setText("QUAY LẠI");
-        jPanel1.add(btnQuayLai, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 450, 190, 50));
+        jPanel1.add(btnQuayLai, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 530, 190, 50));
 
         btnChamCong.setBackground(new java.awt.Color(83, 53, 74));
         btnChamCong.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btnChamCong.setForeground(new java.awt.Color(255, 255, 255));
         btnChamCong.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_timesheet_50px.png"))); // NOI18N
         btnChamCong.setText("CHẤM CÔNG");
-        jPanel1.add(btnChamCong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 190, 50));
+        jPanel1.add(btnChamCong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 380, 190, 50));
 
         btnBangLuong.setBackground(new java.awt.Color(83, 53, 74));
         btnBangLuong.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btnBangLuong.setForeground(new java.awt.Color(255, 255, 255));
         btnBangLuong.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_payroll_50px.png"))); // NOI18N
         btnBangLuong.setText("BẢNG LƯƠNG");
-        jPanel1.add(btnBangLuong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 190, 50));
+        jPanel1.add(btnBangLuong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 430, 190, 50));
 
         btnHopDong.setBackground(new java.awt.Color(83, 53, 74));
         btnHopDong.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btnHopDong.setForeground(new java.awt.Color(255, 255, 255));
         btnHopDong.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_contract_50px.png"))); // NOI18N
         btnHopDong.setText("HỢP ĐỒNG");
-        jPanel1.add(btnHopDong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 400, 190, 50));
+        jPanel1.add(btnHopDong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 190, 50));
+        jPanel1.add(lbTieude, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 50));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 610));
 
@@ -445,6 +486,11 @@ public class TTNV extends javax.swing.JFrame {
         rbtnDaNghi.setEnabled(false);
 
         btnLuu.setText("Lưu");
+        btnLuu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnLuuMouseClicked(evt);
+            }
+        });
 
         btnHuy.setText("Huỷ");
         btnHuy.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -459,7 +505,12 @@ public class TTNV extends javax.swing.JFrame {
             pnTTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnTTLayout.createSequentialGroup()
                 .addGap(63, 63, 63)
-                .addGroup(pnTTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(pnTTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnTTLayout.createSequentialGroup()
+                        .addGroup(pnTTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(93, Short.MAX_VALUE))
                     .addGroup(pnTTLayout.createSequentialGroup()
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -467,13 +518,10 @@ public class TTNV extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(rbtnDaNghi)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnHuy, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(36, 36, 36)
                         .addComponent(btnLuu, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(15, 15, 15))
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(93, Short.MAX_VALUE))
+                        .addGap(39, 39, 39)
+                        .addComponent(btnHuy, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(84, 84, 84))))
         );
         pnTTLayout.setVerticalGroup(
             pnTTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -482,19 +530,14 @@ public class TTNV extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(pnTTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnTTLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnTTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(rbtnDangLam)
-                            .addComponent(rbtnDaNghi)
-                            .addComponent(jLabel11)))
-                    .addGroup(pnTTLayout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addGroup(pnTTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnLuu)
-                            .addComponent(btnHuy))))
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnTTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rbtnDangLam)
+                    .addComponent(rbtnDaNghi)
+                    .addComponent(jLabel11)
+                    .addComponent(btnLuu)
+                    .addComponent(btnHuy))
+                .addContainerGap(47, Short.MAX_VALUE))
         );
 
         jPanel2.add(pnTT, "card2");
@@ -570,6 +613,10 @@ public class TTNV extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnHuyMouseClicked
 
+    private void btnLuuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLuuMouseClicked
+        luuChinhSuaNV();
+    }//GEN-LAST:event_btnLuuMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -637,6 +684,7 @@ public class TTNV extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JLabel lbAnh;
+    private javax.swing.JLabel lbTieude;
     private javax.swing.JPanel pnTT;
     private javax.swing.JRadioButton rbtnDaNghi;
     private javax.swing.JRadioButton rbtnDangLam;

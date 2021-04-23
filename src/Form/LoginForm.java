@@ -30,7 +30,7 @@ public class LoginForm extends javax.swing.JFrame {
     public static String  ten="";
     private void kiemTraTaiKhoan(){
         Connection con=KetNoiDB.getConnection();
-        String sql="select * from TAIKHOAN,NHANVIEN where " +
+        String sql="select * from NHANVIEN,TAIKHOAN where " +
 "TAIKHOAN.MaNV=NHANVIEN.MaNV AND TAIKHOAN.MaNV = '"+txtMaTK.getText()+"'";
         String usr="";
         String pass="";
@@ -40,10 +40,10 @@ public class LoginForm extends javax.swing.JFrame {
             Statement st=con.createStatement();
             ResultSet rs=st.executeQuery(sql);
             while(rs.next()){
-                usr=rs.getString(1);
-                pass=rs.getString(2);
-                ChucVu=rs.getString(3);
-                ten=rs.getString(5);
+                usr=rs.getString(13);
+                pass=rs.getString(14);
+                ChucVu=rs.getString(12);
+                ten=rs.getString(2);
                 
             }
             rs.close();
@@ -59,15 +59,15 @@ public class LoginForm extends javax.swing.JFrame {
         }
         if(usr.equals(txtMaTK.getText())&&Arrays.equals(txtMK.getPassword(), mkcx)){
         Arrays.fill(mkcx, '0');
-        if(ChucVu.equals("admin")){
+        if(ChucVu.equals("0")){
         this.dispose();
         new AdminForm().setVisible(true);
             }
-        else if(ChucVu.equals("Lễ tân")){
+        else if(ChucVu.equals("1")){
             this.dispose();
             new LeTanform().setVisible(true);
         }
-        else if (ChucVu.equals("Nhân viên bảo dưỡng")) {
+        else if (ChucVu.equals("2")) {
                  this.dispose();
             new NVSX_Form().setVisible(true);
             }
@@ -235,6 +235,7 @@ public class LoginForm extends javax.swing.JFrame {
         if (evt.getKeyCode()==KeyEvent.VK_ENTER) {
             kiemTraTaiKhoan();
         }
+        //System.out.println(txtMK.getText());
     }//GEN-LAST:event_txtMKKeyPressed
 
     /**

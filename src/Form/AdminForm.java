@@ -7,6 +7,7 @@ package Form;
 
 import Form.Xuli.KetNoiDB;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -34,6 +35,51 @@ public class AdminForm extends javax.swing.JFrame {
     Connection con=null;
     Statement st=null;
     ResultSet rs=null;
+    PreparedStatement ps;
+    public  void  showDuLieu()
+    {
+        try {
+            tbDSNV.removeAll();
+            String[] arr = {"Mã NV","Họ Tên","Ngày Sinh","Giới Tính","Chức Vụ","Trạng Thái"}; 
+            
+            DefaultTableModel model = new DefaultTableModel(arr,0);
+            con = KetNoiDB.getConnection();
+            String sql = "select MaNV,HoTen,CONVERT(varchar, NgaySinh, 105) as NgaySinh,"
+                + " GioiTinh,ChucVu,TrangThai"
+                + " from NHANVIEN";
+             ps = con.prepareStatement(sql);
+             rs = ps.executeQuery();
+            while(rs.next())
+            {
+                Vector vector = new Vector();
+                vector.add(rs.getString("MaNV"));
+                vector.add(rs.getString("HoTen"));
+                vector.add(rs.getString("NgaySinh"));
+                switch (rs.getInt("GioiTinh")) {
+                    case 0 -> vector.add("Nam");
+                    case 1 -> vector.add("Nữ");
+                    case 2 -> vector.add("khác");
+                }
+                switch (rs.getInt("ChucVu")) {
+                    case 0 -> vector.add("admin");
+                    case 1 -> vector.add("Lễ tân");
+                    case 2 -> vector.add("Nhân viên bảo dưỡng");
+                    default -> {
+                    }
+                }
+                switch(rs.getInt("TrangThai")){
+                    case 0 ->vector.add("Đã nghỉ");
+                    case 1 -> vector.add("Đang làm việc");
+                }
+                model.addRow(vector);
+            }
+            tbDSNV.setModel(model);
+           // rs.close();
+            //st.close();
+           // con.close();
+        } catch (SQLException e) {
+        }
+    }
     public void loadDB(){
         String sql="select MaNV,HoTen,CONVERT(varchar, NgaySinh, 105) as NgaySinh,"
                 + " GioiTinh,ChucVu,TrangThai,TenCV"
@@ -55,9 +101,9 @@ public class AdminForm extends javax.swing.JFrame {
                 data.addElement(rs.getString("HoTen"));
                 data.addElement(rs.getString("NgaySinh"));
                 switch (rs.getInt("GioiTinh")) {
-                    case 1 -> data.addElement("Nam");
-                    case 2 -> data.addElement("Nữ");
-                    case 3 -> data.addElement("Khác");
+                    case 0 -> data.addElement("Nam");
+                    case 1 -> data.addElement("Nữ");
+                    case 2 -> data.addElement("Khác");
                 }
                 data.addElement(rs.getString("TenCV"));
                 switch(rs.getInt("TrangThai")){
@@ -108,6 +154,7 @@ public class AdminForm extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         txtTimKiem = new javax.swing.JTextField();
         txtTenAD = new javax.swing.JLabel();
+        btnQuayLai1 = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -252,7 +299,7 @@ public class AdminForm extends javax.swing.JFrame {
         btnQuayLai.setText("QUAY LẠI");
         btnQuayLai.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnQuayLai.setPreferredSize(new java.awt.Dimension(200, 50));
-        jPanel5.add(btnQuayLai, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 370, 200, -1));
+        jPanel5.add(btnQuayLai, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 420, 200, -1));
 
         btnTTNV.setBackground(new java.awt.Color(0, 0, 36));
         btnTTNV.setForeground(new java.awt.Color(255, 255, 255));
@@ -273,6 +320,11 @@ public class AdminForm extends javax.swing.JFrame {
         btnThemNV.setText("THÊM NHÂN VIÊN");
         btnThemNV.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnThemNV.setPreferredSize(new java.awt.Dimension(200, 50));
+        btnThemNV.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnThemNVMouseClicked(evt);
+            }
+        });
         jPanel5.add(btnThemNV, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 200, -1));
 
         btnXoaNV.setBackground(new java.awt.Color(0, 0, 36));
@@ -281,6 +333,11 @@ public class AdminForm extends javax.swing.JFrame {
         btnXoaNV.setText("XOÁ NHÂN VIÊN");
         btnXoaNV.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnXoaNV.setPreferredSize(new java.awt.Dimension(200, 50));
+        btnXoaNV.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnXoaNVMouseClicked(evt);
+            }
+        });
         jPanel5.add(btnXoaNV, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 320, 200, -1));
 
         jLabel6.setFont(new java.awt.Font("Arial", 3, 12)); // NOI18N
@@ -301,6 +358,19 @@ public class AdminForm extends javax.swing.JFrame {
         txtTenAD.setText("hello");
         jPanel5.add(txtTenAD, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, 200, 20));
 
+        btnQuayLai1.setBackground(new java.awt.Color(0, 0, 36));
+        btnQuayLai1.setForeground(new java.awt.Color(255, 255, 255));
+        btnQuayLai1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_jog_reverse_50px.png"))); // NOI18N
+        btnQuayLai1.setText("LÀM MỚI");
+        btnQuayLai1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnQuayLai1.setPreferredSize(new java.awt.Dimension(200, 50));
+        btnQuayLai1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnQuayLai1MouseClicked(evt);
+            }
+        });
+        jPanel5.add(btnQuayLai1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 370, 200, -1));
+
         pnNV.add(jPanel5, java.awt.BorderLayout.WEST);
 
         jLayeredPane1.add(pnNV, "card3");
@@ -314,7 +384,7 @@ public class AdminForm extends javax.swing.JFrame {
        
         pnMenu.setVisible(false);
         pnNV.setVisible(true);
-        loadDB();
+        showDuLieu();
     }//GEN-LAST:event_btnDSNVMouseClicked
 
     private void txtTimKiemKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKeyReleased
@@ -335,6 +405,53 @@ public class AdminForm extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_btnTTNVMouseClicked
+
+    private void btnXoaNVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnXoaNVMouseClicked
+        int res = JOptionPane.showConfirmDialog(null, "Bạn có Chắc Chắn Muốn Xóa ?");
+        
+        if(res == 0)
+        {
+        int position = tbDSNV.getSelectedRow();
+        
+        String data = tbDSNV.getModel().getValueAt(position, 0).toString();
+        String data2 = tbDSNV.getModel().getValueAt(position, 1).toString();
+        
+        con = KetNoiDB.getConnection();
+        try {
+            
+            String sql3 = "DELETE FROM dbo.[HOPDONG] WHERE MaNV = ?";
+            PreparedStatement ps3 = con.prepareStatement(sql3);
+            ps3.setString(1, data);
+            ps3.executeUpdate();
+            
+            String sql2 = "DELETE FROM dbo.[TAIKHOAN] WHERE MaNV = ?";
+            PreparedStatement ps2 = con.prepareStatement(sql2);
+            ps2.setString(1, data);
+            ps2.executeUpdate();
+            
+            
+            String sql = "DELETE FROM dbo.[NHANVIEN] WHERE MaNV = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, data);
+            ps.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null, "Bạn Đã Xoa Nhân Viên có Tên: "+ data2 +"  ra khỏi danh sách");
+            showDuLieu();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+    }//GEN-LAST:event_btnXoaNVMouseClicked
+
+    private void btnThemNVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemNVMouseClicked
+        ThemNV Themnv = new ThemNV();
+        Themnv.setVisible(true);
+    }//GEN-LAST:event_btnThemNVMouseClicked
+
+    private void btnQuayLai1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnQuayLai1MouseClicked
+        showDuLieu();
+    }//GEN-LAST:event_btnQuayLai1MouseClicked
         
     /**
      * @param args the command line arguments
@@ -378,6 +495,7 @@ public class AdminForm extends javax.swing.JFrame {
     private javax.swing.JButton btnPCDV;
     private javax.swing.JButton btnQLND;
     private javax.swing.JButton btnQuayLai;
+    private javax.swing.JButton btnQuayLai1;
     private javax.swing.JButton btnTK;
     private javax.swing.JButton btnTTNV;
     private javax.swing.JButton btnThemNV;

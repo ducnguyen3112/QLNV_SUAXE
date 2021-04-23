@@ -163,7 +163,7 @@ public class LeTanform extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Tên nhân viên", "Ngày sinh", "Giới tính", "Trạng thái"
+                "Mã nhân viên", "Tên nhân viên", "Giới tính", "Trạng thái"
             }
         ));
         jScrollPane3.setViewportView(tbNVBD);
