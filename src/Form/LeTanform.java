@@ -5,8 +5,14 @@
  */
 package Form;
 
+import Form.Xuli.KetNoiDB;
+import java.sql.*;
 import java.awt.Color;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+import java.util.Vector;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 /**
@@ -247,6 +253,193 @@ public class LeTanform extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+   
+    public Vector KtBienSoXe(){
+        Connection ketNoi = KetNoiDB.getConnection();
+        String sql = "select BienSoXe from CT_SDDV";
+        Vector data = new Vector();
+        try {
+            Statement st = ketNoi.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while(rs.next()){
+                data.add(rs.getString("BienSoXe"));
+            }
+            rs.close();
+            st.close();
+            ketNoi.close();
+        } catch (SQLException e) {
+             Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, e);
+        }
+       return data;
+    } 
+    public boolean  checkBienSoXe(String s, Vector<String> a ){
+        for (String i : a)
+        {
+                if (i.equals(s)) {
+                    return false;
+                }
+        }   
+        return true;
+    }
+    public void loadDBXe(){
+        String sql="select BienSoXe,HieuXe,ChuXe from XE";
+        Connection   con = KetNoiDB.getConnection();
+        //DefaultTableModel model=(DefaultTableModel) tbDsnv.getModel();
+        tbXe.setDefaultEditor(Object.class, null);
+        DefaultTableModel model=(DefaultTableModel) tbXe.getModel();
+        
+        try {
+            Statement st=null;
+            ResultSet rs=null;
+            st=con.createStatement();
+            rs=st.executeQuery(sql);
+            Vector data;
+            Vector dataClone = KtBienSoXe();
+            System.out.println(dataClone);
+            while (rs.next()) {   
+                String s = rs.getString("BienSoXe");
+                if (checkBienSoXe(s, dataClone)){
+                data=new Vector();
+                data.addElement(s);
+                data.addElement(rs.getString("HieuXe"));
+                data.addElement(rs.getString("ChuXe"));
+                System.out.println(data +"Data o day");
+                model.addRow(data);
+               }
+            }
+            rs.close();
+            st.close();
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    } 
+    
+     
+    public Vector KtMaNV(){
+        Connection ketNoi = KetNoiDB.getConnection();
+        String sql = "select MaNV from CT_SDDV";
+        Vector data = new Vector();
+        try {
+            Statement st = ketNoi.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while(rs.next()){
+                data.add(rs.getString("MaNV"));
+            }
+            rs.close();
+            st.close();
+            ketNoi.close();
+        } catch (SQLException e) {
+             Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, e);
+        }
+       return data;
+    }
+    
+    public boolean  checkMaNv(String s, Vector<String> a ){
+        for (String i : a)
+        {
+                if (i.equals(s)) {
+                    return false;
+                }
+        }   
+        return true;
+    }
+    public  void loadNVBaoDuong(){
+        String sql="select MaNV,HoTen,GioiTinh from NHANVIEN where ChucVu = 2";
+        Connection   con = KetNoiDB.getConnection();
+        //DefaultTableModel model=(DefaultTableModel) tbDsnv.getModel();
+        tbNVBD.setDefaultEditor(Object.class, null);
+        DefaultTableModel model=(DefaultTableModel) tbNVBD.getModel();
+        
+        try {
+            Statement st=null;
+            ResultSet rs=null;
+            st=con.createStatement();
+            rs=st.executeQuery(sql);
+            Vector data;
+            Vector dataClone = KtMaNV();
+            System.out.println(dataClone);
+            while (rs.next()) {   
+                String s = rs.getString("MaNV");
+                if (!checkMaNv(s, dataClone)){
+                data=new Vector();
+                data.addElement(s);
+                data.addElement(rs.getString("HoTen"));
+                 switch (rs.getInt("GioiTinh")) {
+                    case 0 -> data.addElement("Nam");
+                    case 1 -> data.addElement("Nữ");
+                    case 3 -> data.addElement("Khác");
+                }
+                data.addElement("Bận");
+                model.addRow(data);
+               }
+                else {
+                data=new Vector();
+                data.addElement(s);
+                data.addElement(rs.getString("HoTen"));
+                 switch (rs.getInt("GioiTinh")) {
+                    case 0 -> data.addElement("Nam");
+                    case 1 -> data.addElement("Nữ");
+                    case 3 -> data.addElement("Khác");
+                }
+                data.addElement("Rãnh");
+                model.addRow(data);
+                }
+            }
+            rs.close();
+            st.close();
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+    }
+    public String getTenDv(String s){
+        String sql = "select TenDV from DICHVU where MaDV = 1 ";
+        Connection ketNoi = KetNoiDB.getConnection();
+        String tamp = null;
+        try {
+            Statement st = ketNoi.createStatement();
+            ResultSet rs  =st.executeQuery(sql);
+            while (rs.next()){
+                tamp = rs.getString("TenDV"); 
+                System.out.println(tamp);
+            }  
+            st.close();
+            rs.close();
+            ketNoi.close();
+        } catch (SQLException e) {
+        }
+        return tamp;
+    }
+    public void loadDataPhanCong(){
+        String sql = "select BienSoXe, MaNV, MaDV,NgayGiolamDV from CT_SDDV";
+        Connection ketNoi = KetNoiDB.getConnection();
+        tbPhanCong.setDefaultEditor(Object.class, null);
+        DefaultTableModel model=(DefaultTableModel) tbPhanCong.getModel();
+        try {
+               Statement st = ketNoi.createStatement();
+               ResultSet rs = st.executeQuery(sql);
+               Vector data;
+               while(rs.next()){
+                   data =new Vector();
+                   data.addElement(rs.getString("BienSoXe"));
+                   data.addElement(rs.getString("MaNV"));
+                   String tenDv = getTenDv(rs.getString("MaDV"));
+                   data.addElement(tenDv);
+                   data.addElement(rs.getString("NgayGiolamDV"));
+                   model.addRow(data);
+               }
+            rs.close();
+            st.close();
+            ketNoi.close();
+        } catch (SQLException e) {
+        }
+        
+    }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
