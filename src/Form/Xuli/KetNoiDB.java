@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class KetNoiDB {
     public static Connection getConnection(){
         Connection con=null;
-        String url="jdbc:sqlserver://localhost:1433;databaseName=QLNV_SUAXE";
+        String url="jdbc:sqlserver://localhost:1433;databaseName=QLNV_SUAXE2";
         String user="sa";
         String passwd="123";
         try {
@@ -53,8 +53,7 @@ public class KetNoiDB {
     public static void main(String[] args) {
         Connection con=getConnection();
         String t=taoMaNV(0);
-        
-        System.out.println();
+      
         if(con!=null){
             System.out.println("Thanh cong");
             System.out.println(t);
