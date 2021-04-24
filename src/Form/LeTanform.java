@@ -104,6 +104,11 @@ public class LeTanform extends javax.swing.JFrame {
         btnTiepNhan.setText("TIẾP NHẬN");
         btnTiepNhan.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnTiepNhan.setPreferredSize(new java.awt.Dimension(200, 50));
+        btnTiepNhan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnTiepNhanMouseClicked(evt);
+            }
+        });
         jPanel1.add(btnTiepNhan, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 200, -1));
 
         btnPhanCong1.setBackground(new java.awt.Color(51, 0, 51));
@@ -250,6 +255,10 @@ public class LeTanform extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnTiepNhanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTiepNhanMouseClicked
+        
+    }//GEN-LAST:event_btnTiepNhanMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -389,6 +398,7 @@ public class LeTanform extends javax.swing.JFrame {
             st.close();
             con.close();
         } catch (SQLException ex) {
+            
             
             
         }

@@ -28,6 +28,7 @@ public class LoginForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
     public static String  ten="";
+     public static String  MaNV="";
     private void kiemTraTaiKhoan(){
         Connection con=KetNoiDB.getConnection();
         String sql="select * from NHANVIEN,TAIKHOAN where " +
@@ -46,6 +47,7 @@ public class LoginForm extends javax.swing.JFrame {
                 ten=rs.getString(2);
                 
             }
+            MaNV=usr;
             rs.close();
             st.close();
             con.close();
