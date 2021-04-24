@@ -61,6 +61,6 @@ public class KetNoiDB {
         }
         java.util.Date date=new java.util.Date();
         SimpleDateFormat datefm=new SimpleDateFormat("yyyy-MM-dd");
-        System.out.println(datefm.format(date));
+        System.out.println(date);
     }
 }
