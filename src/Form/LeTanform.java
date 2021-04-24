@@ -6,11 +6,13 @@
 package Form;
 
 import Form.Xuli.KetNoiDB;
+import com.sun.source.doctree.IndexTree;
 import java.sql.*;
 import java.awt.Color;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.util.Vector;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -19,7 +21,7 @@ import javax.swing.table.JTableHeader;
  *
  * @author StarScream
  */
-public class LeTanform extends javax.swing.JFrame {
+public final class LeTanform extends javax.swing.JFrame {
 
     /** Creates new form LeTanform */
     public LeTanform() {
@@ -28,6 +30,10 @@ public class LeTanform extends javax.swing.JFrame {
         setTitle("Phân công dịch vụ");
          lbTenLT.setText(LoginForm.ten);
         setLocationRelativeTo(null);
+        loadDBXe();
+        loadDataPhanCong();
+        loadNVBaoDuong();
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE );
     }
     
     /** This method is called from within the constructor to
@@ -117,6 +123,11 @@ public class LeTanform extends javax.swing.JFrame {
         btnPhanCong1.setText("PHÂN CÔNG");
         btnPhanCong1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnPhanCong1.setPreferredSize(new java.awt.Dimension(200, 50));
+        btnPhanCong1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnPhanCong1MouseClicked(evt);
+            }
+        });
         jPanel1.add(btnPhanCong1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 200, -1));
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.WEST);
@@ -177,6 +188,11 @@ public class LeTanform extends javax.swing.JFrame {
                 "Mã nhân viên", "Tên nhân viên", "Giới tính", "Trạng thái"
             }
         ));
+        tbNVBD.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbNVBDMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tbNVBD);
 
         jLabel7.setFont(new java.awt.Font("Times New Roman", 3, 14)); // NOI18N
@@ -224,6 +240,11 @@ public class LeTanform extends javax.swing.JFrame {
                 "Biển số xe", "Dòng xe", "Chủ xe"
             }
         ));
+        tbXe.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbXeMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(tbXe);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -254,15 +275,52 @@ public class LeTanform extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    public static  String MaNVTN;
     private void btnTiepNhanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTiepNhanMouseClicked
-        
+        MaNVTN = "1";
+        new ThemXe().setVisible(true);
+        loadDBXe();
     }//GEN-LAST:event_btnTiepNhanMouseClicked
+//Chon bien so xe tu trong table
+    public static  String phanCongBienSoXe;
+    public String seletecdBienSoXe(){
+        int index = tbXe.getSelectedRow();
+        return (String) tbXe.getValueAt(index, 0);
+    }
+    private void tbXeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbXeMouseClicked
+        // TODO add your handling code here:
+        phanCongBienSoXe = seletecdBienSoXe();
+    }//GEN-LAST:event_tbXeMouseClicked
+   
+    //Chon nhan vien phan cong
+    public static String MaNVPhanCong;
+    public String seletecdMaNV(){
+         int index = tbNVBD.getSelectedRow();
+         if (tbNVBD.getValueAt(index, 3).equals("Bận")) {
+            JOptionPane.showMessageDialog(this, "Nhân viên đang bận mời chọn nhân viên khác");   
+        }
+        else 
+         return (String) tbNVBD.getValueAt(index, 0);
+     return null;    
+    }
+    
+    private void tbNVBDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbNVBDMouseClicked
+        // TODO add your handling code here:
+        MaNVPhanCong = seletecdMaNV();
+    }//GEN-LAST:event_tbNVBDMouseClicked
+
+    private void btnPhanCong1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPhanCong1MouseClicked
+        // TODO add your handling code here:
+        System.out.println(MaNVPhanCong);
+        new PhanCongForm().setVisible(true);
+    }//GEN-LAST:event_btnPhanCong1MouseClicked
 
     /**
      * @param args the command line arguments
      */
-   
+    
+    
+    
     public Vector KtBienSoXe(){
         Connection ketNoi = KetNoiDB.getConnection();
         String sql = "select BienSoXe from CT_SDDV";
@@ -292,9 +350,9 @@ public class LeTanform extends javax.swing.JFrame {
     public void loadDBXe(){
         String sql="select BienSoXe,HieuXe,ChuXe from XE";
         Connection   con = KetNoiDB.getConnection();
-        //DefaultTableModel model=(DefaultTableModel) tbDsnv.getModel();
         tbXe.setDefaultEditor(Object.class, null);
         DefaultTableModel model=(DefaultTableModel) tbXe.getModel();
+        tbXe.removeAll();
         
         try {
             Statement st=null;
@@ -406,7 +464,7 @@ public class LeTanform extends javax.swing.JFrame {
         
         
     }
-    public String getTenDv(String s){
+    public static String getTenDv(String s){
         String sql = "select TenDV from DICHVU where MaDV = 1 ";
         Connection ketNoi = KetNoiDB.getConnection();
         String tamp = null;

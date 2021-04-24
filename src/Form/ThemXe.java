@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 package Form;
-
+import Form.Xuli.KetNoiDB;
+import java.sql.*;
+import javax.swing.JOptionPane;
 /**
  *
  * @author StarScream
@@ -12,11 +14,31 @@ package Form;
 public class ThemXe extends javax.swing.JFrame {
 
     /** Creates new form ThemXe */
+    private String maNV;
     public ThemXe() {
         initComponents();
         setSize(451, 511);
+        this.maNV = LeTanform.MaNVTN;
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE );
     }
-
+    public void themXe(){
+            String sql = "insert into XE(BienSoXe,HieuXe,ChuXe,NVTN) values(?,?,?,?)";
+            Connection ketNoi = KetNoiDB.getConnection();
+            try {
+            PreparedStatement ps = ketNoi.prepareStatement(sql);
+            ps.setString(1, jBienSoXe.getText());
+            ps.setString(2, jHieuXe.getText());
+            ps.setString(3, jTenChuXe.getText());
+            ps.setString(4, this.maNV);
+            if (ps.executeUpdate()>0) {
+                JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!");
+            }else{
+                JOptionPane.showMessageDialog(this, "Lỗi! Thêm nhân viên không thành công");
+            }
+           
+        } catch (Exception e) {
+        }
+    }
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -31,9 +53,9 @@ public class ThemXe extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        jTenChuXe = new javax.swing.JTextField();
+        jHieuXe = new javax.swing.JTextField();
+        jBienSoXe = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
@@ -63,17 +85,17 @@ public class ThemXe extends javax.swing.JFrame {
         jLabel5.setText("Hiệu xe:");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, 60, 20));
 
-        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jTextField1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 300, 300, 30));
+        jTenChuXe.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jTenChuXe.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        getContentPane().add(jTenChuXe, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 300, 300, 30));
 
-        jTextField2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jTextField2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 210, 300, 30));
+        jHieuXe.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jHieuXe.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        getContentPane().add(jHieuXe, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 210, 300, 30));
 
-        jTextField3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jTextField3.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 130, 300, 30));
+        jBienSoXe.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jBienSoXe.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        getContentPane().add(jBienSoXe, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 130, 300, 30));
 
         jButton1.setBackground(new java.awt.Color(204, 204, 0));
         jButton1.setText("HUỶ");
@@ -81,10 +103,21 @@ public class ThemXe extends javax.swing.JFrame {
 
         jButton2.setBackground(new java.awt.Color(204, 204, 0));
         jButton2.setText("TIẾP NHẬN");
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton2MouseClicked(evt);
+            }
+        });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 390, 160, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+        // TODO add your handling code here:
+        themXe();
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton2MouseClicked
 
     /**
      * @param args the command line arguments
@@ -116,21 +149,21 @@ public class ThemXe extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ThemXe().setVisible(true);
+             //   new ThemXe().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField jBienSoXe;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JTextField jHieuXe;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTenChuXe;
     // End of variables declaration//GEN-END:variables
 }
