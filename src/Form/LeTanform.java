@@ -268,8 +268,7 @@ public class LeTanform extends javax.swing.JFrame {
             st.close();
             ketNoi.close();
         } catch (SQLException e) {
-             Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, e);
-        }
+                     }
        return data;
     } 
     public boolean  checkBienSoXe(String s, Vector<String> a ){
@@ -311,7 +310,7 @@ public class LeTanform extends javax.swing.JFrame {
             st.close();
             con.close();
         } catch (SQLException ex) {
-            Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, ex);
+           
         }
     } 
     
@@ -330,7 +329,7 @@ public class LeTanform extends javax.swing.JFrame {
             st.close();
             ketNoi.close();
         } catch (SQLException e) {
-             Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, e);
+           
         }
        return data;
     }
@@ -390,7 +389,7 @@ public class LeTanform extends javax.swing.JFrame {
             st.close();
             con.close();
         } catch (SQLException ex) {
-            Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
         
         
