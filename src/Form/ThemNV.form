@@ -574,6 +574,7 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtMaHD">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="49" green="37" red="90" type="rgb"/>
                 </Property>
