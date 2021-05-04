@@ -529,7 +529,7 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
         }    
     }
     public static String getTenDv(String s){
-        String sql = "select TenDV from DICHVU where MaDV = "+ s;
+        String sql = "select TenDV from DICHVU where MaDV = '"+ s + "'";
         Connection ketNoi = KetNoiDB.getConnection();
         String tamp = null;
         try {

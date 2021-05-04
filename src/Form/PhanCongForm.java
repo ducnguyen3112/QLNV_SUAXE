@@ -52,7 +52,7 @@ public class PhanCongForm extends javax.swing.JDialog {
      */
     
      public static String getTenNhanVien (String s) {
-        String sql = "select HoTen from NHANVIEN where MaNV = "+ s;
+        String sql = "select HoTen from NHANVIEN where MaNV = '"+ s+"'";
         Connection ketNoi = KetNoiDB.getConnection();
         String tamp = null;
         try {
