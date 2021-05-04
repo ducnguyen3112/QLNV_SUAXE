@@ -193,6 +193,11 @@ public class PhanCongForm extends javax.swing.JDialog {
         });
 
         jButton2.setText("HUỶ");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("Biển số xe:");
@@ -200,6 +205,7 @@ public class PhanCongForm extends javax.swing.JDialog {
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel5.setText("Họ tên NVBD:");
 
+        jBienSoXE.setEditable(false);
         jBienSoXE.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         jHovaTen.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -300,9 +306,13 @@ public class PhanCongForm extends javax.swing.JDialog {
     private void jCBoxDVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBoxDVActionPerformed
         // TODO add your handling code here:
             if(jCBoxDV.getSelectedItem().equals("Thêm dịch vụ")){
-                 String  inputDv = JOptionPane.showInputDialog("Thêm dịch vụ");
-                 themDichVu(inputDv);
-                 loadDataComboxDV();
+                 String  inputDV = JOptionPane.showInputDialog("Thêm dịch vụ");
+                 System.out.println(inputDV);
+                 if(inputDV != null)
+                 {
+                     themDichVu(inputDV);
+                     loadDataComboxDV();
+                 }
             }  
             else{
                    TenDV = (String) jCBoxDV.getSelectedItem();
@@ -357,6 +367,11 @@ public class PhanCongForm extends javax.swing.JDialog {
         }   
             
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

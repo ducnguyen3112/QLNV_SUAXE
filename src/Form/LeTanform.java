@@ -7,8 +7,10 @@ package Form;
 
 import Form.Xuli.KetNoiDB;
 import java.sql.*;
+import java.util.HashSet;
 import java.util.Vector;
 import javax.swing.JOptionPane;
+import javax.swing.event.ChangeEvent;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -296,6 +298,9 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
         // TODO add your handling code here:
        phanCongBienSoXe = seletecdBienSoXe();
        DeleteBienSoXe = seletecdBienSoXe();
+       tbPhanCong.getSelectionModel().clearSelection();
+        
+        
        
     }//GEN-LAST:event_tbXeMouseClicked
    
@@ -311,6 +316,7 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
     private void tbNVBDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbNVBDMouseClicked
         // TODO add your handling code here:
              MaNVPhanCong = seletecdMaNV();
+             tbPhanCong.getSelectionModel().clearSelection();
     }//GEN-LAST:event_tbNVBDMouseClicked
 //Tiep nhan xe
     private void btnTiepNhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTiepNhanActionPerformed
@@ -347,7 +353,7 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
                        showDataXe();
               } 
               else {
-                   JOptionPane.showMessageDialog(this, "Đã không thành công xe có biển số : " + DeleteBienSoXe);
+                   JOptionPane.showMessageDialog(this, "Xóa thành công xe có biển số : " + DeleteBienSoXe);
               }
         } catch (Exception e) {
         }
