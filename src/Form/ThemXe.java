@@ -4,19 +4,47 @@
  * and open the template in the editor.
  */
 package Form;
-
+import Form.Xuli.KetNoiDB;
+import java.sql.*;
+import javax.swing.JOptionPane;
 /**
  *
  * @author StarScream
  */
-public class ThemXe extends javax.swing.JFrame {
+public class ThemXe extends javax.swing.JDialog {
 
     /** Creates new form ThemXe */
-    public ThemXe() {
+    private LeTanform leTan;
+    public static String BienSoXe,HieuXe,TenChuXe;
+    public ThemXe(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         initComponents();
         setSize(451, 511);
+        setLocationRelativeTo(null);
+    
     }
-
+     public void themXe(){
+            String sql = "insert into XE(BienSoXe,HieuXe,ChuXe,NVTN) values(?,?,?,?)";
+            Connection ketNoi = KetNoiDB.getConnection();
+            try {
+            PreparedStatement ps = ketNoi.prepareStatement(sql);
+            ps.setString(1, jBienSoXe.getText());
+            ps.setString(2, jHieuXe.getText());
+            ps.setString(3, jTenChuXe.getText());
+            ps.setString(4, LeTanform.MaNVLeTan);
+            if (ps.executeUpdate()>0) {
+                JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!");
+                
+            }else{
+                JOptionPane.showMessageDialog(this, "Lỗi! Thêm nhân viên không thành công");
+            }
+           ps.close();
+           ketNoi.close();
+        } catch (Exception e) {
+        }
+    }
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -31,15 +59,16 @@ public class ThemXe extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        jTenChuXe = new javax.swing.JTextField();
+        jHieuXe = new javax.swing.JTextField();
+        jBienSoXe = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
         jLabel1.setText("jLabel1");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setSize(getPreferredSize());
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -63,29 +92,62 @@ public class ThemXe extends javax.swing.JFrame {
         jLabel5.setText("Hiệu xe:");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, 60, 20));
 
-        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jTextField1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 300, 300, 30));
+        jTenChuXe.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jTenChuXe.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        getContentPane().add(jTenChuXe, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 300, 300, 30));
 
-        jTextField2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jTextField2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 210, 300, 30));
+        jHieuXe.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jHieuXe.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        getContentPane().add(jHieuXe, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 210, 300, 30));
 
-        jTextField3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jTextField3.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 130, 300, 30));
+        jBienSoXe.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jBienSoXe.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        getContentPane().add(jBienSoXe, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 130, 300, 30));
 
         jButton1.setBackground(new java.awt.Color(204, 204, 0));
         jButton1.setText("HUỶ");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 390, 160, -1));
 
         jButton2.setBackground(new java.awt.Color(204, 204, 0));
         jButton2.setText("TIẾP NHẬN");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 390, 160, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        System.out.println(jBienSoXe.getText());
+          if (jBienSoXe.getText().equals("")) {
+                JOptionPane.showMessageDialog(this, "Không được để trong biến số xe");
+          }      
+          else if(jHieuXe.getText().equals("")){
+                 JOptionPane.showMessageDialog(this, "Không được để trống hiệu xe");
+          }
+          else if(jTenChuXe.getText().equals("")){
+               JOptionPane.showMessageDialog(this, "Không được để trống tên chủ xe");
+          }
+          else{
+              
+                    themXe();
+                    this.dispose();
+          }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
     /**
      * @param args the command line arguments
      */
@@ -114,23 +176,31 @@ public class ThemXe extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ThemXe().setVisible(true);
+                ThemXe dialog = new ThemXe(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField jBienSoXe;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JTextField jHieuXe;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTenChuXe;
     // End of variables declaration//GEN-END:variables
+
 }

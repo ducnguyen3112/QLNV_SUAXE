@@ -80,45 +80,45 @@ public class AdminForm extends javax.swing.JFrame {
         } catch (SQLException e) {
         }
     }
-    public void loadDB(){
-        String sql="select MaNV,HoTen,CONVERT(varchar, NgaySinh, 105) as NgaySinh,"
-                + " GioiTinh,ChucVu,TrangThai,TenCV"
-                + " from NHANVIEN,CHUCVU where NHANVIEN.ChucVu=CHUCVU.MaCV";
-        
-        //DefaultTableModel model=(DefaultTableModel) tbDsnv.getModel();
-        tbDSNV.setDefaultEditor(Object.class, null);
-        DefaultTableModel model=(DefaultTableModel) tbDSNV.getModel();
-        
-        try {
-            con=KetNoiDB.getConnection();
-            st=con.createStatement();
-            rs=st.executeQuery(sql);
-            Vector data;
-            while (rs.next()) {                
-                data=new Vector();
-                maNV=rs.getString("MaNV");
-                data.addElement(maNV);
-                data.addElement(rs.getString("HoTen"));
-                data.addElement(rs.getString("NgaySinh"));
-                switch (rs.getInt("GioiTinh")) {
-                    case 0 -> data.addElement("Nam");
-                    case 1 -> data.addElement("Nữ");
-                    case 2 -> data.addElement("Khác");
-                }
-                data.addElement(rs.getString("TenCV"));
-                switch(rs.getInt("TrangThai")){
-                    case 0 ->data.addElement("Đã nghỉ");
-                    case 1 -> data.addElement("Đang làm việc");
-                }
-                model.addRow(data);
-            }
-            rs.close();
-            st.close();
-            con.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+//    public void loadDB(){
+//        String sql="select MaNV,HoTen,CONVERT(varchar, NgaySinh, 105) as NgaySinh,"
+//                + " GioiTinh,ChucVu,TrangThai,TenCV"
+//                + " from NHANVIEN,CHUCVU where NHANVIEN.ChucVu=CHUCVU.MaCV";
+//        
+//        //DefaultTableModel model=(DefaultTableModel) tbDsnv.getModel();
+//        tbDSNV.setDefaultEditor(Object.class, null);
+//        DefaultTableModel model=(DefaultTableModel) tbDSNV.getModel();
+//        
+//        try {
+//            con=KetNoiDB.getConnection();
+//            st=con.createStatement();
+//            rs=st.executeQuery(sql);
+//            Vector data;
+//            while (rs.next()) {                
+//                data=new Vector();
+//                maNV=rs.getString("MaNV");
+//                data.addElement(maNV);
+//                data.addElement(rs.getString("HoTen"));
+//                data.addElement(rs.getString("NgaySinh"));
+//                switch (rs.getInt("GioiTinh")) {
+//                    case 0 -> data.addElement("Nam");
+//                    case 1 -> data.addElement("Nữ");
+//                    case 2 -> data.addElement("Khác");
+//                }
+//                data.addElement(rs.getString("TenCV"));
+//                switch(rs.getInt("TrangThai")){
+//                    case 0 ->data.addElement("Đã nghỉ");
+//                    case 1 -> data.addElement("Đang làm việc");
+//                }
+//                model.addRow(data);
+//            }
+//            rs.close();
+//            st.close();
+//            con.close();
+//        } catch (SQLException ex) {
+//            Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
     
     /** This method is called from within the constructor to
      * initialize the form.

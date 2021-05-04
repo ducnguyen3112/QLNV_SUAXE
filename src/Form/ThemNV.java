@@ -300,6 +300,7 @@ public class ThemNV extends javax.swing.JFrame {
         jLabel11.setText("Mã hợp đồng:");
         jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 30, -1, -1));
 
+        txtMaHD.setEditable(false);
         txtMaHD.setBackground(new java.awt.Color(144, 55, 73));
         txtMaHD.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         txtMaHD.setForeground(new java.awt.Color(255, 255, 255));

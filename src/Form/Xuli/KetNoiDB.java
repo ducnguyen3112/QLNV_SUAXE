@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class KetNoiDB {
     public static Connection getConnection(){
         Connection con=null;
-        String url="jdbc:sqlserver://localhost:1433;databaseName=QLNV_SUAXE";
+        String url="jdbc:sqlserver://localhost:1433;databaseName=QLNV_SUAXE2";
         String user="sa";
         String passwd="123";
         try {
@@ -40,11 +40,21 @@ public class KetNoiDB {
             while (rs.next()) {                
                 m=rs.getString(1);
             }
+            if (m==null) {
+                if (cv==0) {
+                    m="ad0";
+                }else if (cv==1) {
+                    m="lt0";
+                }else if (cv==2) {
+                    m="nv0";
+                }
+            }else{
             t1=m.substring(0, 2);
             t2=m.substring(2);
             int i=Integer.parseInt(t2);
             i++;
             m=t1+Integer.toString(i);
+            }
         } catch (SQLException ex) {
             Logger.getLogger(ThemNV.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -53,14 +63,13 @@ public class KetNoiDB {
     public static void main(String[] args) {
         Connection con=getConnection();
         String t=taoMaNV(0);
-        
-        System.out.println();
+      
         if(con!=null){
             System.out.println("Thanh cong");
             System.out.println(t);
         }
         java.util.Date date=new java.util.Date();
         SimpleDateFormat datefm=new SimpleDateFormat("yyyy-MM-dd");
-        System.out.println(datefm.format(date));
+        System.out.println(date);
     }
 }

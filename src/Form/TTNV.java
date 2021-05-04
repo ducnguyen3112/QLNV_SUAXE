@@ -5,11 +5,13 @@
  */
 package Form;
 import Form.Xuli.KetNoiDB;
+import java.awt.Image;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 /**
  *
@@ -35,13 +37,16 @@ public class TTNV extends javax.swing.JFrame {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE );
     }
     private void luuChinhSuaNV(){
-        String sql="update NHANVIEN set HoTen=?,NgaySinh=?,GioiTinh=?,SDT=?,DanToc=?"
-                + " QueQuan=?,CMND=?,DiaChi=?,TrangThai=?,ChucVu=? where MaNV= '2'";
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+          String date;
+        String sql="update NHANVIEN set HoTen=?,NgaySinh=?,GioiTinh=?,SDT=?,DanToc=?,"
+                + " QueQuan=?,CMND=?,DiaChi=?,TrangThai=?,ChucVu=? where MaNV= '"+AdminForm.maNV+"'";
         Connection con=KetNoiDB.getConnection();
         try {
             PreparedStatement ps =con.prepareStatement(sql);
             ps.setString(1, txtTen.getText());
-            
+            date = sdf1.format(dcNgaySinh.getDate());
+            ps.setString(2, date);
             if (rbtnNam.isSelected()) {
                 ps.setInt(3, 1);
             }else if (rbtnNu.isSelected()) {
@@ -55,11 +60,11 @@ public class TTNV extends javax.swing.JFrame {
             ps.setString(7,txtCMND.getText());
             ps.setString(8,txtDiaChi.getText());
             if (rbtnDangLam.isSelected()) {
-               ps.setInt(9, 1);
+               ps.setInt(10, 1);
             }else if (rbtnDaNghi.isSelected()) {
-                ps.setInt(9, 0);
+                ps.setInt(10, 0);
             }
-            ps.setInt(10, cbChucVu.getSelectedIndex());
+            ps.setInt(9, cbChucVu.getSelectedIndex());
             int i=ps.executeUpdate();
             if (i>0) {
                 JOptionPane.showMessageDialog(this, "Chỉnh sửa thông tin nhân viên thành công.");
@@ -73,9 +78,9 @@ public class TTNV extends javax.swing.JFrame {
     }
     private void loadDB(){
         String sql="select MaNV,HoTen,CONVERT(varchar, NgaySinh, 105) as NgaySinh,"
-                + " GioiTinh,ChucVu,TrangThai,TenCV,SDT,CMND,DanToc,DiaChi,QueQuan"
-                + " from NHANVIEN,CHUCVU where NHANVIEN.ChucVu=CHUCVU.MaCV" 
-                + " and NHANVIEN.MaNV= '2'";
+                + " GioiTinh,ChucVu,TrangThai,TenCV,SDT,CMND,DanToc,DiaChi,QueQuan,"
+                + "HinhAnh from NHANVIEN,CHUCVU where NHANVIEN.ChucVu=CHUCVU.MaCV" 
+                + " and NHANVIEN.MaNV= '"+AdminForm.maNV+ "'";
         try {
            Connection con=KetNoiDB.getConnection();
             Statement st=con.createStatement();
@@ -96,6 +101,9 @@ public class TTNV extends javax.swing.JFrame {
                     cbChucVu.setSelectedIndex(2);
                 }
                 txtQueQuan.setText(rs.getString("QueQuan"));
+                byte[] img=rs.getBytes("HinhAnh");
+                ImageIcon imageicon = new ImageIcon(new ImageIcon(img).getImage().getScaledInstance(lbAnh.getWidth(), lbAnh.getHeight(), Image.SCALE_SMOOTH));
+                lbAnh.setIcon(imageicon);
                 switch (rs.getInt("GioiTinh")) {
                     case 1 -> rbtnNam.setSelected(true);
                     case 2 -> rbtnNu.setSelected(true);
@@ -341,33 +349,27 @@ public class TTNV extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtCMND)
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel4)
-                                            .addComponent(jLabel6)
-                                            .addComponent(jLabel12))
-                                        .addGap(92, 92, 92)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 199, Short.MAX_VALUE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(dcNgaySinh, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
-                                .addGap(179, 179, 179)))
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtDanToc, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(rbtnNam)
-                                .addGap(18, 18, 18)
-                                .addComponent(rbtnNu)
-                                .addGap(18, 18, 18)
-                                .addComponent(rbtnKhac))
-                            .addComponent(jLabel5))
-                        .addGap(37, 37, 37))
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel12))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 291, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtCMND, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(dcNgaySinh, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
+                            .addComponent(cbChucVu, javax.swing.GroupLayout.Alignment.LEADING, 0, 190, Short.MAX_VALUE))
+                        .addGap(179, 179, 179)))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtDanToc, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(cbChucVu, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(rbtnNam)
+                        .addGap(18, 18, 18)
+                        .addComponent(rbtnNu)
+                        .addGap(18, 18, 18)
+                        .addComponent(rbtnKhac))
+                    .addComponent(jLabel5))
+                .addGap(37, 37, 37))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

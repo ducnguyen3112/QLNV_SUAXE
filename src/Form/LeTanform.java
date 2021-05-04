@@ -7,29 +7,33 @@ package Form;
 
 import Form.Xuli.KetNoiDB;
 import java.sql.*;
-import java.awt.Color;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
+import java.util.HashSet;
 import java.util.Vector;
-import javax.swing.JTable;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 
 /**
  *
  * @author StarScream
  */
-public class LeTanform extends javax.swing.JFrame {
-
+public final class LeTanform extends javax.swing.JFrame implements showData {
+    public static String MaNVLeTan;
+    public static  String phanCongBienSoXe="",DeleteBienSoXe="";
+    public static String MaNVPhanCong="";
+    public static  String dataBangPhanCong = "";
     /** Creates new form LeTanform */
     public LeTanform() {
         initComponents();
+        this.MaNVLeTan = LoginForm.MaNV;
         setSize(1200, 680);
         setTitle("Phân công dịch vụ");
-         lbTenLT.setText(LoginForm.ten);
+        lbTenLT.setText(LoginForm.ten);
         setLocationRelativeTo(null);
+        loadDBXe();
+        loadDataPhanCong();
+        loadNVBaoDuong();
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE );
     }
-    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -88,6 +92,11 @@ public class LeTanform extends javax.swing.JFrame {
         btnSua.setText("SỬA");
         btnSua.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnSua.setPreferredSize(new java.awt.Dimension(200, 50));
+        btnSua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSuaActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnSua, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 200, -1));
 
         btnXoa.setBackground(new java.awt.Color(51, 0, 51));
@@ -96,6 +105,11 @@ public class LeTanform extends javax.swing.JFrame {
         btnXoa.setText("XOÁ");
         btnXoa.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnXoa.setPreferredSize(new java.awt.Dimension(200, 50));
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnXoa, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 390, 200, -1));
 
         btnTiepNhan.setBackground(new java.awt.Color(51, 0, 51));
@@ -104,6 +118,11 @@ public class LeTanform extends javax.swing.JFrame {
         btnTiepNhan.setText("TIẾP NHẬN");
         btnTiepNhan.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnTiepNhan.setPreferredSize(new java.awt.Dimension(200, 50));
+        btnTiepNhan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTiepNhanActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnTiepNhan, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 200, -1));
 
         btnPhanCong1.setBackground(new java.awt.Color(51, 0, 51));
@@ -112,6 +131,11 @@ public class LeTanform extends javax.swing.JFrame {
         btnPhanCong1.setText("PHÂN CÔNG");
         btnPhanCong1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnPhanCong1.setPreferredSize(new java.awt.Dimension(200, 50));
+        btnPhanCong1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPhanCong1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnPhanCong1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 200, -1));
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.WEST);
@@ -131,6 +155,11 @@ public class LeTanform extends javax.swing.JFrame {
                 "Biển số xe", "Tên nhân viên", "Dịch vụ", "Thời gian đem vào"
             }
         ));
+        tbPhanCong.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbPhanCongMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbPhanCong);
 
         jLabel8.setFont(new java.awt.Font("Times New Roman", 3, 14)); // NOI18N
@@ -172,6 +201,11 @@ public class LeTanform extends javax.swing.JFrame {
                 "Mã nhân viên", "Tên nhân viên", "Giới tính", "Trạng thái"
             }
         ));
+        tbNVBD.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbNVBDMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tbNVBD);
 
         jLabel7.setFont(new java.awt.Font("Times New Roman", 3, 14)); // NOI18N
@@ -219,6 +253,11 @@ public class LeTanform extends javax.swing.JFrame {
                 "Biển số xe", "Dòng xe", "Chủ xe"
             }
         ));
+        tbXe.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbXeMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(tbXe);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -249,12 +288,114 @@ public class LeTanform extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    /**
-     * @param args the command line arguments
-     */
+//Chon bien so xe tu trong table
+    public String seletecdBienSoXe(){
+        int index = tbXe.getSelectedRow();
+        return (String) tbXe.getValueAt(index, 0);
+    }
+    private void tbXeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbXeMouseClicked
+        // TODO add your handling code here:
+       phanCongBienSoXe = seletecdBienSoXe();
+       DeleteBienSoXe = seletecdBienSoXe();
+       tbPhanCong.getSelectionModel().clearSelection();
+        
+    }//GEN-LAST:event_tbXeMouseClicked
    
-    public Vector KtBienSoXe(){
+    //Chon nhan vien phan cong
+    public String seletecdMaNV(){
+         int index = tbNVBD.getSelectedRow();
+         if (tbNVBD.getValueAt(index, 3).equals("Bận")) {
+             
+            JOptionPane.showMessageDialog(this, "Nhân viên đang bận mời chọn nhân viên khác");   
+        }
+         return (String) tbNVBD.getValueAt(index, 0);
+    }
+    
+    private void tbNVBDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbNVBDMouseClicked
+        // TODO add your handling code here:
+             MaNVPhanCong = seletecdMaNV();
+             tbPhanCong.getSelectionModel().clearSelection();
+
+    }//GEN-LAST:event_tbNVBDMouseClicked
+//Tiep nhan xe
+    private void btnTiepNhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTiepNhanActionPerformed
+        // TODO add your handling code here:
+            MaNVLeTan = "1";
+            new ThemXe(this, rootPaneCheckingEnabled).setVisible(true);
+            showDataXe();
+    }//GEN-LAST:event_btnTiepNhanActionPerformed
+
+    private void btnPhanCong1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPhanCong1ActionPerformed
+        // TODO add your handling code here:
+        if (phanCongBienSoXe.equals("")){
+         JOptionPane.showMessageDialog(this, "Bạn chưa chọn xe để phân công");
+        }
+        else if(MaNVPhanCong.equals("")){
+        JOptionPane.showMessageDialog(this, "Bạn chưa chọn nhân viên để phân công");
+        }
+        else{
+             dataBangPhanCong = "";
+             new PhanCongForm(this, rootPaneCheckingEnabled).setVisible(true);
+             showDataPhanCong();
+        }
+    }//GEN-LAST:event_btnPhanCong1ActionPerformed
+/// Xóa xe đã tiếp nhận
+    public void deteleXeChuaPhanCong(){
+        String sql = "DELETE FROM XE WHERE BienSoXe = ?";
+        
+        Connection ketNoi =KetNoiDB.getConnection();
+        try {
+            PreparedStatement st = ketNoi.prepareStatement(sql);
+            st.setString(1, DeleteBienSoXe);
+              if(st.executeUpdate() > 0){
+                       JOptionPane.showMessageDialog(this, "Đã xóa thành công xe có biển số : " + DeleteBienSoXe);
+                       showDataXe();
+              } 
+              else {
+                   JOptionPane.showMessageDialog(this, "Xóa thành công xe có biển số : " + DeleteBienSoXe);
+  
+              }
+        } catch (Exception e) {
+        }
+    }
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        // TODO add your handling code here:
+        if (DeleteBienSoXe.equals("")){
+         JOptionPane.showMessageDialog(this, "Bạn chưa chọn xe để xóa");
+        }
+        else {
+            int index = JOptionPane.showConfirmDialog(rootPane, "Bạn có muốn xóa xe "+ DeleteBienSoXe+" không?");
+            if(index == 0 ){
+                deteleXeChuaPhanCong();
+                DeleteBienSoXe = "";
+            }
+            else{
+                  DeleteBienSoXe = "";
+               }
+        }  
+        
+        
+    }//GEN-LAST:event_btnXoaActionPerformed
+// Sửa bảng phân công
+    private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
+        // TODO add your handling code here:
+            if (dataBangPhanCong.equals("")){
+                 JOptionPane.showMessageDialog(this, "Bạn chưa chọn xe đã phân công để sửa !!!");
+             }
+            else {     
+                       new PhanCongForm(this, rootPaneCheckingEnabled).setVisible(true);
+                       showDataPhanCong();
+            }
+    }//GEN-LAST:event_btnSuaActionPerformed
+    public String seletecdBangPhanCong(){
+        int index = tbPhanCong.getSelectedRow();
+        return (String) tbPhanCong.getValueAt(index, 0);
+    }
+    private void tbPhanCongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbPhanCongMouseClicked
+        // TODO add your handling code here:
+          dataBangPhanCong = seletecdBangPhanCong();  
+    }//GEN-LAST:event_tbPhanCongMouseClicked
+    public static  Vector KtBienSoXe(){
         Connection ketNoi = KetNoiDB.getConnection();
         String sql = "select BienSoXe from CT_SDDV";
         Vector data = new Vector();
@@ -268,8 +409,7 @@ public class LeTanform extends javax.swing.JFrame {
             st.close();
             ketNoi.close();
         } catch (SQLException e) {
-             Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, e);
-        }
+                     }
        return data;
     } 
     public boolean  checkBienSoXe(String s, Vector<String> a ){
@@ -281,13 +421,17 @@ public class LeTanform extends javax.swing.JFrame {
         }   
         return true;
     }
+   
+    /**
+     * @param args the command line arguments
+     */
+    
     public void loadDBXe(){
         String sql="select BienSoXe,HieuXe,ChuXe from XE";
-        Connection   con = KetNoiDB.getConnection();
-        //DefaultTableModel model=(DefaultTableModel) tbDsnv.getModel();
+        Connection con = KetNoiDB.getConnection();
         tbXe.setDefaultEditor(Object.class, null);
         DefaultTableModel model=(DefaultTableModel) tbXe.getModel();
-        
+        model.setRowCount(0);
         try {
             Statement st=null;
             ResultSet rs=null;
@@ -295,7 +439,6 @@ public class LeTanform extends javax.swing.JFrame {
             rs=st.executeQuery(sql);
             Vector data;
             Vector dataClone = KtBienSoXe();
-            System.out.println(dataClone);
             while (rs.next()) {   
                 String s = rs.getString("BienSoXe");
                 if (checkBienSoXe(s, dataClone)){
@@ -303,7 +446,6 @@ public class LeTanform extends javax.swing.JFrame {
                 data.addElement(s);
                 data.addElement(rs.getString("HieuXe"));
                 data.addElement(rs.getString("ChuXe"));
-                System.out.println(data +"Data o day");
                 model.addRow(data);
                }
             }
@@ -311,7 +453,7 @@ public class LeTanform extends javax.swing.JFrame {
             st.close();
             con.close();
         } catch (SQLException ex) {
-            Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, ex);
+           
         }
     } 
     
@@ -330,7 +472,7 @@ public class LeTanform extends javax.swing.JFrame {
             st.close();
             ketNoi.close();
         } catch (SQLException e) {
-             Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, e);
+           
         }
        return data;
     }
@@ -345,12 +487,12 @@ public class LeTanform extends javax.swing.JFrame {
         return true;
     }
     public  void loadNVBaoDuong(){
-        String sql="select MaNV,HoTen,GioiTinh from NHANVIEN where ChucVu = 2";
+        String sql="select MaNV,HoTen,GioiTinh from NHANVIEN";
         Connection   con = KetNoiDB.getConnection();
         //DefaultTableModel model=(DefaultTableModel) tbDsnv.getModel();
         tbNVBD.setDefaultEditor(Object.class, null);
         DefaultTableModel model=(DefaultTableModel) tbNVBD.getModel();
-        
+        model.setRowCount(0);
         try {
             Statement st=null;
             ResultSet rs=null;
@@ -358,7 +500,6 @@ public class LeTanform extends javax.swing.JFrame {
             rs=st.executeQuery(sql);
             Vector data;
             Vector dataClone = KtMaNV();
-            System.out.println(dataClone);
             while (rs.next()) {   
                 String s = rs.getString("MaNV");
                 if (!checkMaNv(s, dataClone)){
@@ -368,7 +509,7 @@ public class LeTanform extends javax.swing.JFrame {
                  switch (rs.getInt("GioiTinh")) {
                     case 0 -> data.addElement("Nam");
                     case 1 -> data.addElement("Nữ");
-                    case 3 -> data.addElement("Khác");
+                    case 2 -> data.addElement("Khác");
                 }
                 data.addElement("Bận");
                 model.addRow(data);
@@ -380,7 +521,7 @@ public class LeTanform extends javax.swing.JFrame {
                  switch (rs.getInt("GioiTinh")) {
                     case 0 -> data.addElement("Nam");
                     case 1 -> data.addElement("Nữ");
-                    case 3 -> data.addElement("Khác");
+                    case 2 -> data.addElement("Khác");
                 }
                 data.addElement("Rãnh");
                 model.addRow(data);
@@ -390,14 +531,11 @@ public class LeTanform extends javax.swing.JFrame {
             st.close();
             con.close();
         } catch (SQLException ex) {
-            Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
-        
+                  
+        }    
     }
-    public String getTenDv(String s){
-        String sql = "select TenDV from DICHVU where MaDV = 1 ";
+    public static String getTenDv(String s){
+        String sql = "select TenDV from DICHVU where MaDV = '"+ s + "'";
         Connection ketNoi = KetNoiDB.getConnection();
         String tamp = null;
         try {
@@ -405,7 +543,6 @@ public class LeTanform extends javax.swing.JFrame {
             ResultSet rs  =st.executeQuery(sql);
             while (rs.next()){
                 tamp = rs.getString("TenDV"); 
-                System.out.println(tamp);
             }  
             st.close();
             rs.close();
@@ -419,6 +556,7 @@ public class LeTanform extends javax.swing.JFrame {
         Connection ketNoi = KetNoiDB.getConnection();
         tbPhanCong.setDefaultEditor(Object.class, null);
         DefaultTableModel model=(DefaultTableModel) tbPhanCong.getModel();
+        model.setRowCount(0);
         try {
                Statement st = ketNoi.createStatement();
                ResultSet rs = st.executeQuery(sql);
@@ -495,4 +633,18 @@ public class LeTanform extends javax.swing.JFrame {
     private javax.swing.JTable tbPhanCong;
     private javax.swing.JTable tbXe;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public <T> void showDataXe() {
+         //To change body of generated methods, choose Tools | Templates.
+         loadDBXe();
+    }
+
+    @Override
+    public <T> void showDataPhanCong() {
+        loadDataPhanCong();
+        loadNVBaoDuong();
+        loadDBXe();
+        //To change body of generated methods, choose Tools | Templates.
+    }
 }
