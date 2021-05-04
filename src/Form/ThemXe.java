@@ -11,17 +11,20 @@ import javax.swing.JOptionPane;
  *
  * @author StarScream
  */
-public class ThemXe extends javax.swing.JFrame {
+public class ThemXe extends javax.swing.JDialog {
 
     /** Creates new form ThemXe */
-    private String maNV;
-    public ThemXe() {
+    private LeTanform leTan;
+    public static String BienSoXe,HieuXe,TenChuXe;
+    public ThemXe(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         initComponents();
         setSize(451, 511);
-        this.maNV = LeTanform.MaNVTN;
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE );
+        setLocationRelativeTo(null);
+    
     }
-    public void themXe(){
+     public void themXe(){
             String sql = "insert into XE(BienSoXe,HieuXe,ChuXe,NVTN) values(?,?,?,?)";
             Connection ketNoi = KetNoiDB.getConnection();
             try {
@@ -29,16 +32,19 @@ public class ThemXe extends javax.swing.JFrame {
             ps.setString(1, jBienSoXe.getText());
             ps.setString(2, jHieuXe.getText());
             ps.setString(3, jTenChuXe.getText());
-            ps.setString(4, this.maNV);
+            ps.setString(4, LeTanform.MaNVLeTan);
             if (ps.executeUpdate()>0) {
                 JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!");
+                
             }else{
                 JOptionPane.showMessageDialog(this, "Lỗi! Thêm nhân viên không thành công");
             }
-           
+           ps.close();
+           ketNoi.close();
         } catch (Exception e) {
         }
     }
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -61,7 +67,8 @@ public class ThemXe extends javax.swing.JFrame {
 
         jLabel1.setText("jLabel1");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setSize(getPreferredSize());
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -99,13 +106,18 @@ public class ThemXe extends javax.swing.JFrame {
 
         jButton1.setBackground(new java.awt.Color(204, 204, 0));
         jButton1.setText("HUỶ");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 390, 160, -1));
 
         jButton2.setBackground(new java.awt.Color(204, 204, 0));
         jButton2.setText("TIẾP NHẬN");
-        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton2MouseClicked(evt);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
             }
         });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 390, 160, -1));
@@ -113,12 +125,29 @@ public class ThemXe extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        themXe();
-        this.setVisible(false);
-    }//GEN-LAST:event_jButton2MouseClicked
+        System.out.println(jBienSoXe.getText());
+          if (jBienSoXe.getText().equals("")) {
+                JOptionPane.showMessageDialog(this, "Không được để trong biến số xe");
+          }      
+          else if(jHieuXe.getText().equals("")){
+                 JOptionPane.showMessageDialog(this, "Không được để trống hiệu xe");
+          }
+          else if(jTenChuXe.getText().equals("")){
+               JOptionPane.showMessageDialog(this, "Không được để trống tên chủ xe");
+          }
+          else{
+              
+                    themXe();
+                    this.dispose();
+          }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
     /**
      * @param args the command line arguments
      */
@@ -147,9 +176,16 @@ public class ThemXe extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-             //   new ThemXe().setVisible(true);
+                ThemXe dialog = new ThemXe(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }
@@ -166,4 +202,5 @@ public class ThemXe extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JTextField jTenChuXe;
     // End of variables declaration//GEN-END:variables
+
 }
