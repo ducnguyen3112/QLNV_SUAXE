@@ -377,7 +377,6 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
                  JOptionPane.showMessageDialog(this, "Bạn chưa chọn xe đã phân công để sửa !!!");
              }
             else {     
-                       phanCongBienSoXe="";
                        new PhanCongForm(this, rootPaneCheckingEnabled).setVisible(true);
                        showDataPhanCong();
             }

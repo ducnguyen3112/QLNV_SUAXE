@@ -40,11 +40,21 @@ public class KetNoiDB {
             while (rs.next()) {                
                 m=rs.getString(1);
             }
+            if (m==null) {
+                if (cv==0) {
+                    m="ad0";
+                }else if (cv==1) {
+                    m="lt0";
+                }else if (cv==2) {
+                    m="nv0";
+                }
+            }else{
             t1=m.substring(0, 2);
             t2=m.substring(2);
             int i=Integer.parseInt(t2);
             i++;
             m=t1+Integer.toString(i);
+            }
         } catch (SQLException ex) {
             Logger.getLogger(ThemNV.class.getName()).log(Level.SEVERE, null, ex);
         }

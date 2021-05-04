@@ -100,9 +100,9 @@ public class PhanCongForm extends javax.swing.JDialog {
             ps.setString(1, maDVCombox);
             ps.setString(2,tenDV);
             if (ps.executeUpdate()>0) {
-                JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!");
+                JOptionPane.showMessageDialog(this, "Thêm dịch vụ thành công!");
             }else{
-                JOptionPane.showMessageDialog(this, "Lỗi! Thêm nhân viên không thành công");
+                JOptionPane.showMessageDialog(this, "Lỗi!Không thành công");
             }
            ps.close();
            ketNoi.close();
@@ -277,7 +277,8 @@ public class PhanCongForm extends javax.swing.JDialog {
         
         jBienSoXE.setText(dataPhanCong);
         loadDataComboxDV();
-        String sql = "select MaNV,MaDV,MoTa from CT_SDDV WHERE BienSoXe = " + dataPhanCong;
+        
+        String sql = "SELECT MaNV,MoTa from CT_SDDV WHERE BienSoXe = '" + dataPhanCong + "'";
         Connection ketNoi = KetNoiDB.getConnection();
         try {
                Statement st = ketNoi.createStatement();
@@ -286,7 +287,6 @@ public class PhanCongForm extends javax.swing.JDialog {
                    String tenNV = getTenNhanVien(rs.getString("MaNV"));
                    jHovaTen.setText(tenNV);
                    jMota.setText(rs.getString("MoTa"));
-                   MaDV = rs.getString("MaDV");
                }
             rs.close();
             st.close();
@@ -313,6 +313,7 @@ public class PhanCongForm extends javax.swing.JDialog {
     public void KtTenNhanVien(){
         Connection ketNoi = KetNoiDB.getConnection();
         String sql="select MaNV,HoTen from NHANVIEN";
+         MaNV="";
          dataNhanVien = new HashMap();
          dataNhanVien.clear();
          try {
