@@ -305,6 +305,7 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
     public String seletecdMaNV(){
          int index = tbNVBD.getSelectedRow();
          if (tbNVBD.getValueAt(index, 3).equals("Bận")) {
+             
             JOptionPane.showMessageDialog(this, "Nhân viên đang bận mời chọn nhân viên khác");   
         }
          return (String) tbNVBD.getValueAt(index, 0);
