@@ -102,7 +102,7 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
         btnXoa.setBackground(new java.awt.Color(51, 0, 51));
         btnXoa.setForeground(new java.awt.Color(255, 255, 255));
         btnXoa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_profile_50px.png"))); // NOI18N
-        btnXoa.setText("XOÁ");
+        btnXoa.setText("ĐĂNG XUẤT");
         btnXoa.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnXoa.setPreferredSize(new java.awt.Dimension(200, 50));
         btnXoa.addActionListener(new java.awt.event.ActionListener() {
@@ -320,7 +320,7 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
 //Tiep nhan xe
     private void btnTiepNhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTiepNhanActionPerformed
         // TODO add your handling code here:
-            MaNVLeTan = "1";
+            MaNVLeTan = LoginForm.MaNV;
             new ThemXe(this, rootPaneCheckingEnabled).setVisible(true);
             showDataXe();
     }//GEN-LAST:event_btnTiepNhanActionPerformed
@@ -359,22 +359,11 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
         }
     }
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
-        // TODO add your handling code here:
-        if (DeleteBienSoXe.equals("")){
-         JOptionPane.showMessageDialog(this, "Bạn chưa chọn xe để xóa");
+        int option = JOptionPane.showConfirmDialog(this, "Bạn muốn đăng xuất ngay bây giờ?");
+        if (option==0) {
+            this.dispose();
+            new LoginForm().setVisible(true);
         }
-        else {
-            int index = JOptionPane.showConfirmDialog(rootPane, "Bạn có muốn xóa xe "+ DeleteBienSoXe+" không?");
-            if(index == 0 ){
-                deteleXeChuaPhanCong();
-                DeleteBienSoXe = "";
-            }
-            else{
-                  DeleteBienSoXe = "";
-               }
-        }  
-        
-        
     }//GEN-LAST:event_btnXoaActionPerformed
 // Sửa bảng phân công
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed

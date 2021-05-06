@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class KetNoiDB {
     public static Connection getConnection(){
         Connection con=null;
-        String url="jdbc:sqlserver://localhost:1433;databaseName=QLNV_SUAXE2";
+        String url="jdbc:sqlserver://localhost:1433;databaseName=QLNV_SUAXE";
         String user="sa";
         String passwd="123";
         try {
@@ -70,6 +70,6 @@ public class KetNoiDB {
         }
         java.util.Date date=new java.util.Date();
         SimpleDateFormat datefm=new SimpleDateFormat("yyyy-MM-dd");
-        System.out.println(date);
+        System.out.println(datefm.toString());
     }
 }

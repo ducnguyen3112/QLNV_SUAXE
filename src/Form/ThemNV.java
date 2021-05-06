@@ -445,7 +445,7 @@ public class ThemNV extends javax.swing.JFrame {
     
     private void btnLuuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLuuMouseClicked
         String sql = "INSERT INTO NHANVIEN (MaNV,HoTen,NgaySinh,GioiTinh,SDT,DanToc,QueQuan,HinhAnh,CMND,DiaChi,TrangThai,ChucVu)" + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
-         String str;
+        String str;
          
           SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
           String date;
@@ -486,7 +486,6 @@ public class ThemNV extends javax.swing.JFrame {
             
             ps = con.prepareStatement(sql2);
             ps.setString(1, str);
-            
             ps.setString(2, "123456");
             
             ps.execute();
@@ -502,8 +501,6 @@ public class ThemNV extends javax.swing.JFrame {
             ps3.setString(4, str);
             ps3.setFloat(5, Float.parseFloat(txtHSL.getText()));
             ps3.execute();
-            
-            JOptionPane.showMessageDialog(null, "Đã Thêm Nhân Viên Thành Công");
             con.close();
             ps.close();
             con.close();
@@ -515,8 +512,7 @@ public class ThemNV extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLuuMouseClicked
 
     private void btnHuyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHuyMouseClicked
-        
-
+        this.dispose();
     }//GEN-LAST:event_btnHuyMouseClicked
 
     private void btTaiAnhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btTaiAnhMouseClicked

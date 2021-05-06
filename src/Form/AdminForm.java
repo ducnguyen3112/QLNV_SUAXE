@@ -299,6 +299,11 @@ public class AdminForm extends javax.swing.JFrame {
         btnQuayLai.setText("QUAY LẠI");
         btnQuayLai.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnQuayLai.setPreferredSize(new java.awt.Dimension(200, 50));
+        btnQuayLai.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnQuayLaiMouseClicked(evt);
+            }
+        });
         jPanel5.add(btnQuayLai, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 420, 200, -1));
 
         btnTTNV.setBackground(new java.awt.Color(0, 0, 36));
@@ -408,7 +413,6 @@ public class AdminForm extends javax.swing.JFrame {
 
     private void btnXoaNVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnXoaNVMouseClicked
         int res = JOptionPane.showConfirmDialog(null, "Bạn có Chắc Chắn Muốn Xóa ?");
-        
         if(res == 0)
         {
         int position = tbDSNV.getSelectedRow();
@@ -418,7 +422,9 @@ public class AdminForm extends javax.swing.JFrame {
         
         con = KetNoiDB.getConnection();
         try {
-            
+            String sql4 ="DELETE FROM dbo.[CT_SDDV] WHERE MaNV = ?";
+            PreparedStatement ps4 = con.prepareStatement(sql4);
+            ps4.setString(1, data);
             String sql3 = "DELETE FROM dbo.[HOPDONG] WHERE MaNV = ?";
             PreparedStatement ps3 = con.prepareStatement(sql3);
             ps3.setString(1, data);
@@ -428,6 +434,8 @@ public class AdminForm extends javax.swing.JFrame {
             PreparedStatement ps2 = con.prepareStatement(sql2);
             ps2.setString(1, data);
             ps2.executeUpdate();
+            
+            
             
             
             String sql = "DELETE FROM dbo.[NHANVIEN] WHERE MaNV = ?";
@@ -452,6 +460,11 @@ public class AdminForm extends javax.swing.JFrame {
     private void btnQuayLai1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnQuayLai1MouseClicked
         showDuLieu();
     }//GEN-LAST:event_btnQuayLai1MouseClicked
+
+    private void btnQuayLaiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnQuayLaiMouseClicked
+        pnMenu.setVisible(true);
+        pnNV.setVisible(false);
+    }//GEN-LAST:event_btnQuayLaiMouseClicked
         
     /**
      * @param args the command line arguments

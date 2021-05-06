@@ -177,6 +177,7 @@ public class ThemXe extends javax.swing.JDialog {
 
         /* Create and display the form */
          java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 ThemXe dialog = new ThemXe(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {

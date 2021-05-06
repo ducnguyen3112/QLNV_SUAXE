@@ -212,6 +212,11 @@ public class TTNV extends javax.swing.JFrame {
         btnQuayLai.setForeground(new java.awt.Color(255, 255, 255));
         btnQuayLai.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_jog_reverse_50px.png"))); // NOI18N
         btnQuayLai.setText("QUAY LẠI");
+        btnQuayLai.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnQuayLaiMouseClicked(evt);
+            }
+        });
         jPanel1.add(btnQuayLai, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 530, 190, 50));
 
         btnChamCong.setBackground(new java.awt.Color(83, 53, 74));
@@ -233,6 +238,11 @@ public class TTNV extends javax.swing.JFrame {
         btnHopDong.setForeground(new java.awt.Color(255, 255, 255));
         btnHopDong.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_contract_50px.png"))); // NOI18N
         btnHopDong.setText("HỢP ĐỒNG");
+        btnHopDong.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnHopDongMouseClicked(evt);
+            }
+        });
         jPanel1.add(btnHopDong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 190, 50));
         jPanel1.add(lbTieude, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 50));
 
@@ -618,6 +628,14 @@ public class TTNV extends javax.swing.JFrame {
     private void btnLuuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLuuMouseClicked
         luuChinhSuaNV();
     }//GEN-LAST:event_btnLuuMouseClicked
+
+    private void btnHopDongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHopDongMouseClicked
+        new HopDongForm().setVisible(true);
+    }//GEN-LAST:event_btnHopDongMouseClicked
+
+    private void btnQuayLaiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnQuayLaiMouseClicked
+        this.dispose();
+    }//GEN-LAST:event_btnQuayLaiMouseClicked
 
     /**
      * @param args the command line arguments
