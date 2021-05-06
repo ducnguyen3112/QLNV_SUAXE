@@ -125,9 +125,6 @@
               <Dimension value="[200, 50]"/>
             </Property>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnXoaActionPerformed"/>
-          </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
               <AbsoluteConstraints x="0" y="390" width="200" height="-1"/>
@@ -262,8 +259,9 @@
                       <Color blue="66" green="66" red="66" type="rgb"/>
                     </Property>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="4" rowCount="0">
+                      <Table columnCount="5" rowCount="0">
                         <Column editable="true" title="Bi&#x1ec3;n s&#x1ed1; xe" type="java.lang.Object"/>
+                        <Column editable="true" title="M&#xe3; nh&#xe2;n vi&#xea;n" type="java.lang.Object"/>
                         <Column editable="true" title="T&#xea;n nh&#xe2;n vi&#xea;n" type="java.lang.Object"/>
                         <Column editable="true" title="D&#x1ecb;ch v&#x1ee5;" type="java.lang.Object"/>
                         <Column editable="true" title="Th&#x1edd;i gian &#x111;em v&#xe0;o" type="java.lang.Object"/>
@@ -271,6 +269,11 @@
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                       <TableColumnModel selectionModel="0">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
                         <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                           <Title/>
                           <Editor/>
@@ -376,20 +379,14 @@
                       <Color blue="66" green="66" red="66" type="rgb"/>
                     </Property>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="4" rowCount="0">
+                      <Table columnCount="3" rowCount="0">
                         <Column editable="true" title="M&#xe3; nh&#xe2;n vi&#xea;n" type="java.lang.Object"/>
                         <Column editable="true" title="T&#xea;n nh&#xe2;n vi&#xea;n" type="java.lang.Object"/>
                         <Column editable="true" title="Gi&#x1edb;i t&#xed;nh" type="java.lang.Object"/>
-                        <Column editable="true" title="Tr&#x1ea1;ng th&#xe1;i" type="java.lang.Object"/>
                       </Table>
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                       <TableColumnModel selectionModel="0">
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                          <Title/>
-                          <Editor/>
-                          <Renderer/>
-                        </Column>
                         <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                           <Title/>
                           <Editor/>
@@ -535,6 +532,7 @@
                   </Properties>
                   <Events>
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tbXeMouseClicked"/>
+                    <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tbXeKeyPressed"/>
                   </Events>
                 </Component>
               </SubComponents>
