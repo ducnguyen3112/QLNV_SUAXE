@@ -44,7 +44,7 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        lbTiepTan = new javax.swing.JLabel();
         lbTenLT = new javax.swing.JLabel();
         btnSua = new javax.swing.JButton();
         btnXoa = new javax.swing.JButton();
@@ -71,15 +71,15 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
         jPanel1.setPreferredSize(new java.awt.Dimension(200, 0));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Courier New", 1, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_front_desk_110px.png"))); // NOI18N
-        jLabel1.setText("TIẾP TÂN");
-        jLabel1.setToolTipText("");
-        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jLabel1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 29, 200, 137));
+        lbTiepTan.setFont(new java.awt.Font("Courier New", 1, 14)); // NOI18N
+        lbTiepTan.setForeground(new java.awt.Color(255, 255, 255));
+        lbTiepTan.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbTiepTan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_front_desk_110px.png"))); // NOI18N
+        lbTiepTan.setText("TIẾP TÂN");
+        lbTiepTan.setToolTipText("");
+        lbTiepTan.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lbTiepTan.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jPanel1.add(lbTiepTan, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 29, 200, 137));
 
         lbTenLT.setForeground(new java.awt.Color(255, 255, 255));
         lbTenLT.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -605,7 +605,6 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnTiepNhan;
     private javax.swing.JButton btnXoa;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -618,6 +617,7 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel lbTenLT;
+    private javax.swing.JLabel lbTiepTan;
     private javax.swing.JTable tbNVBD;
     private javax.swing.JTable tbPhanCong;
     private javax.swing.JTable tbXe;
