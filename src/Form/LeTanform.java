@@ -6,10 +6,13 @@
 package Form;
 
 import Form.Xuli.KetNoiDB;
+import java.awt.Color;
+import java.awt.event.KeyEvent;
 import java.sql.*;
 import java.util.HashSet;
 import java.util.Vector;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -105,11 +108,6 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
         btnXoa.setText("ĐĂNG XUẤT");
         btnXoa.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnXoa.setPreferredSize(new java.awt.Dimension(200, 50));
-        btnXoa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnXoaActionPerformed(evt);
-            }
-        });
         jPanel1.add(btnXoa, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 390, 200, -1));
 
         btnTiepNhan.setBackground(new java.awt.Color(51, 0, 51));
@@ -152,7 +150,7 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
 
             },
             new String [] {
-                "Biển số xe", "Tên nhân viên", "Dịch vụ", "Thời gian đem vào"
+                "Biển số xe", "Mã nhân viên", "Tên nhân viên", "Dịch vụ", "Thời gian đem vào"
             }
         ));
         tbPhanCong.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -198,7 +196,7 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
 
             },
             new String [] {
-                "Mã nhân viên", "Tên nhân viên", "Giới tính", "Trạng thái"
+                "Mã nhân viên", "Tên nhân viên", "Giới tính"
             }
         ));
         tbNVBD.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -258,6 +256,11 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
                 tbXeMouseClicked(evt);
             }
         });
+        tbXe.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tbXeKeyPressed(evt);
+            }
+        });
         jScrollPane4.setViewportView(tbXe);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -304,10 +307,6 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
     //Chon nhan vien phan cong
     public String seletecdMaNV(){
          int index = tbNVBD.getSelectedRow();
-         if (tbNVBD.getValueAt(index, 3).equals("Bận")) {
-             
-            JOptionPane.showMessageDialog(this, "Nhân viên đang bận mời chọn nhân viên khác");   
-        }
          return (String) tbNVBD.getValueAt(index, 0);
     }
     
@@ -352,20 +351,12 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
                        showDataXe();
               } 
               else {
-                   JOptionPane.showMessageDialog(this, "Xóa thành công xe có biển số : " + DeleteBienSoXe);
+                   JOptionPane.showMessageDialog(this, "Xóa không thành công xe có biển số : " + DeleteBienSoXe);
   
               }
         } catch (Exception e) {
         }
-    }
-    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
-        int option = JOptionPane.showConfirmDialog(this, "Bạn muốn đăng xuất ngay bây giờ?");
-        if (option==0) {
-            this.dispose();
-            new LoginForm().setVisible(true);
-        }
-    }//GEN-LAST:event_btnXoaActionPerformed
-// Sửa bảng phân công
+    }// Sửa bảng phân công
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
             if (dataBangPhanCong.equals("")){
@@ -384,6 +375,25 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
         // TODO add your handling code here:
           dataBangPhanCong = seletecdBangPhanCong();  
     }//GEN-LAST:event_tbPhanCongMouseClicked
+
+    private void tbXeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbXeKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode()== KeyEvent.VK_DELETE){
+            if (DeleteBienSoXe.equals("")){
+            JOptionPane.showMessageDialog(this, "Bạn chưa chọn xe để xóa");
+        }
+        else {
+            int index = JOptionPane.showConfirmDialog(rootPane, "Bạn có muốn xóa xe "+ DeleteBienSoXe+" không?");
+            if(index == 0 ){
+                deteleXeChuaPhanCong();
+                DeleteBienSoXe = "";
+            }
+            else{
+                 DeleteBienSoXe = "";
+               }
+            }      
+        }
+    }//GEN-LAST:event_tbXeKeyPressed
     public static  Vector KtBienSoXe(){
         Connection ketNoi = KetNoiDB.getConnection();
         String sql = "select BienSoXe from CT_SDDV";
@@ -491,7 +501,7 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
             Vector dataClone = KtMaNV();
             while (rs.next()) {   
                 String s = rs.getString("MaNV");
-                if (!checkMaNv(s, dataClone)){
+                if (checkMaNv(s, dataClone)){
                 data=new Vector();
                 data.addElement(s);
                 data.addElement(rs.getString("HoTen"));
@@ -500,21 +510,8 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
                     case 1 -> data.addElement("Nữ");
                     case 2 -> data.addElement("Khác");
                 }
-                data.addElement("Bận");
                 model.addRow(data);
                }
-                else {
-                data=new Vector();
-                data.addElement(s);
-                data.addElement(rs.getString("HoTen"));
-                 switch (rs.getInt("GioiTinh")) {
-                    case 0 -> data.addElement("Nam");
-                    case 1 -> data.addElement("Nữ");
-                    case 2 -> data.addElement("Khác");
-                }
-                data.addElement("Rãnh");
-                model.addRow(data);
-                }
             }
             rs.close();
             st.close();
@@ -554,6 +551,7 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
                    data =new Vector();
                    data.addElement(rs.getString("BienSoXe"));
                    data.addElement(rs.getString("MaNV"));
+                   data.addElement(PhanCongForm.getTenNhanVien(rs.getString("MaNV")));
                    String tenDv = getTenDv(rs.getString("MaDV"));
                    data.addElement(tenDv);
                    data.addElement(rs.getString("NgayGiolamDV"));
