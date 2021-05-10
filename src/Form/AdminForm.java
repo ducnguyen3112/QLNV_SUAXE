@@ -453,8 +453,8 @@ public class AdminForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnXoaNVMouseClicked
 
     private void btnThemNVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemNVMouseClicked
-        ThemNV Themnv = new ThemNV();
-        Themnv.setVisible(true);
+       new ThemNV(this, rootPaneCheckingEnabled).setVisible(true);
+             showDuLieu();
     }//GEN-LAST:event_btnThemNVMouseClicked
 
     private void btnQuayLai1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnQuayLai1MouseClicked
