@@ -26,12 +26,13 @@ import javax.swing.JFileChooser;
  *
  * @author StarScream
  */
-public class ThemNV extends javax.swing.JFrame {
+public class ThemNV extends javax.swing.JDialog {
     String filename = null;
     byte[] person_image = null;
     /** Creates new form ThemNV */
     SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yyyy");
-    public ThemNV() {
+    public ThemNV(java.awt.Frame parent,boolean model) {
+        super(parent,model);
         initComponents();
         rbtnNam.setSelected(true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -74,8 +75,6 @@ public class ThemNV extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         txtDiaChi = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
-        txtMaHD = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         dcNgayHetHan = new com.toedter.calendar.JDateChooser();
         jLabel15 = new javax.swing.JLabel();
@@ -88,7 +87,7 @@ public class ThemNV extends javax.swing.JFrame {
         btnLuu = new javax.swing.JButton();
         btnHuy = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         pnTT.setBackground(new java.awt.Color(144, 55, 73));
 
@@ -161,7 +160,7 @@ public class ThemNV extends javax.swing.JFrame {
 
         dcNgaySinh.setDateFormatString("dd-MM-yyyy");
 
-        cbChucVu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Lễ Tân", "Nhân viên vảo dưỡng" }));
+        cbChucVu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Lễ Tân", "Nhân viên bảo dưỡng" }));
         cbChucVu.setSelectedIndex(-1);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -295,47 +294,35 @@ public class ThemNV extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "HỢP ĐỒNG", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel11.setText("Mã hợp đồng:");
-        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 30, -1, -1));
-
-        txtMaHD.setEditable(false);
-        txtMaHD.setBackground(new java.awt.Color(144, 55, 73));
-        txtMaHD.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        txtMaHD.setForeground(new java.awt.Color(255, 255, 255));
-        txtMaHD.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jPanel2.add(txtMaHD, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 50, 180, 20));
-
         jLabel13.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setText("Ngày hết hạn:");
-        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 30, -1, -1));
+        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 80, -1, -1));
 
         dcNgayHetHan.setDateFormatString("dd-MM-yyyy");
-        jPanel2.add(dcNgayHetHan, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 50, 180, -1));
+        jPanel2.add(dcNgayHetHan, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 100, 180, -1));
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(255, 255, 255));
         jLabel15.setText("HSL:");
-        jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 90, -1, -1));
+        jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 80, -1, -1));
 
         txtHSL.setBackground(new java.awt.Color(144, 55, 73));
         txtHSL.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         txtHSL.setForeground(new java.awt.Color(255, 255, 255));
         txtHSL.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jPanel2.add(txtHSL, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 110, 180, -1));
+        jPanel2.add(txtHSL, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 100, 180, -1));
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setText("Ngày kí:");
-        jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 30, -1, -1));
+        jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 80, -1, -1));
 
         txtNgayKiHD.setBackground(new java.awt.Color(144, 55, 73));
         txtNgayKiHD.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         txtNgayKiHD.setForeground(new java.awt.Color(255, 255, 255));
         txtNgayKiHD.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jPanel2.add(txtNgayKiHD, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 50, 174, 20));
+        jPanel2.add(txtNgayKiHD, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 100, 174, 20));
 
         javax.swing.GroupLayout pnTTLayout = new javax.swing.GroupLayout(pnTT);
         pnTT.setLayout(pnTTLayout);
@@ -444,6 +431,7 @@ public class ThemNV extends javax.swing.JFrame {
 
     
     private void btnLuuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLuuMouseClicked
+        
         String sql = "INSERT INTO NHANVIEN (MaNV,HoTen,NgaySinh,GioiTinh,SDT,DanToc,QueQuan,HinhAnh,CMND,DiaChi,TrangThai,ChucVu)" + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
         String str;
          
@@ -494,7 +482,8 @@ public class ThemNV extends javax.swing.JFrame {
             //thêm vào dboHOPDONG
             String sql3 = "INSERT INTO HOPDONG (MaHD,NgayKy,HanHD,MaNV,HSL)" + "VALUES(?,?,?,?,?)" ;
             PreparedStatement ps3 = con.prepareStatement(sql3);
-            ps3.setString(1, txtMaHD.getText());
+            String maHD="hd"+str;
+            ps3.setString(1,maHD );
             ps3.setString(2, sdf1.format(new java.util.Date()));
             date = sdf1.format(dcNgayHetHan.getDate());
             ps3.setString(3, date);
@@ -504,11 +493,11 @@ public class ThemNV extends javax.swing.JFrame {
             con.close();
             ps.close();
             con.close();
-
         } catch (SQLException ex) {
             Logger.getLogger(ThemNV.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, ex);
         }
+        this.dispose();
     }//GEN-LAST:event_btnLuuMouseClicked
 
     private void btnHuyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHuyMouseClicked
@@ -569,7 +558,14 @@ public class ThemNV extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ThemNV().setVisible(true);
+                      ThemNV dialog = new ThemNV(new javax.swing.JFrame(), true);
+                      dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }
@@ -583,7 +579,6 @@ public class ThemNV extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser dcNgayHetHan;
     private com.toedter.calendar.JDateChooser dcNgaySinh;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel15;
@@ -608,7 +603,6 @@ public class ThemNV extends javax.swing.JFrame {
     private javax.swing.JTextField txtDanToc;
     private javax.swing.JTextField txtDiaChi;
     private javax.swing.JTextField txtHSL;
-    private javax.swing.JTextField txtMaHD;
     private javax.swing.JTextField txtNgayKiHD;
     private javax.swing.JTextField txtQueQuan;
     private javax.swing.JTextField txtSDT;

@@ -135,9 +135,10 @@ public class AdminForm extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         lbTenDN = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        btnQLND = new javax.swing.JButton();
+        btnBangLuong = new javax.swing.JButton();
         btnTK = new javax.swing.JButton();
         btnDSNV = new javax.swing.JButton();
+        btnChamCong = new javax.swing.JButton();
         btnPCDV = new javax.swing.JButton();
         btnCD = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
@@ -186,14 +187,19 @@ public class AdminForm extends javax.swing.JFrame {
         pnMenu.add(jLabel4);
         jLabel4.setBounds(160, 190, 820, 40);
 
-        btnQLND.setBackground(new java.awt.Color(255, 204, 51));
-        btnQLND.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_people_110px.png"))); // NOI18N
-        btnQLND.setText("QUẢN LÍ NGƯỜI DÙNG");
-        btnQLND.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnQLND.setPreferredSize(new java.awt.Dimension(150, 140));
-        btnQLND.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        pnMenu.add(btnQLND);
-        btnQLND.setBounds(490, 290, 150, 140);
+        btnBangLuong.setBackground(new java.awt.Color(255, 204, 51));
+        btnBangLuong.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_payroll_110px_2.png"))); // NOI18N
+        btnBangLuong.setText("BẢNG LƯƠNG");
+        btnBangLuong.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnBangLuong.setPreferredSize(new java.awt.Dimension(150, 140));
+        btnBangLuong.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnBangLuong.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnBangLuongMouseClicked(evt);
+            }
+        });
+        pnMenu.add(btnBangLuong);
+        btnBangLuong.setBounds(720, 290, 150, 140);
 
         btnTK.setBackground(new java.awt.Color(255, 204, 51));
         btnTK.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_pie_chart_110px.png"))); // NOI18N
@@ -202,7 +208,7 @@ public class AdminForm extends javax.swing.JFrame {
         btnTK.setPreferredSize(new java.awt.Dimension(150, 140));
         btnTK.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         pnMenu.add(btnTK);
-        btnTK.setBounds(650, 290, 150, 140);
+        btnTK.setBounds(380, 440, 150, 140);
 
         btnDSNV.setBackground(new java.awt.Color(255, 204, 51));
         btnDSNV.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_send_hot_list_110px_1.png"))); // NOI18N
@@ -216,7 +222,26 @@ public class AdminForm extends javax.swing.JFrame {
             }
         });
         pnMenu.add(btnDSNV);
-        btnDSNV.setBounds(170, 290, 150, 140);
+        btnDSNV.setBounds(210, 290, 150, 140);
+
+        btnChamCong.setBackground(new java.awt.Color(255, 204, 51));
+        btnChamCong.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_test_passed_110px_3.png"))); // NOI18N
+        btnChamCong.setText("CHẤM CÔNG");
+        btnChamCong.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnChamCong.setPreferredSize(new java.awt.Dimension(150, 140));
+        btnChamCong.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnChamCong.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnChamCongMouseClicked(evt);
+            }
+        });
+        btnChamCong.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChamCongActionPerformed(evt);
+            }
+        });
+        pnMenu.add(btnChamCong);
+        btnChamCong.setBounds(550, 290, 150, 140);
 
         btnPCDV.setBackground(new java.awt.Color(255, 204, 51));
         btnPCDV.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_request_service_110px_1.png"))); // NOI18N
@@ -224,17 +249,27 @@ public class AdminForm extends javax.swing.JFrame {
         btnPCDV.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnPCDV.setPreferredSize(new java.awt.Dimension(150, 140));
         btnPCDV.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnPCDV.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnPCDVMouseClicked(evt);
+            }
+        });
         pnMenu.add(btnPCDV);
-        btnPCDV.setBounds(330, 290, 150, 140);
+        btnPCDV.setBounds(380, 290, 150, 140);
 
         btnCD.setBackground(new java.awt.Color(255, 204, 51));
-        btnCD.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_settings_110px_1.png"))); // NOI18N
-        btnCD.setText("CÀI ĐẶT");
+        btnCD.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_logout_rounded_left_110px_1.png"))); // NOI18N
+        btnCD.setText("ĐĂNG XUẤT");
         btnCD.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnCD.setPreferredSize(new java.awt.Dimension(150, 140));
         btnCD.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnCD.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnCDMouseClicked(evt);
+            }
+        });
         pnMenu.add(btnCD);
-        btnCD.setBounds(810, 290, 150, 140);
+        btnCD.setBounds(550, 440, 150, 140);
 
         jLabel5.setBackground(new java.awt.Color(255, 204, 51));
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/photo-1517999144091-3d9dca6d1e43.png"))); // NOI18N
@@ -412,49 +447,13 @@ public class AdminForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTTNVMouseClicked
 
     private void btnXoaNVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnXoaNVMouseClicked
-        int res = JOptionPane.showConfirmDialog(null, "Bạn có Chắc Chắn Muốn Xóa ?");
-        if(res == 0)
-        {
-        int position = tbDSNV.getSelectedRow();
-        
-        String data = tbDSNV.getModel().getValueAt(position, 0).toString();
-        String data2 = tbDSNV.getModel().getValueAt(position, 1).toString();
-        
-        con = KetNoiDB.getConnection();
-        try {
-            String sql4 ="DELETE FROM dbo.[CT_SDDV] WHERE MaNV = ?";
-            PreparedStatement ps4 = con.prepareStatement(sql4);
-            ps4.setString(1, data);
-            String sql3 = "DELETE FROM dbo.[HOPDONG] WHERE MaNV = ?";
-            PreparedStatement ps3 = con.prepareStatement(sql3);
-            ps3.setString(1, data);
-            ps3.executeUpdate();
-            
-            String sql2 = "DELETE FROM dbo.[TAIKHOAN] WHERE MaNV = ?";
-            PreparedStatement ps2 = con.prepareStatement(sql2);
-            ps2.setString(1, data);
-            ps2.executeUpdate();
-            
-            
-            
-            
-            String sql = "DELETE FROM dbo.[NHANVIEN] WHERE MaNV = ?";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, data);
-            ps.executeUpdate();
-            
-            JOptionPane.showMessageDialog(null, "Bạn Đã Xoa Nhân Viên có Tên: "+ data2 +"  ra khỏi danh sách");
-            showDuLieu();
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        }
+        KetNoiDB.xoaNhanVien(tbDSNV);
+        showDuLieu();
     }//GEN-LAST:event_btnXoaNVMouseClicked
 
     private void btnThemNVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemNVMouseClicked
-        ThemNV Themnv = new ThemNV();
-        Themnv.setVisible(true);
+       new ThemNV(this, rootPaneCheckingEnabled).setVisible(true);
+             showDuLieu();
     }//GEN-LAST:event_btnThemNVMouseClicked
 
     private void btnQuayLai1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnQuayLai1MouseClicked
@@ -465,6 +464,30 @@ public class AdminForm extends javax.swing.JFrame {
         pnMenu.setVisible(true);
         pnNV.setVisible(false);
     }//GEN-LAST:event_btnQuayLaiMouseClicked
+
+    private void btnCDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCDMouseClicked
+        int option = JOptionPane.showConfirmDialog(this, "Bạn muốn đăng xuất?");
+        if (option==0) {
+            this.dispose();
+            new LoginForm().setVisible(true);
+        }
+    }//GEN-LAST:event_btnCDMouseClicked
+
+    private void btnPCDVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPCDVMouseClicked
+        
+    }//GEN-LAST:event_btnPCDVMouseClicked
+
+    private void btnChamCongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnChamCongMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnChamCongMouseClicked
+
+    private void btnChamCongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChamCongActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnChamCongActionPerformed
+
+    private void btnBangLuongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBangLuongMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBangLuongMouseClicked
         
     /**
      * @param args the command line arguments
@@ -503,10 +526,11 @@ public class AdminForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBangLuong;
     private javax.swing.JButton btnCD;
+    private javax.swing.JButton btnChamCong;
     private javax.swing.JButton btnDSNV;
     private javax.swing.JButton btnPCDV;
-    private javax.swing.JButton btnQLND;
     private javax.swing.JButton btnQuayLai;
     private javax.swing.JButton btnQuayLai1;
     private javax.swing.JButton btnTK;

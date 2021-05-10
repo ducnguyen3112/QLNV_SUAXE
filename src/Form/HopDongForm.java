@@ -81,8 +81,10 @@ public class HopDongForm extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel3.setText("Ngày kí:");
 
+        txtHoTen.setEditable(false);
         txtHoTen.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
 
+        txtNgayKi.setEditable(false);
         txtNgayKi.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
@@ -95,6 +97,7 @@ public class HopDongForm extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel5.setText("Hệ số lương:");
 
+        txtHSL.setEditable(false);
         txtHSL.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
 
         btnLuu.setText("Lưu");
@@ -180,7 +183,7 @@ public class HopDongForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnHuyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHuyMouseClicked
-        System.exit(0);
+        this.dispose();
     }//GEN-LAST:event_btnHuyMouseClicked
 
     private void btnSuaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSuaMouseClicked
