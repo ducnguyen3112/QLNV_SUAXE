@@ -141,8 +141,6 @@ public class TTNV extends javax.swing.JFrame {
         btnTaiAnh = new javax.swing.JButton();
         btnChinhSuaTT = new javax.swing.JButton();
         btnPhat = new javax.swing.JButton();
-        btnChamCong = new javax.swing.JButton();
-        btnBangLuong = new javax.swing.JButton();
         btnHopDong = new javax.swing.JButton();
         lbTieude = new javax.swing.JLabel();
         txtMaNV = new javax.swing.JTextField();
@@ -208,7 +206,7 @@ public class TTNV extends javax.swing.JFrame {
                 btnChinhSuaTTMouseClicked(evt);
             }
         });
-        jPanel1.add(btnChinhSuaTT, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 190, 50));
+        jPanel1.add(btnChinhSuaTT, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 190, 50));
 
         btnPhat.setBackground(new java.awt.Color(83, 53, 74));
         btnPhat.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -221,23 +219,7 @@ public class TTNV extends javax.swing.JFrame {
                 btnPhatMouseClicked(evt);
             }
         });
-        jPanel1.add(btnPhat, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 470, 190, 50));
-
-        btnChamCong.setBackground(new java.awt.Color(83, 53, 74));
-        btnChamCong.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        btnChamCong.setForeground(new java.awt.Color(255, 255, 255));
-        btnChamCong.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_timesheet_50px.png"))); // NOI18N
-        btnChamCong.setText("CHẤM CÔNG");
-        btnChamCong.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jPanel1.add(btnChamCong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 190, 50));
-
-        btnBangLuong.setBackground(new java.awt.Color(83, 53, 74));
-        btnBangLuong.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        btnBangLuong.setForeground(new java.awt.Color(255, 255, 255));
-        btnBangLuong.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_payroll_50px.png"))); // NOI18N
-        btnBangLuong.setText("BẢNG LƯƠNG");
-        btnBangLuong.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jPanel1.add(btnBangLuong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 320, 190, 50));
+        jPanel1.add(btnPhat, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 420, 190, 50));
 
         btnHopDong.setBackground(new java.awt.Color(83, 53, 74));
         btnHopDong.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -250,7 +232,7 @@ public class TTNV extends javax.swing.JFrame {
                 btnHopDongMouseClicked(evt);
             }
         });
-        jPanel1.add(btnHopDong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 370, 190, 50));
+        jPanel1.add(btnHopDong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 320, 190, 50));
         jPanel1.add(lbTieude, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 50));
 
         txtMaNV.setBackground(new java.awt.Color(144, 55, 73));
@@ -270,7 +252,7 @@ public class TTNV extends javax.swing.JFrame {
                 btnQuayLai1MouseClicked(evt);
             }
         });
-        jPanel1.add(btnQuayLai1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 540, 190, 50));
+        jPanel1.add(btnQuayLai1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 470, 190, 50));
 
         btnThuong.setBackground(new java.awt.Color(83, 53, 74));
         btnThuong.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -283,7 +265,7 @@ public class TTNV extends javax.swing.JFrame {
                 btnThuongMouseClicked(evt);
             }
         });
-        jPanel1.add(btnThuong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 420, 190, 50));
+        jPanel1.add(btnThuong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 370, 190, 50));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 610));
 
@@ -757,8 +739,6 @@ public class TTNV extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup btgrGioiTinh;
     private javax.swing.ButtonGroup btgrTrangThai;
-    private javax.swing.JButton btnBangLuong;
-    private javax.swing.JButton btnChamCong;
     private javax.swing.JButton btnChinhSuaTT;
     private javax.swing.JButton btnHopDong;
     private javax.swing.JButton btnHuy;

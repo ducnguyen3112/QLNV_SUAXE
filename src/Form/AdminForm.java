@@ -135,8 +135,10 @@ public class AdminForm extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         lbTenDN = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        btnBangLuong = new javax.swing.JButton();
         btnTK = new javax.swing.JButton();
         btnDSNV = new javax.swing.JButton();
+        btnChamCong = new javax.swing.JButton();
         btnPCDV = new javax.swing.JButton();
         btnCD = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
@@ -185,6 +187,20 @@ public class AdminForm extends javax.swing.JFrame {
         pnMenu.add(jLabel4);
         jLabel4.setBounds(160, 190, 820, 40);
 
+        btnBangLuong.setBackground(new java.awt.Color(255, 204, 51));
+        btnBangLuong.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_payroll_110px_2.png"))); // NOI18N
+        btnBangLuong.setText("BẢNG LƯƠNG");
+        btnBangLuong.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnBangLuong.setPreferredSize(new java.awt.Dimension(150, 140));
+        btnBangLuong.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnBangLuong.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnBangLuongMouseClicked(evt);
+            }
+        });
+        pnMenu.add(btnBangLuong);
+        btnBangLuong.setBounds(720, 290, 150, 140);
+
         btnTK.setBackground(new java.awt.Color(255, 204, 51));
         btnTK.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_pie_chart_110px.png"))); // NOI18N
         btnTK.setText("THÔNG KÊ");
@@ -192,7 +208,7 @@ public class AdminForm extends javax.swing.JFrame {
         btnTK.setPreferredSize(new java.awt.Dimension(150, 140));
         btnTK.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         pnMenu.add(btnTK);
-        btnTK.setBounds(570, 290, 150, 140);
+        btnTK.setBounds(380, 440, 150, 140);
 
         btnDSNV.setBackground(new java.awt.Color(255, 204, 51));
         btnDSNV.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_send_hot_list_110px_1.png"))); // NOI18N
@@ -206,7 +222,26 @@ public class AdminForm extends javax.swing.JFrame {
             }
         });
         pnMenu.add(btnDSNV);
-        btnDSNV.setBounds(170, 290, 150, 140);
+        btnDSNV.setBounds(210, 290, 150, 140);
+
+        btnChamCong.setBackground(new java.awt.Color(255, 204, 51));
+        btnChamCong.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_test_passed_110px_3.png"))); // NOI18N
+        btnChamCong.setText("CHẤM CÔNG");
+        btnChamCong.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnChamCong.setPreferredSize(new java.awt.Dimension(150, 140));
+        btnChamCong.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnChamCong.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnChamCongMouseClicked(evt);
+            }
+        });
+        btnChamCong.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChamCongActionPerformed(evt);
+            }
+        });
+        pnMenu.add(btnChamCong);
+        btnChamCong.setBounds(550, 290, 150, 140);
 
         btnPCDV.setBackground(new java.awt.Color(255, 204, 51));
         btnPCDV.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_request_service_110px_1.png"))); // NOI18N
@@ -220,7 +255,7 @@ public class AdminForm extends javax.swing.JFrame {
             }
         });
         pnMenu.add(btnPCDV);
-        btnPCDV.setBounds(360, 290, 150, 140);
+        btnPCDV.setBounds(380, 290, 150, 140);
 
         btnCD.setBackground(new java.awt.Color(255, 204, 51));
         btnCD.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_logout_rounded_left_110px_1.png"))); // NOI18N
@@ -234,7 +269,7 @@ public class AdminForm extends javax.swing.JFrame {
             }
         });
         pnMenu.add(btnCD);
-        btnCD.setBounds(780, 290, 150, 140);
+        btnCD.setBounds(550, 440, 150, 140);
 
         jLabel5.setBackground(new java.awt.Color(255, 204, 51));
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/photo-1517999144091-3d9dca6d1e43.png"))); // NOI18N
@@ -441,6 +476,18 @@ public class AdminForm extends javax.swing.JFrame {
     private void btnPCDVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPCDVMouseClicked
         
     }//GEN-LAST:event_btnPCDVMouseClicked
+
+    private void btnChamCongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnChamCongMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnChamCongMouseClicked
+
+    private void btnChamCongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChamCongActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnChamCongActionPerformed
+
+    private void btnBangLuongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBangLuongMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBangLuongMouseClicked
         
     /**
      * @param args the command line arguments
@@ -479,7 +526,9 @@ public class AdminForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBangLuong;
     private javax.swing.JButton btnCD;
+    private javax.swing.JButton btnChamCong;
     private javax.swing.JButton btnDSNV;
     private javax.swing.JButton btnPCDV;
     private javax.swing.JButton btnQuayLai;
