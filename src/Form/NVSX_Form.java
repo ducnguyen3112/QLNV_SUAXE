@@ -5,6 +5,19 @@
  */
 package Form;
 
+import static Form.LeTanform.traVeTenDichVu;
+import Form.Xuli.KetNoiDB;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Vector;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author StarScream
@@ -12,12 +25,103 @@ package Form;
 public class NVSX_Form extends javax.swing.JFrame {
 
     /** Creates new form NVSX_Form */
+    public static  String dataSuaDichVu = "", dataHoanThanhDichVu="";
     public NVSX_Form() {
         initComponents();
         setLocationRelativeTo(null);
         lbTenNVSX.setText(LoginForm.ten);
+        loadDataPhanCong();
+        loadDataHoanThanh();
     }
 
+    public static String traVeDongXe(String bienSoXe){
+        String sql = "select HieuXe from Xe where BienSoXe = '"+ bienSoXe + "'";
+        Connection ketNoi = KetNoiDB.getConnection();
+        String tamp = null;
+        try {
+            Statement st = ketNoi.createStatement();
+            ResultSet rs  =st.executeQuery(sql);
+            while (rs.next()){
+                tamp = rs.getString("HieuXe"); 
+            }  
+            st.close();
+            rs.close();
+            ketNoi.close();
+        } catch (SQLException e) {
+        }
+        return tamp;
+    }
+    public void loadDataPhanCong(){
+        //them ma nhan vien vao
+        String sql = "select BienSoXe, MaDV,NgayGiolamDV,NgayGioHT,MoTa from CT_SDDV";
+        Connection ketNoi = KetNoiDB.getConnection();
+        tbPhanCongNV.setDefaultEditor(Object.class, null);
+        DefaultTableModel model=(DefaultTableModel) tbPhanCongNV.getModel();
+        model.setRowCount(0);
+        ArrayList <String> locBienSoXe = new ArrayList<String>();
+        locBienSoXe.clear();
+        try {
+               Statement st = ketNoi.createStatement();
+               ResultSet rs = st.executeQuery(sql);
+               Vector data;
+               while(rs.next()){
+                   String tamBienSoXe =rs.getString("BienSoXe"); 
+                   if(!locBienSoXe.contains(tamBienSoXe) & (rs.getString("NgayGioHT") == null))
+                   {
+                        data =new Vector();
+                        data.addElement(tamBienSoXe);
+                        data.addElement(traVeDongXe(tamBienSoXe));
+                        String tenDv = traVeTenDichVu(rs.getString("BienSoXe"));
+                        data.addElement(tenDv);
+                        data.addElement(rs.getString("NgayGiolamDV"));
+                        data.addElement(rs.getString("MoTa"));
+                        model.addRow(data);
+                        locBienSoXe.add(tamBienSoXe);
+                   }
+               }
+            rs.close();
+            st.close();
+            ketNoi.close();
+        } catch (SQLException e) {
+        }
+        
+    }
+    public void loadDataHoanThanh(){
+        //them ma nhan vien vao
+        String sql = "select BienSoXe, MaDV,NgayGioHT,MoTa from CT_SDDV";
+        Connection ketNoi = KetNoiDB.getConnection();
+        tbHoanThanh.setDefaultEditor(Object.class, null);
+        DefaultTableModel model=(DefaultTableModel) tbHoanThanh.getModel();
+        model.setRowCount(0);
+        ArrayList <String> locBienSoXe = new ArrayList<String>();
+        locBienSoXe.clear();
+        try {
+               Statement st = ketNoi.createStatement();
+               ResultSet rs = st.executeQuery(sql);
+               Vector data;
+               while(rs.next()){
+                   String tamBienSoXe =rs.getString("BienSoXe"); 
+                   if(!locBienSoXe.contains(tamBienSoXe) & (rs.getString("NgayGioHT") != null ))
+                   {
+                        data =new Vector();
+                        data.addElement(tamBienSoXe);
+                        data.addElement(traVeDongXe(tamBienSoXe));
+                        String tenDv = traVeTenDichVu(rs.getString("BienSoXe"));
+                        data.addElement(tenDv);
+                        data.addElement(rs.getString("NgayGioHT"));
+                        data.addElement(rs.getString("MoTa"));
+                        model.addRow(data);
+                        locBienSoXe.add(tamBienSoXe);
+                   }
+               }
+            rs.close();
+            st.close();
+            ketNoi.close();
+        } catch (SQLException e) {
+        }
+        
+    }
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -66,6 +170,11 @@ public class NVSX_Form extends javax.swing.JFrame {
         btnHoanThanh.setText("HOÀN THÀNH");
         btnHoanThanh.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnHoanThanh.setPreferredSize(new java.awt.Dimension(200, 50));
+        btnHoanThanh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHoanThanhActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnHoanThanh, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 200, -1));
 
         btnSuaDichVu.setBackground(new java.awt.Color(0, 0, 36));
@@ -74,6 +183,11 @@ public class NVSX_Form extends javax.swing.JFrame {
         btnSuaDichVu.setText("CHỈNH SỬA DỊCH VỤ");
         btnSuaDichVu.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnSuaDichVu.setPreferredSize(new java.awt.Dimension(200, 50));
+        btnSuaDichVu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSuaDichVuActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnSuaDichVu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 200, -1));
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.WEST);
@@ -90,6 +204,11 @@ public class NVSX_Form extends javax.swing.JFrame {
                 "Biển số", "Dòng xe", "Dịch vụ", "Giờ tiếp nhận", "Mô tả"
             }
         ));
+        tbPhanCongNV.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbPhanCongNVMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbPhanCongNV);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -150,6 +269,62 @@ public class NVSX_Form extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public String chondBienSoXe(){
+        int index = tbPhanCongNV.getSelectedRow();
+        return (String) tbPhanCongNV.getValueAt(index, 0);
+    }
+    
+    private void btnSuaDichVuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaDichVuActionPerformed
+        // TODO add your handling code here:
+        tbPhanCongNV.getSelectionModel().clearSelection();
+        if(dataSuaDichVu.equals(""))
+            JOptionPane.showMessageDialog(rootPane, "Chưa chọn xe để sửa dịch vụ");
+        else{
+            new SuaDV_Form(this, rootPaneCheckingEnabled).setVisible(true);
+            loadDataPhanCong();
+            dataHoanThanhDichVu = "";
+        } 
+    }//GEN-LAST:event_btnSuaDichVuActionPerformed
+
+    private void tbPhanCongNVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbPhanCongNVMouseClicked
+        // TODO add your handling code here:
+           dataSuaDichVu = chondBienSoXe();
+           dataHoanThanhDichVu = dataSuaDichVu;
+    }//GEN-LAST:event_tbPhanCongNVMouseClicked
+    
+    public void themThoiGianHoanThanh(){
+        java.util.Date date=new java.util.Date();
+        SimpleDateFormat datefm=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String sql = "UPDATE CT_SDDV SET  NgayGioHT = ? " + "where BienSoXe = ?";
+        Connection ketNoi = KetNoiDB.getConnection();
+        try {
+            PreparedStatement pr = ketNoi.prepareStatement(sql);
+            pr.setString(1, datefm.format(date));
+            pr.setString(2,dataHoanThanhDichVu);
+             if (pr.executeUpdate()>0) {
+                JOptionPane.showMessageDialog(this, "Xe đã hoàn thành");
+            }else{
+                JOptionPane.showMessageDialog(this, "Lỗi!không thành công");
+            }
+        } catch (Exception e) {
+        }
+
+    }
+    private void btnHoanThanhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHoanThanhActionPerformed
+        // TODO add your handling code here:
+         if(dataHoanThanhDichVu.equals(""))
+            JOptionPane.showMessageDialog(rootPane, "Chưa chọn xe để hoàn thành dịch vụ");
+         
+        else{
+             int index = JOptionPane.showConfirmDialog(rootPane, "Bạn có chắc hoàn thành xe chưa");
+             if(index == 0){
+                themThoiGianHoanThanh();
+                loadDataHoanThanh();
+                loadDataPhanCong();
+             }
+        } 
+    }//GEN-LAST:event_btnHoanThanhActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -199,4 +374,8 @@ public class NVSX_Form extends javax.swing.JFrame {
     private javax.swing.JTable tbHoanThanh;
     private javax.swing.JTable tbPhanCongNV;
     // End of variables declaration//GEN-END:variables
+
+    private void and(boolean b) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

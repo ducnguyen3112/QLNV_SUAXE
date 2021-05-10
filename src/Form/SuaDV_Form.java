@@ -5,6 +5,18 @@
  */
 package Form;
 
+import Form.Xuli.KetNoiDB;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Vector;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author StarScream
@@ -12,12 +24,115 @@ package Form;
 public class SuaDV_Form extends javax.swing.JDialog {
 
     /** Creates new form SuaDV_Form */
+    private HashMap bangDV = new HashMap();
+    private HashMap listDichVuDangSuDung = new HashMap();
+    private String luuThoiGian = null,
+                   luuMaNhanVien=null,
+                   luuMoTa=null;
     public SuaDV_Form(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
+        setLocationRelativeTo(null);
+        loadData();
     }
-
+    
+   public void loadDataComboxDV(){
+         jCBDichVu.removeAllItems();
+         bangDV.clear();
+         String sql = "select MaDV,TenDV from DICHVU";
+         Connection ketNoi = KetNoiDB.getConnection();
+         try {
+             Statement st = ketNoi.createStatement();
+             ResultSet rs = st.executeQuery(sql);
+             while(rs.next()){
+                 bangDV.put(rs.getString("TenDV"), rs.getString("MaDV"));
+                 jCBDichVu.addItem(rs.getString("TenDV"));
+             }
+             st.close();
+             rs.close();
+             ketNoi.close();
+         } catch (Exception e) {
+         }
+            
+    } 
+   public String getMaDV(String TenDV){
+       String MaDV="";
+          for (Object i : bangDV.keySet()) {
+                if(i.equals(TenDV))
+                {
+                    MaDV = (String) bangDV.get(i);
+                }
+        }
+      return MaDV;     
+    }
+    public String traVeTenDichVu(String maDV){
+        for (Object i : bangDV.keySet()) {
+                if (maDV.equals(bangDV.get(i))){
+                    return (String) i;
+                }
+        }
+      return null;
+   }
+   public static  String traVeMaNhanVien(String s){
+       String sql = "select MaNV from CT_SDDV where BienSoXe = '" + s + "'";
+       Connection ketNoi = KetNoiDB.getConnection();
+        String tamp = null;
+        try {
+            Statement st = ketNoi.createStatement();
+            ResultSet rs  =st.executeQuery(sql);
+            while (rs.next()){
+                tamp = rs.getString("MaNV"); 
+            }  
+            st.close();
+            rs.close();
+            ketNoi.close();
+        } catch (SQLException e) {
+        }
+        return tamp;
+   }
+   public  void loadDataVaoBangDichVu(){
+       String sql = "select MaNV,MaDV,NgayGioLamDV,MoTa from CT_SDDV where BienSoXe = '" + NVSX_Form.dataSuaDichVu + "'";
+       Connection ketNoi = KetNoiDB.getConnection();
+       listDichVuDangSuDung.clear();
+        try {
+            Statement st = ketNoi.createStatement();
+            ResultSet rs  =st.executeQuery(sql);
+            while (rs.next()){
+                luuMaNhanVien = rs.getString("MaNV");
+                listDichVuDangSuDung.put(traVeTenDichVu(rs.getString("MaDV")), rs.getString("MaDV"));
+                luuThoiGian = rs.getString("NgayGioLamDV");
+                luuMoTa = rs.getString("MoTa");
+            }  
+            st.close();
+            rs.close();
+            ketNoi.close();
+        } catch (SQLException e) {
+        }
+       
+   }
+   public void themDichVuVaoBang(){
+            DefaultTableModel model=(DefaultTableModel) tbDichVu.getModel();
+            model.setRowCount(0);
+            Vector thayThe;
+            int count  = 0;
+            for (Object i : listDichVuDangSuDung.keySet()) {
+                thayThe = new Vector();
+                count++;
+                thayThe.addElement(count);
+                thayThe.addElement(listDichVuDangSuDung.get(i));
+                thayThe.addElement(i);
+                model.addRow(thayThe);
+        }
+    }
+    public void loadData(){
+            jBienSoXe.setText(NVSX_Form.dataSuaDichVu);
+            jHoTen.setText(PhanCongForm.getTenNhanVien(traVeMaNhanVien(NVSX_Form.dataSuaDichVu)));
+            loadDataComboxDV();
+            loadDataVaoBangDichVu();
+            themDichVuVaoBang();
+            
+    
+    }
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -30,12 +145,12 @@ public class SuaDV_Form extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        jHoTen = new javax.swing.JTextField();
+        jBienSoXe = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbDichVu = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jCBDichVu = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jToggleButton1 = new javax.swing.JToggleButton();
@@ -53,35 +168,57 @@ public class SuaDV_Form extends javax.swing.JDialog {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel3.setText("Họ tên NVBD:");
 
-        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        jHoTen.setEditable(false);
+        jHoTen.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
 
-        jTextField2.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        jBienSoXe.setEditable(false);
+        jBienSoXe.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbDichVu.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "STT", "Dịch vụ"
+                "STT", "Mã dịch vụ", "Dịch vụ"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tbDichVu.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tbDichVuKeyPressed(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbDichVu);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel5.setText("Danh sách dịch vụ đang tiếp nhận:");
 
-        jComboBox1.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jCBDichVu.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        jCBDichVu.setToolTipText("");
 
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jButton1.setText("THÊM");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel4.setText("Dịch vụ:");
 
         jToggleButton1.setText("Lưu");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
 
         jToggleButton2.setText("Huỷ");
+        jToggleButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -96,17 +233,16 @@ public class SuaDV_Form extends javax.swing.JDialog {
                     .addComponent(jLabel5)
                     .addComponent(jLabel4)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jCBDichVu, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1))
-                    .addComponent(jTextField1)
-                    .addComponent(jTextField2)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jToggleButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jHoTen)
+                    .addComponent(jBienSoXe)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jToggleButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -116,16 +252,16 @@ public class SuaDV_Form extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jBienSoXe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jHoTen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCBDichVu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(jLabel5)
@@ -140,6 +276,83 @@ public class SuaDV_Form extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here: them dich vu
+            String tam  = (String) jCBDichVu.getSelectedItem();
+            listDichVuDangSuDung.put(tam, getMaDV(tam));
+            themDichVuVaoBang();
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+    public String chonDichVuTrongBangCanXoa(){
+        int index = tbDichVu.getSelectedRow();
+        return (String) tbDichVu.getValueAt(index, 2);
+    }
+    private void tbDichVuKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbDichVuKeyPressed
+        // TODO add your handling code here:
+       if(evt.getKeyCode()== KeyEvent.VK_DELETE){
+           String tem = chonDichVuTrongBangCanXoa();
+        if(tem == ""){
+            JOptionPane.showMessageDialog(rootPane, "Chọn dịch vụ để xóa");
+        }
+        else{
+            int check = JOptionPane.showConfirmDialog(rootPane, "Bạn có muốn xóa dịch vụ");
+                    if(check ==0)
+                    {
+                        listDichVuDangSuDung.remove(tem);
+                    }
+        }
+        themDichVuVaoBang();
+       }
+    }//GEN-LAST:event_tbDichVuKeyPressed
+
+    private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jToggleButton2ActionPerformed
+    public void updateDichVu(){
+        xoaTruocKhiSua();
+        int check = 0;
+        for (Object i : listDichVuDangSuDung.keySet()) {
+                String  MaDV = (String) listDichVuDangSuDung.get(i);
+                Connection ketNoi = KetNoiDB.getConnection();
+                try {
+                     String sql ="INSERT INTO CT_SDDV(BienSoXe,MaNV,MaDV,NgayGiolamDV,NgayGioHT,MoTa)  VALUES(?,?,?,?,?,?)";
+                     PreparedStatement ps = ketNoi.prepareStatement(sql);
+                     ps.setString(1, NVSX_Form.dataSuaDichVu);
+                     ps.setString(2, luuMaNhanVien);
+                     ps.setString(3, MaDV);
+                     ps.setString(4, luuThoiGian);
+                     ps.setString(5, null);
+                     ps.setString(6,luuMoTa);
+                     check = ps.executeUpdate();
+                    ps.close();                   
+                    ketNoi.close(); 
+                } catch (Exception e) {
+                }
+      }
+        if (check>0) {
+                        JOptionPane.showMessageDialog(this, "Sửa thành công!");
+                    }else{
+                        JOptionPane.showMessageDialog(this, "Lỗi! Sửa không thành công");
+                    }
+    }
+    public void xoaTruocKhiSua(){
+      String sql ="Delete from CT_SDDV where BienSoXe = '"+ NVSX_Form.dataSuaDichVu+"'";
+       Connection ketNoi = KetNoiDB.getConnection();
+        try {
+                  PreparedStatement st = ketNoi.prepareStatement(sql);
+                  st.executeUpdate(); 
+                  st.close();
+        } catch (Exception e) {
+        }
+    
+    }
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        // TODO add your handling code here:
+        updateDichVu();
+        this.dispose();
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -184,18 +397,18 @@ public class SuaDV_Form extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField jBienSoXe;
     private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jCBDichVu;
+    private javax.swing.JTextField jHoTen;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JToggleButton jToggleButton2;
+    private javax.swing.JTable tbDichVu;
     // End of variables declaration//GEN-END:variables
 }
