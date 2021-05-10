@@ -160,7 +160,7 @@ public class ThemNV extends javax.swing.JDialog {
 
         dcNgaySinh.setDateFormatString("dd-MM-yyyy");
 
-        cbChucVu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Lễ Tân", "Nhân viên vảo dưỡng" }));
+        cbChucVu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Lễ Tân", "Nhân viên bảo dưỡng" }));
         cbChucVu.setSelectedIndex(-1);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -431,6 +431,7 @@ public class ThemNV extends javax.swing.JDialog {
 
     
     private void btnLuuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLuuMouseClicked
+        
         String sql = "INSERT INTO NHANVIEN (MaNV,HoTen,NgaySinh,GioiTinh,SDT,DanToc,QueQuan,HinhAnh,CMND,DiaChi,TrangThai,ChucVu)" + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
         String str;
          

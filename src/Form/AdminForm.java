@@ -412,44 +412,8 @@ public class AdminForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTTNVMouseClicked
 
     private void btnXoaNVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnXoaNVMouseClicked
-        int res = JOptionPane.showConfirmDialog(null, "Bạn có Chắc Chắn Muốn Xóa ?");
-        if(res == 0)
-        {
-        int position = tbDSNV.getSelectedRow();
-        
-        String data = tbDSNV.getModel().getValueAt(position, 0).toString();
-        String data2 = tbDSNV.getModel().getValueAt(position, 1).toString();
-        
-        con = KetNoiDB.getConnection();
-        try {
-            String sql4 ="DELETE FROM dbo.[CT_SDDV] WHERE MaNV = ?";
-            PreparedStatement ps4 = con.prepareStatement(sql4);
-            ps4.setString(1, data);
-            String sql3 = "DELETE FROM dbo.[HOPDONG] WHERE MaNV = ?";
-            PreparedStatement ps3 = con.prepareStatement(sql3);
-            ps3.setString(1, data);
-            ps3.executeUpdate();
-            
-            String sql2 = "DELETE FROM dbo.[TAIKHOAN] WHERE MaNV = ?";
-            PreparedStatement ps2 = con.prepareStatement(sql2);
-            ps2.setString(1, data);
-            ps2.executeUpdate();
-            
-            
-            
-            
-            String sql = "DELETE FROM dbo.[NHANVIEN] WHERE MaNV = ?";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, data);
-            ps.executeUpdate();
-            
-            JOptionPane.showMessageDialog(null, "Bạn Đã Xoa Nhân Viên có Tên: "+ data2 +"  ra khỏi danh sách");
-            showDuLieu();
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        }
+        KetNoiDB.xoaNhanVien(tbDSNV);
+        showDuLieu();
     }//GEN-LAST:event_btnXoaNVMouseClicked
 
     private void btnThemNVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemNVMouseClicked

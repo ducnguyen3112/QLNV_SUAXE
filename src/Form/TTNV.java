@@ -95,9 +95,9 @@ public class TTNV extends javax.swing.JFrame {
                 txtDiaChi.setText(rs.getString("DiaChi"));
                 if (rs.getString("TenCV").equals("admin")) {
                     cbChucVu.setSelectedIndex(0);
-                }else if(rs.getString("TenCV").equals("Lễ Tân")){
+                }else if(rs.getString("TenCV").equals("Lễ tân")){
                     cbChucVu.setSelectedIndex(1);
-                }else{
+                }else if(rs.getString("TenCV").equals("Nhân viên bảo dưỡng")){
                     cbChucVu.setSelectedIndex(2);
                 }
                 txtQueQuan.setText(rs.getString("QueQuan"));
@@ -140,15 +140,17 @@ public class TTNV extends javax.swing.JFrame {
         lbAnh = new javax.swing.JLabel();
         btnTaiAnh = new javax.swing.JButton();
         btnChinhSuaTT = new javax.swing.JButton();
-        btnQuayLai = new javax.swing.JButton();
+        btnPhat = new javax.swing.JButton();
         btnChamCong = new javax.swing.JButton();
         btnBangLuong = new javax.swing.JButton();
         btnHopDong = new javax.swing.JButton();
         lbTieude = new javax.swing.JLabel();
+        txtMaNV = new javax.swing.JTextField();
+        btnQuayLai1 = new javax.swing.JButton();
+        btnThuong = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         pnTT = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        txtMaNV = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtTen = new javax.swing.JTextField();
@@ -187,64 +189,101 @@ public class TTNV extends javax.swing.JFrame {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lbAnh.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel1.add(lbAnh, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 120, 160));
+        jPanel1.add(lbAnh, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 120, 160));
 
         btnTaiAnh.setBackground(new java.awt.Color(83, 53, 74));
         btnTaiAnh.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btnTaiAnh.setForeground(new java.awt.Color(255, 255, 255));
         btnTaiAnh.setText("Tải ảnh lên");
-        jPanel1.add(btnTaiAnh, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 300, 120, 20));
+        jPanel1.add(btnTaiAnh, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 120, 20));
 
         btnChinhSuaTT.setBackground(new java.awt.Color(83, 53, 74));
         btnChinhSuaTT.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btnChinhSuaTT.setForeground(new java.awt.Color(255, 255, 255));
         btnChinhSuaTT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_change_user_50px.png"))); // NOI18N
         btnChinhSuaTT.setText("CHỈNH SỬA");
+        btnChinhSuaTT.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnChinhSuaTT.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnChinhSuaTTMouseClicked(evt);
             }
         });
-        jPanel1.add(btnChinhSuaTT, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 330, 190, 50));
+        jPanel1.add(btnChinhSuaTT, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 190, 50));
 
-        btnQuayLai.setBackground(new java.awt.Color(83, 53, 74));
-        btnQuayLai.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        btnQuayLai.setForeground(new java.awt.Color(255, 255, 255));
-        btnQuayLai.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_jog_reverse_50px.png"))); // NOI18N
-        btnQuayLai.setText("QUAY LẠI");
-        btnQuayLai.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnPhat.setBackground(new java.awt.Color(83, 53, 74));
+        btnPhat.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnPhat.setForeground(new java.awt.Color(255, 255, 255));
+        btnPhat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_soccer_yellow_card_50px.png"))); // NOI18N
+        btnPhat.setText("XỬ PHẠT");
+        btnPhat.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnPhat.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnQuayLaiMouseClicked(evt);
+                btnPhatMouseClicked(evt);
             }
         });
-        jPanel1.add(btnQuayLai, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 530, 190, 50));
+        jPanel1.add(btnPhat, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 470, 190, 50));
 
         btnChamCong.setBackground(new java.awt.Color(83, 53, 74));
         btnChamCong.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btnChamCong.setForeground(new java.awt.Color(255, 255, 255));
         btnChamCong.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_timesheet_50px.png"))); // NOI18N
         btnChamCong.setText("CHẤM CÔNG");
-        jPanel1.add(btnChamCong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 380, 190, 50));
+        btnChamCong.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jPanel1.add(btnChamCong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 190, 50));
 
         btnBangLuong.setBackground(new java.awt.Color(83, 53, 74));
         btnBangLuong.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btnBangLuong.setForeground(new java.awt.Color(255, 255, 255));
         btnBangLuong.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_payroll_50px.png"))); // NOI18N
         btnBangLuong.setText("BẢNG LƯƠNG");
-        jPanel1.add(btnBangLuong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 430, 190, 50));
+        btnBangLuong.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jPanel1.add(btnBangLuong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 320, 190, 50));
 
         btnHopDong.setBackground(new java.awt.Color(83, 53, 74));
         btnHopDong.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btnHopDong.setForeground(new java.awt.Color(255, 255, 255));
         btnHopDong.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_contract_50px.png"))); // NOI18N
         btnHopDong.setText("HỢP ĐỒNG");
+        btnHopDong.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnHopDong.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnHopDongMouseClicked(evt);
             }
         });
-        jPanel1.add(btnHopDong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 190, 50));
+        jPanel1.add(btnHopDong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 370, 190, 50));
         jPanel1.add(lbTieude, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 50));
+
+        txtMaNV.setBackground(new java.awt.Color(144, 55, 73));
+        txtMaNV.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        txtMaNV.setForeground(new java.awt.Color(255, 255, 255));
+        txtMaNV.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jPanel1.add(txtMaNV, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 110, 170, 20));
+
+        btnQuayLai1.setBackground(new java.awt.Color(83, 53, 74));
+        btnQuayLai1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnQuayLai1.setForeground(new java.awt.Color(255, 255, 255));
+        btnQuayLai1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_jog_reverse_50px.png"))); // NOI18N
+        btnQuayLai1.setText("QUAY LẠI");
+        btnQuayLai1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnQuayLai1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnQuayLai1MouseClicked(evt);
+            }
+        });
+        jPanel1.add(btnQuayLai1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 540, 190, 50));
+
+        btnThuong.setBackground(new java.awt.Color(83, 53, 74));
+        btnThuong.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnThuong.setForeground(new java.awt.Color(255, 255, 255));
+        btnThuong.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_medal_first_place_50px.png"))); // NOI18N
+        btnThuong.setText("KHEN THƯỞNG");
+        btnThuong.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnThuong.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnThuongMouseClicked(evt);
+            }
+        });
+        jPanel1.add(btnThuong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 420, 190, 50));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 610));
 
@@ -255,11 +294,6 @@ public class TTNV extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(144, 55, 73));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "THÔNG TIN CÁ NHÂN", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel3.setForeground(new java.awt.Color(255, 255, 255));
-
-        txtMaNV.setBackground(new java.awt.Color(144, 55, 73));
-        txtMaNV.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        txtMaNV.setForeground(new java.awt.Color(255, 255, 255));
-        txtMaNV.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -336,6 +370,8 @@ public class TTNV extends javax.swing.JFrame {
 
         dcNgaySinh.setDateFormatString("dd-MM-yyyy");
         dcNgaySinh.setEnabled(false);
+        dcNgaySinh.setMaxSelectableDate(new java.util.Date(1104516077000L));
+        dcNgaySinh.setMinSelectableDate(new java.util.Date(-5364683923000L));
 
         cbChucVu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Lễ Tân", "Nhân viên vảo dưỡng" }));
         cbChucVu.setSelectedIndex(-1);
@@ -350,7 +386,6 @@ public class TTNV extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(txtSDT, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
-                        .addComponent(txtMaNV, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(txtTen, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING))
@@ -396,9 +431,7 @@ public class TTNV extends javax.swing.JFrame {
                             .addComponent(jLabel2)
                             .addComponent(jLabel4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(dcNgaySinh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtMaNV))
+                        .addComponent(dcNgaySinh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(44, 44, 44)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
@@ -496,6 +529,11 @@ public class TTNV extends javax.swing.JFrame {
         rbtnDaNghi.setForeground(new java.awt.Color(255, 255, 255));
         rbtnDaNghi.setText("Đã nghỉ");
         rbtnDaNghi.setEnabled(false);
+        rbtnDaNghi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbtnDaNghiActionPerformed(evt);
+            }
+        });
 
         btnLuu.setText("Lưu");
         btnLuu.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -626,6 +664,37 @@ public class TTNV extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHuyMouseClicked
 
     private void btnLuuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLuuMouseClicked
+        if (txtTen.getText()==null) {
+            JOptionPane.showMessageDialog(rootPane, "Không được để trống họ tên");
+        }else if (txtTen.getText().matches("^[^0-9]{7,}$")) {
+            JOptionPane.showMessageDialog(rootPane, "Họ tên không đúng xin kiểm tra lại.");
+        }
+        if (txtQueQuan.getText()==null) {
+            JOptionPane.showMessageDialog(rootPane, "Không được để trống quê quán");
+        }else if (txtQueQuan.getText().matches("^[^0-9]{7,}$")) {
+            JOptionPane.showMessageDialog(rootPane, "Quê quán không đúng xin kiểm tra lại.");
+        }
+        if (txtDanToc.getText()==null) {
+            JOptionPane.showMessageDialog(rootPane, "Không được để trống họ tên");
+        }else if (txtDanToc.getText().matches("^[^1-9]{7,}$")) {
+            JOptionPane.showMessageDialog(rootPane, "Dân tộc không đúng xin kiểm tra lại.");
+        }
+        if (txtDiaChi.getText()==null) {
+            JOptionPane.showMessageDialog(rootPane, "Không được để trống địa chỉ");
+        }
+        if (txtCMND.getText()==null) {
+            JOptionPane.showMessageDialog(rootPane, "Không được để trống CMND");
+        }else if (txtCMND.getText().matches("^[0-9]{9,12}$")) {
+            JOptionPane.showMessageDialog(rootPane, "CMND không đúng xin kiểm tra lại.");
+        }
+        if (txtSDT.getText()==null) {
+            JOptionPane.showMessageDialog(rootPane, "Không được để trống số điện thoại");
+        }else if (txtSDT.getText().matches("^[0]{1}[0-9]{9}$")) {
+            JOptionPane.showMessageDialog(rootPane, "Số điện thoại không đúng xin kiểm tra lại.");
+        }
+        if (cbChucVu.getSelectedIndex()==-1) {
+            JOptionPane.showMessageDialog(rootPane, "Xin hãy chọn một chức vụ");
+        }
         luuChinhSuaNV();
     }//GEN-LAST:event_btnLuuMouseClicked
 
@@ -633,9 +702,21 @@ public class TTNV extends javax.swing.JFrame {
         new HopDongForm().setVisible(true);
     }//GEN-LAST:event_btnHopDongMouseClicked
 
-    private void btnQuayLaiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnQuayLaiMouseClicked
+    private void btnPhatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPhatMouseClicked
         this.dispose();
-    }//GEN-LAST:event_btnQuayLaiMouseClicked
+    }//GEN-LAST:event_btnPhatMouseClicked
+
+    private void rbtnDaNghiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnDaNghiActionPerformed
+        
+    }//GEN-LAST:event_rbtnDaNghiActionPerformed
+
+    private void btnQuayLai1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnQuayLai1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnQuayLai1MouseClicked
+
+    private void btnThuongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThuongMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnThuongMouseClicked
 
     /**
      * @param args the command line arguments
@@ -682,8 +763,10 @@ public class TTNV extends javax.swing.JFrame {
     private javax.swing.JButton btnHopDong;
     private javax.swing.JButton btnHuy;
     private javax.swing.JButton btnLuu;
-    private javax.swing.JButton btnQuayLai;
+    private javax.swing.JButton btnPhat;
+    private javax.swing.JButton btnQuayLai1;
     private javax.swing.JButton btnTaiAnh;
+    private javax.swing.JButton btnThuong;
     private javax.swing.JComboBox<String> cbChucVu;
     private com.toedter.calendar.JDateChooser dcNgaySinh;
     private javax.swing.JLabel jLabel10;
