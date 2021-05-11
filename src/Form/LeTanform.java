@@ -50,7 +50,7 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
         lbTiepTan = new javax.swing.JLabel();
         lbTenLT = new javax.swing.JLabel();
         btnSua = new javax.swing.JButton();
-        btnXoa = new javax.swing.JButton();
+        btnQuayLai = new javax.swing.JButton();
         btnTiepNhan = new javax.swing.JButton();
         btnPhanCong1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
@@ -78,7 +78,6 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
         lbTiepTan.setForeground(new java.awt.Color(255, 255, 255));
         lbTiepTan.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbTiepTan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_front_desk_110px.png"))); // NOI18N
-        lbTiepTan.setText("TIẾP TÂN");
         lbTiepTan.setToolTipText("");
         lbTiepTan.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         lbTiepTan.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -86,7 +85,6 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
 
         lbTenLT.setForeground(new java.awt.Color(255, 255, 255));
         lbTenLT.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbTenLT.setText("jLabel2");
         jPanel1.add(lbTenLT, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 172, 200, 21));
 
         btnSua.setBackground(new java.awt.Color(51, 0, 51));
@@ -102,13 +100,18 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
         });
         jPanel1.add(btnSua, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 200, -1));
 
-        btnXoa.setBackground(new java.awt.Color(51, 0, 51));
-        btnXoa.setForeground(new java.awt.Color(255, 255, 255));
-        btnXoa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_profile_50px.png"))); // NOI18N
-        btnXoa.setText("ĐĂNG XUẤT");
-        btnXoa.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btnXoa.setPreferredSize(new java.awt.Dimension(200, 50));
-        jPanel1.add(btnXoa, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 390, 200, -1));
+        btnQuayLai.setBackground(new java.awt.Color(51, 0, 51));
+        btnQuayLai.setForeground(new java.awt.Color(255, 255, 255));
+        btnQuayLai.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_jog_reverse_50px.png"))); // NOI18N
+        btnQuayLai.setText("QUAY LẠI");
+        btnQuayLai.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnQuayLai.setPreferredSize(new java.awt.Dimension(200, 50));
+        btnQuayLai.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnQuayLaiActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnQuayLai, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 390, 200, -1));
 
         btnTiepNhan.setBackground(new java.awt.Color(51, 0, 51));
         btnTiepNhan.setForeground(new java.awt.Color(255, 255, 255));
@@ -394,6 +397,10 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
             }      
         }
     }//GEN-LAST:event_tbXeKeyPressed
+
+    private void btnQuayLaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuayLaiActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnQuayLaiActionPerformed
     public static  Vector KtBienSoXe(){
         Connection ketNoi = KetNoiDB.getConnection();
         String sql = "select BienSoXe from CT_SDDV";
@@ -411,7 +418,7 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
                      }
        return data;
     } 
-    public boolean  checkBienSoXe(String s, Vector<String> a ){
+    public static boolean  checkBienSoXe(String s, Vector<String> a ){
         for (String i : a)
         {
                 if (i.equals(s)) {
@@ -425,7 +432,7 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
      * @param args the command line arguments
      */
     
-    public void loadDBXe(){
+    public  void loadDBXe(){
         String sql="select BienSoXe,HieuXe,ChuXe from XE";
         Connection con = KetNoiDB.getConnection();
         tbXe.setDefaultEditor(Object.class, null);
@@ -600,9 +607,9 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnPhanCong1;
+    private javax.swing.JButton btnQuayLai;
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnTiepNhan;
-    private javax.swing.JButton btnXoa;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;

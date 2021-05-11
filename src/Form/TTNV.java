@@ -22,6 +22,7 @@ public class TTNV extends javax.swing.JFrame {
     /** Creates new form TTNV */
     public TTNV() {
         initComponents();
+        setLocationRelativeTo(null);
        loadDB();
         btnLuu.setVisible(false);
         btnHuy.setVisible(false);
@@ -34,6 +35,7 @@ public class TTNV extends javax.swing.JFrame {
         txtQueQuan.setEditable(false);
         txtSDT.setEditable(false);
         txtTen.setEditable(false);
+        
         setDefaultCloseOperation(DISPOSE_ON_CLOSE );
     }
     private void luuChinhSuaNV(){
@@ -646,6 +648,9 @@ public class TTNV extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHuyMouseClicked
 
     private void btnLuuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLuuMouseClicked
+        if (lbAnh.getIcon()==null) {
+            JOptionPane.showMessageDialog(rootPane, "Xin hãy chọn ảnh");
+        }
         if (txtTen.getText()==null) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống họ tên");
         }else if (txtTen.getText().matches("^[^0-9]{7,}$")) {

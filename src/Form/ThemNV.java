@@ -34,6 +34,7 @@ public class ThemNV extends javax.swing.JDialog {
     public ThemNV(java.awt.Frame parent,boolean model) {
         super(parent,model);
         initComponents();
+        setLocationRelativeTo(null);
         rbtnNam.setSelected(true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         txtNgayKiHD.setText(sdf2.format(new java.util.Date()));
@@ -431,7 +432,40 @@ public class ThemNV extends javax.swing.JDialog {
 
     
     private void btnLuuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLuuMouseClicked
-        
+        if (lbHinhAnh.getIcon()==null) {
+            JOptionPane.showMessageDialog(rootPane, "Xin hãy chọn ảnh");
+        }
+        if (txtTen.getText()==null) {
+            JOptionPane.showMessageDialog(rootPane, "Không được để trống họ tên");
+        }else if (txtTen.getText().matches("^[^0-9]{7,}$")) {
+            JOptionPane.showMessageDialog(rootPane, "Họ tên không đúng xin kiểm tra lại.");
+        }
+        if (txtQueQuan.getText()==null) {
+            JOptionPane.showMessageDialog(rootPane, "Không được để trống quê quán");
+        }else if (txtQueQuan.getText().matches("^[^0-9]{7,}$")) {
+            JOptionPane.showMessageDialog(rootPane, "Quê quán không đúng xin kiểm tra lại.");
+        }
+        if (txtDanToc.getText()==null) {
+            JOptionPane.showMessageDialog(rootPane, "Không được để trống họ tên");
+        }else if (txtDanToc.getText().matches("^[^1-9]{7,}$")) {
+            JOptionPane.showMessageDialog(rootPane, "Dân tộc không đúng xin kiểm tra lại.");
+        }
+        if (txtDiaChi.getText()==null) {
+            JOptionPane.showMessageDialog(rootPane, "Không được để trống địa chỉ");
+        }
+        if (txtCMND.getText()==null) {
+            JOptionPane.showMessageDialog(rootPane, "Không được để trống CMND");
+        }else if (txtCMND.getText().matches("^[0-9]{9,12}$")) {
+            JOptionPane.showMessageDialog(rootPane, "CMND không đúng xin kiểm tra lại.");
+        }
+        if (txtSDT.getText()==null) {
+            JOptionPane.showMessageDialog(rootPane, "Không được để trống số điện thoại");
+        }else if (txtSDT.getText().matches("^[0]{1}[0-9]{9}$")) {
+            JOptionPane.showMessageDialog(rootPane, "Số điện thoại không đúng xin kiểm tra lại.");
+        }
+        if (cbChucVu.getSelectedIndex()==-1) {
+            JOptionPane.showMessageDialog(rootPane, "Xin hãy chọn một chức vụ");
+        }
         String sql = "INSERT INTO NHANVIEN (MaNV,HoTen,NgaySinh,GioiTinh,SDT,DanToc,QueQuan,HinhAnh,CMND,DiaChi,TrangThai,ChucVu)" + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
         String str;
          

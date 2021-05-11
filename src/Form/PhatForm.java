@@ -15,6 +15,7 @@ public class PhatForm extends javax.swing.JDialog {
     public PhatForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /** This method is called from within the constructor to

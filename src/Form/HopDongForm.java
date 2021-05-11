@@ -21,6 +21,7 @@ public class HopDongForm extends javax.swing.JFrame {
     /** Creates new form HopDongForm */
     public HopDongForm() {
         initComponents();
+        setLocationRelativeTo(null);
         loadHD();
     }
     public void loadHD(){

@@ -15,6 +15,7 @@ public class SuaDV_Form extends javax.swing.JDialog {
     public SuaDV_Form(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setLocationRelativeTo(null);
         
     }
 

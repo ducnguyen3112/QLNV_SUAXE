@@ -224,6 +224,7 @@ public class LoginForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDongMouseClicked
 
     private void btnDangNhapMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDangNhapMouseClicked
+        
         kiemTraTaiKhoan();
     }//GEN-LAST:event_btnDangNhapMouseClicked
 

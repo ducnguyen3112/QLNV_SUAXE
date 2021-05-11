@@ -5,7 +5,11 @@
  */
 package Form;
 
+import static Form.LeTanform.DeleteBienSoXe;
+import static Form.LeTanform.KtBienSoXe;
+import static Form.LeTanform.getTenDv;
 import Form.Xuli.KetNoiDB;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -80,46 +84,9 @@ public class AdminForm extends javax.swing.JFrame {
         } catch (SQLException e) {
         }
     }
-//    public void loadDB(){
-//        String sql="select MaNV,HoTen,CONVERT(varchar, NgaySinh, 105) as NgaySinh,"
-//                + " GioiTinh,ChucVu,TrangThai,TenCV"
-//                + " from NHANVIEN,CHUCVU where NHANVIEN.ChucVu=CHUCVU.MaCV";
-//        
-//        //DefaultTableModel model=(DefaultTableModel) tbDsnv.getModel();
-//        tbDSNV.setDefaultEditor(Object.class, null);
-//        DefaultTableModel model=(DefaultTableModel) tbDSNV.getModel();
-//        
-//        try {
-//            con=KetNoiDB.getConnection();
-//            st=con.createStatement();
-//            rs=st.executeQuery(sql);
-//            Vector data;
-//            while (rs.next()) {                
-//                data=new Vector();
-//                maNV=rs.getString("MaNV");
-//                data.addElement(maNV);
-//                data.addElement(rs.getString("HoTen"));
-//                data.addElement(rs.getString("NgaySinh"));
-//                switch (rs.getInt("GioiTinh")) {
-//                    case 0 -> data.addElement("Nam");
-//                    case 1 -> data.addElement("Nữ");
-//                    case 2 -> data.addElement("Khác");
-//                }
-//                data.addElement(rs.getString("TenCV"));
-//                switch(rs.getInt("TrangThai")){
-//                    case 0 ->data.addElement("Đã nghỉ");
-//                    case 1 -> data.addElement("Đang làm việc");
-//                }
-//                model.addRow(data);
-//            }
-//            rs.close();
-//            st.close();
-//            con.close();
-//        } catch (SQLException ex) {
-//            Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
+   
     
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -177,7 +144,7 @@ public class AdminForm extends javax.swing.JFrame {
         lbTenDN.setForeground(new java.awt.Color(255, 153, 0));
         lbTenDN.setText("admin");
         pnMenu.add(lbTenDN);
-        lbTenDN.setBounds(1000, 50, 160, 30);
+        lbTenDN.setBounds(1000, 50, 160, 20);
 
         jLabel4.setFont(new java.awt.Font("Cambria", 1, 24)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 204, 0));
@@ -249,9 +216,9 @@ public class AdminForm extends javax.swing.JFrame {
         btnPCDV.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnPCDV.setPreferredSize(new java.awt.Dimension(150, 140));
         btnPCDV.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnPCDV.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnPCDVMouseClicked(evt);
+        btnPCDV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPCDVActionPerformed(evt);
             }
         });
         pnMenu.add(btnPCDV);
@@ -259,7 +226,7 @@ public class AdminForm extends javax.swing.JFrame {
 
         btnCD.setBackground(new java.awt.Color(255, 204, 51));
         btnCD.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_logout_rounded_left_110px_1.png"))); // NOI18N
-        btnCD.setText("ĐĂNG XUẤT");
+        btnCD.setText("TUỲ CHỈNH");
         btnCD.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnCD.setPreferredSize(new java.awt.Dimension(150, 140));
         btnCD.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -466,16 +433,8 @@ public class AdminForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnQuayLaiMouseClicked
 
     private void btnCDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCDMouseClicked
-        int option = JOptionPane.showConfirmDialog(this, "Bạn muốn đăng xuất?");
-        if (option==0) {
-            this.dispose();
-            new LoginForm().setVisible(true);
-        }
+        new TuyChinhFrom(this, rootPaneCheckingEnabled).setVisible(true);
     }//GEN-LAST:event_btnCDMouseClicked
-
-    private void btnPCDVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPCDVMouseClicked
-        
-    }//GEN-LAST:event_btnPCDVMouseClicked
 
     private void btnChamCongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnChamCongMouseClicked
         // TODO add your handling code here:
@@ -488,7 +447,11 @@ public class AdminForm extends javax.swing.JFrame {
     private void btnBangLuongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBangLuongMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBangLuongMouseClicked
-        
+
+    private void btnPCDVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPCDVActionPerformed
+        new LeTanform().setVisible(true);
+    }//GEN-LAST:event_btnPCDVActionPerformed
+           
     /**
      * @param args the command line arguments
      */
