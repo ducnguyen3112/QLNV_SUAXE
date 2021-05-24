@@ -432,39 +432,62 @@ public class ThemNV extends javax.swing.JDialog {
 
     
     private void btnLuuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLuuMouseClicked
-        if (lbHinhAnh.getIcon()==null) {
+
+        check:  if (lbHinhAnh.getIcon()==null) {
             JOptionPane.showMessageDialog(rootPane, "Xin hãy chọn ảnh");
+            return;
         }
-        if (txtTen.getText()==null) {
+        if (txtTen.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống họ tên");
-        }else if (txtTen.getText().matches("^[^0-9]{7,}$")) {
+           return;
+        }else if (!txtTen.getText().matches("^[^0-9]{7,}$")) {
             JOptionPane.showMessageDialog(rootPane, "Họ tên không đúng xin kiểm tra lại.");
-        }
-        if (txtQueQuan.getText()==null) {
+           return;
+        }if (txtQueQuan.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống quê quán");
-        }else if (txtQueQuan.getText().matches("^[^0-9]{7,}$")) {
+            return;
+        }else if (!txtQueQuan.getText().matches("^[^0-9]{3,}$")) {
             JOptionPane.showMessageDialog(rootPane, "Quê quán không đúng xin kiểm tra lại.");
-        }
-        if (txtDanToc.getText()==null) {
-            JOptionPane.showMessageDialog(rootPane, "Không được để trống họ tên");
-        }else if (txtDanToc.getText().matches("^[^1-9]{7,}$")) {
+            return;
+        }if (txtDanToc.getText().equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Không được để trống dân tộc");
+            return;
+        }else if (!txtDanToc.getText().matches("^[^1-9]{3,}$")) {
             JOptionPane.showMessageDialog(rootPane, "Dân tộc không đúng xin kiểm tra lại.");
-        }
-        if (txtDiaChi.getText()==null) {
+            return;
+        }if (txtDiaChi.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống địa chỉ");
-        }
-        if (txtCMND.getText()==null) {
+            return;
+        }if (txtCMND.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống CMND");
-        }else if (txtCMND.getText().matches("^[0-9]{9,12}$")) {
+            return;
+        }if (!txtCMND.getText().matches("^[0-9]{9,12}$")) {
             JOptionPane.showMessageDialog(rootPane, "CMND không đúng xin kiểm tra lại.");
-        }
-        if (txtSDT.getText()==null) {
+            return;
+        }if (txtSDT.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống số điện thoại");
-        }else if (txtSDT.getText().matches("^[0]{1}[0-9]{9}$")) {
+            return;
+        }else if (!txtSDT.getText().matches("^[0]{1}[0-9]{9}$")) {
             JOptionPane.showMessageDialog(rootPane, "Số điện thoại không đúng xin kiểm tra lại.");
+            return;
+        }if (txtHSL.getText().equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Không được để trống hệ số lương");
+            return;
+        }else if(!txtHSL.getText().matches("^[0-9]{1}[.]{1}[0-9]{1,}$")){
+            JOptionPane.showMessageDialog(rootPane, "Hệ số lương không đúng xin kiểm tra lại");
+            return;
         }
         if (cbChucVu.getSelectedIndex()==-1) {
             JOptionPane.showMessageDialog(rootPane, "Xin hãy chọn một chức vụ");
+            return;
+        }
+        if (dcNgaySinh.getDate()==null) {
+            JOptionPane.showMessageDialog(rootPane, "Xin hãy chọn ngày sinh");
+            return;
+        }
+        if(dcNgayHetHan.getDate()==null){
+            JOptionPane.showMessageDialog(rootPane, "Xin hãy chọn ngày hết hạn hợp đồng");
+            return;
         }
         String sql = "INSERT INTO NHANVIEN (MaNV,HoTen,NgaySinh,GioiTinh,SDT,DanToc,QueQuan,HinhAnh,CMND,DiaChi,TrangThai,ChucVu)" + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
         String str;
@@ -532,6 +555,7 @@ public class ThemNV extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, ex);
         }
         this.dispose();
+        
     }//GEN-LAST:event_btnLuuMouseClicked
 
     private void btnHuyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHuyMouseClicked
