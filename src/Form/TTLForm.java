@@ -244,9 +244,9 @@ public class TTLForm extends javax.swing.JDialog {
                 for (Object i : NVvoiMaCong.keySet()) {
                     PreparedStatement ps = ketNoi.prepareStatement(sql);
                     String MaCong = (String) NVvoiMaCong.get(i);
-                    String MaTTL = "TTL"+"-"+MaCong;
+                    String MaTTL = "TTL"+MaCong;
                     int ngayCong = (int) MaCongvoiNgayLam.get(MaCong);
-                    int ThucLinh = luongCB * traVeHeSoLuong((String) i) * ngayCong+ traVeTienThuong((String) i)- traVeTienPhat((String) i);
+                    int ThucLinh = luongCB * traVeHeSoLuong((String) i) * ngayCong + traVeTienThuong((String) i)- traVeTienPhat((String) i);
                     String MaHD = traVeMaHD((String) i );
                     ps.setString(1, MaTTL);
                     ps.setString(2, (String) i);
@@ -269,7 +269,7 @@ public class TTLForm extends javax.swing.JDialog {
        int ktraHienThi = 0;
         try {
             for(Object i :NVvoiMaCong.keySet()){
-            String sql = "select MaNV,ThucLinh,TrangThai from THANHTOANLUONG where MaTTL = 'TTL-"+NVvoiMaCong.get(i)+"'";
+            String sql = "select MaNV,ThucLinh,TrangThai from THANHTOANLUONG where MaTTL = 'TTL"+NVvoiMaCong.get(i)+"'";
             Statement st = ketNoi.createStatement();
             ResultSet rs = st.executeQuery(sql);
             Vector tamp;
@@ -315,7 +315,7 @@ public class TTLForm extends javax.swing.JDialog {
            try {
             PreparedStatement ps = ketNoi.prepareStatement(sql);
             ps.setInt(1, 1);
-            ps.setString(2, "TTL-"+maCong);
+            ps.setString(2, "TTL"+maCong);
             ps.executeUpdate();
             ps.close();
             ketNoi.close();

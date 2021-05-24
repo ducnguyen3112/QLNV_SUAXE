@@ -534,7 +534,7 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
         return true;
     }
     public  void loadNVBaoDuong(){
-        String sql="select MaNV,HoTen,GioiTinh from NHANVIEN";
+        String sql="select MaNV,HoTen,GioiTinh from NHANVIEN where ChucVu = 2";
         Connection   con = KetNoiDB.getConnection();
         //DefaultTableModel model=(DefaultTableModel) tbDsnv.getModel();
         tbNVBD.setDefaultEditor(Object.class, null);

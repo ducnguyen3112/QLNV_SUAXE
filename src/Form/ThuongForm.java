@@ -211,25 +211,32 @@ public class ThuongForm extends javax.swing.JDialog {
     public void luuThuong(){
        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
        String date = sdf1.format(ngayThuong.getDate());
-       int Tien = Integer.parseInt(jtienThuong.getText());
-       String sql ="INSERT INTO CTTHUONG(MaNV,MaThuong,CTThuong,SoTien,NgayThuong)  VALUES(?,?,?,?,?)";
-       Connection ketNoi =KetNoiDB.getConnection();
-        try {
-                     PreparedStatement ps = ketNoi.prepareStatement(sql);
-                     ps.setString(1, MaNVThuong);
-                     ps.setString(2,MaThuong);
-                     ps.setString(3, CTThuong.getText());
-                     ps.setInt(4, Tien);
-                     ps.setString(5, date);
-                   if(ps.executeUpdate() > 0 )
-                       JOptionPane.showMessageDialog(rootPane, "Thưởng thành công");
-                   else 
-                      JOptionPane.showMessageDialog(rootPane, "Thưởng thất bại");
-                   ps.close();                   
-                   ketNoi.close();
-        } catch (Exception e) {
-                   JOptionPane.showMessageDialog(rootPane, e);
+       String tienThuong  = jtienThuong.getText();
+        if (ChamCongForm.kiemTraNhapSo(tienThuong)) {
+            int Tien = Integer.parseInt(tienThuong);
+            String sql ="INSERT INTO CTTHUONG(MaNV,MaThuong,CTThuong,SoTien,NgayThuong)  VALUES(?,?,?,?,?)";
+            Connection ketNoi =KetNoiDB.getConnection();
+             try {
+                          PreparedStatement ps = ketNoi.prepareStatement(sql);
+                          ps.setString(1, MaNVThuong);
+                          ps.setString(2,MaThuong);
+                          ps.setString(3, CTThuong.getText());
+                          ps.setInt(4, Tien);
+                          ps.setString(5, date);
+                        if(ps.executeUpdate() > 0 )
+                            JOptionPane.showMessageDialog(rootPane, "Thưởng thành công");
+                        else 
+                           JOptionPane.showMessageDialog(rootPane, "Thưởng thất bại");
+                        ps.close();                   
+                        ketNoi.close();
+             } catch (Exception e) {
+                        JOptionPane.showMessageDialog(rootPane, e);
+             }    
         }
+        else {
+            JOptionPane.showMessageDialog(rootPane, "Nhập vào phải là số nguyên");
+        }    
+       
     }
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
