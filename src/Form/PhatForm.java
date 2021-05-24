@@ -30,6 +30,8 @@ public class PhatForm extends javax.swing.JDialog {
         initComponents();
         MaNVPhat = AdminForm.maNV;
         loadDaTa();
+        setLocationRelativeTo(null);
+
     }
     public void loadPhat(){
          CBPhat.removeAllItems();

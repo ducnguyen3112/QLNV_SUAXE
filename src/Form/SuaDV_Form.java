@@ -131,7 +131,6 @@ public class SuaDV_Form extends javax.swing.JDialog {
             loadDataVaoBangDichVu();
             themDichVuVaoBang();
             
-    
     }
     /** This method is called from within the constructor to
      * initialize the form.
