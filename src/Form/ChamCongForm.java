@@ -239,7 +239,6 @@ public class ChamCongForm extends javax.swing.JDialog {
         nam = Integer.parseInt(txtNam.getText());
         thang = cbThang.getMonth() + 1;
         date = nam+"-"+thang+"-01";  
-        System.out.println(thang);
         String a = datefm.format(checkData);
         try {
             Date date1 = datefm.parse(date);
