@@ -73,6 +73,7 @@ public class NVSX_Form extends javax.swing.JFrame {
                         data.addElement(traVeDongXe(tamBienSoXe));
                         String tenDv = traVeTenDichVu(rs.getString("BienSoXe"));
                         data.addElement(tenDv);
+                        
                         data.addElement(rs.getString("NgayGiolamDV"));
                         data.addElement(rs.getString("MoTa"));
                         model.addRow(data);

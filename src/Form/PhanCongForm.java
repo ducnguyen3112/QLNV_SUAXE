@@ -20,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
 public class PhanCongForm extends javax.swing.JDialog {
     private String bienSoXe, MaNV,MaDV = "",TenDV,maDVCombox;
     private String dataPhanCong="";
+    private String chonDichVuXoaString="";
     /** Creates new form PhanCongForm */
     private HashMap bangDV;
     private HashMap listDV = new HashMap();
@@ -151,6 +152,34 @@ public class PhanCongForm extends javax.swing.JDialog {
        }
     
     }
+    public void  suaCT_SDDV(){
+        int check = 0;
+        for (Object i : listDV.keySet()) {
+                MaDV = (String) listDV.get(i);
+                try {  
+                     String sql ="INSERT INTO CT_SDDV(BienSoXe,MaNV,MaDV,NgayGiolamDV,NgayGioHT,MoTa)  VALUES(?,?,?,?,?,?)";
+                     Connection ketNoi =KetNoiDB.getConnection();
+                     PreparedStatement ps = ketNoi.prepareStatement(sql);
+                     ps.setString(1, bienSoXe);
+                     ps.setString(2, MaNV);
+                     ps.setString(3, MaDV);
+                     ps.setString(4, luuThoiGian);
+                     ps.setString(5, null);
+                     ps.setString(6,jMota.getText());
+                   check =  ps.executeUpdate();
+                   ps.close();                   
+                   ketNoi.close();
+                } catch (Exception e) {
+                }
+       }
+       if (check > 0 ){
+            JOptionPane.showMessageDialog(this, "Đã phân công nhân viên thành công!");
+         }
+       else {
+            JOptionPane.showMessageDialog(this, "Lỗi !! Không thành công!");
+       }
+    
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -237,6 +266,11 @@ public class PhanCongForm extends javax.swing.JDialog {
                 "STT", "Mã dịch vụ", "Tên dịch vụ"
             }
         ));
+        TBDichVu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TBDichVuMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(TBDichVu);
 
         jButton3.setText("Xóa");
@@ -310,29 +344,59 @@ public class PhanCongForm extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    public void editCT_SDDV(){
-        String sql = "UPDATE CT_SDDV SET  MaNV = ?, " +"MaDV = ? ," +"MoTa = ? " + "where BienSoXe = ?";
-        Connection ketNoi = KetNoiDB.getConnection();
+    public void xoaTruocKhiSua(){
+      String sql ="Delete from CT_SDDV where BienSoXe = '"+dataPhanCong+"'";
+       Connection ketNoi = KetNoiDB.getConnection();
         try {
-            PreparedStatement pr = ketNoi.prepareStatement(sql);
-            pr.setString(1, MaNV);
-            pr.setString(2, MaDV);
-            pr.setString(3, jMota.getText());
-            pr.setString(4, dataPhanCong);
-             if (pr.executeUpdate()>0) {
-                JOptionPane.showMessageDialog(this, "Sửa thành công!");
-            }else{
-                JOptionPane.showMessageDialog(this, "Lỗi! Sửa không thành công");
-            }
+                  PreparedStatement st = ketNoi.prepareStatement(sql);
+                  st.executeUpdate(); 
+                  st.close();
         } catch (Exception e) {
         }
     
     }
+     public String traVeTenDichVu(String maDV){
+        for (Object i : bangDV.keySet()) {
+                if (maDV.equals(bangDV.get(i))){
+                    return (String) i;
+                }
+        }
+      return null;
+   }
+    
+    public void editCT_SDDV(){
+        xoaTruocKhiSua();
+        bienSoXe = dataPhanCong;
+        suaCT_SDDV();
+    
+    }
+    public String luuThoiGian = "";
+    public  void loadDataVaoBangDichVu(){
+       String sql = "select MaNV,MaDV,NgayGioLamDV from CT_SDDV where BienSoXe = '" + dataPhanCong + "'";
+       Connection ketNoi = KetNoiDB.getConnection();
+       listDV.clear();
+        try {
+            Statement st = ketNoi.createStatement();
+            ResultSet rs  =st.executeQuery(sql);
+            while (rs.next()){
+                MaNV = rs.getString("MaNV");
+                listDV.put(traVeTenDichVu(rs.getString("MaDV")), rs.getString("MaDV"));
+                luuThoiGian = rs.getString("NgayGioLamDV");
+            }  
+            st.close();
+            rs.close();
+            ketNoi.close();
+        } catch (SQLException e) {
+        }
+       
+   }
+    
     public void loadDataEdit(){
         
         jBienSoXE.setText(dataPhanCong);
         loadDataComboxDV();
-        
+        loadDataVaoBangDichVu();
+        themDichVuVaoBang();
         String sql = "SELECT MaNV,MoTa from CT_SDDV WHERE BienSoXe = '" + dataPhanCong + "'";
         Connection ketNoi = KetNoiDB.getConnection();
         try {
@@ -446,19 +510,23 @@ public class PhanCongForm extends javax.swing.JDialog {
     }
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        String tem = chonDichVuTrongBangCanXoa();
-        if(tem == ""){
+        if(chonDichVuXoaString == ""){
             JOptionPane.showMessageDialog(rootPane, "Chọn dịch vụ để xóa");
         }
         else{
             int check = JOptionPane.showConfirmDialog(rootPane, "Bạn có muốn xóa dịch vụ");
                     if(check ==0)
                     {
-                        listDV.remove(tem);
+                        listDV.remove(chonDichVuXoaString);
                     }
         }
         themDichVuVaoBang();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void TBDichVuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TBDichVuMouseClicked
+        // TODO add your handling code here:
+            chonDichVuXoaString = chonDichVuTrongBangCanXoa();
+    }//GEN-LAST:event_TBDichVuMouseClicked
 
     /**
      * @param args the command line arguments
