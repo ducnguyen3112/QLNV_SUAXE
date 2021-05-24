@@ -138,7 +138,8 @@ public class PhatForm extends javax.swing.JDialog {
         });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 490, 70, -1));
 
-        ngayPhat.setDateFormatString("dd,MM,yyyy");
+        ngayPhat.setDateFormatString("dd/MM/yyyy");
+        ngayPhat.setEnabled(false);
         ngayPhat.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         getContentPane().add(ngayPhat, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 290, 260, 30));
 
@@ -202,9 +203,11 @@ public class PhatForm extends javax.swing.JDialog {
     public void luuDuLieu(){
        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
        String date = sdf1.format(ngayPhat.getDate());
-       int Tien = Integer.parseInt(jTienPhat.getText());
-       String sql ="INSERT INTO CTPHAT(MaNV,MaLoi,CTPL,SoTien,NgayPhat)  VALUES(?,?,?,?,?)";
-       Connection ketNoi =KetNoiDB.getConnection();
+       String soTien = jTienPhat.getText();
+       if (ChamCongForm.kiemTraNhapSo(soTien)){
+           int Tien = Integer.parseInt(soTien);
+           String sql ="INSERT INTO CTPHAT(MaNV,MaLoi,CTPL,SoTien,NgayPhat)  VALUES(?,?,?,?,?)";
+           Connection ketNoi =KetNoiDB.getConnection();
         try {
                      PreparedStatement ps = ketNoi.prepareStatement(sql);
                      ps.setString(1, MaNVPhat);
@@ -221,6 +224,11 @@ public class PhatForm extends javax.swing.JDialog {
         } catch (Exception e) {
                    JOptionPane.showMessageDialog(rootPane, e);
         }
+       }
+       else {
+           JOptionPane.showMessageDialog(rootPane, "Nhập vào phải là số nguyên");
+       }
+       
     }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
