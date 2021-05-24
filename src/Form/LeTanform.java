@@ -9,6 +9,7 @@ import Form.Xuli.KetNoiDB;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Vector;
 import javax.swing.JOptionPane;
@@ -159,6 +160,11 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
         tbPhanCong.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbPhanCongMouseClicked(evt);
+            }
+        });
+        tbPhanCong.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tbPhanCongKeyPressed(evt);
             }
         });
         jScrollPane1.setViewportView(tbPhanCong);
@@ -398,9 +404,44 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
         }
     }//GEN-LAST:event_tbXeKeyPressed
 
+    public  void xoaDataPhanCong(){
+       String sql ="Delete from CT_SDDV where BienSoXe = '"+ dataBangPhanCong+"'";
+       Connection ketNoi = KetNoiDB.getConnection();
+        try {
+                  PreparedStatement st = ketNoi.prepareStatement(sql);
+                  if(st.executeUpdate() >0 ){
+                  
+                       JOptionPane.showMessageDialog(rootPane, "Xóa thành công");
+                  } else{
+                      JOptionPane.showMessageDialog(rootPane, "Xóa không thành công");
+                  }
+                  
+                  st.close();
+        } catch (Exception e) {
+        }
+    
+    }
+    private void tbPhanCongKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbPhanCongKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode()== KeyEvent.VK_DELETE){
+             if(dataBangPhanCong.equals("")){
+                 JOptionPane.showConfirmDialog(rootPane, "Chưa chọn dữ liệu phân công để xóa");
+             }
+             else{
+                    int index = JOptionPane.showConfirmDialog(rootPane, "Bạn có muốn xóa dịch vụ");
+                    if(index == 0){
+                        xoaDataPhanCong();
+                        showDataPhanCong();
+                    }
+             }
+        }
+    }//GEN-LAST:event_tbPhanCongKeyPressed
+
+
     private void btnQuayLaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuayLaiActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnQuayLaiActionPerformed
+
     public static  Vector KtBienSoXe(){
         Connection ketNoi = KetNoiDB.getConnection();
         String sql = "select BienSoXe from CT_SDDV";
@@ -544,25 +585,51 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
         }
         return tamp;
     }
+    public static  String traVeTenDichVu(String temp){
+          String sql = "select MaDV from CT_SDDV where BienSoXe = '"+ temp + "'";
+        Connection ketNoi = KetNoiDB.getConnection();
+        String tamp ="";
+        try {
+            Statement st = ketNoi.createStatement();
+            ResultSet rs  =st.executeQuery(sql);
+            while (rs.next()){
+                tamp=tamp + " "+getTenDv(rs.getString("MaDV"))+", ";
+            }  
+            st.close();
+            rs.close();
+            ketNoi.close();
+        } catch (SQLException e) {
+        }
+        return tamp.substring(0, tamp.length() - 2);
+
+
+    }
     public void loadDataPhanCong(){
         String sql = "select BienSoXe, MaNV, MaDV,NgayGiolamDV from CT_SDDV";
         Connection ketNoi = KetNoiDB.getConnection();
         tbPhanCong.setDefaultEditor(Object.class, null);
         DefaultTableModel model=(DefaultTableModel) tbPhanCong.getModel();
         model.setRowCount(0);
+        ArrayList <String> locBienSoXe = new ArrayList<String>();
+        locBienSoXe.clear();
         try {
                Statement st = ketNoi.createStatement();
                ResultSet rs = st.executeQuery(sql);
                Vector data;
                while(rs.next()){
-                   data =new Vector();
-                   data.addElement(rs.getString("BienSoXe"));
-                   data.addElement(rs.getString("MaNV"));
-                   data.addElement(PhanCongForm.getTenNhanVien(rs.getString("MaNV")));
-                   String tenDv = getTenDv(rs.getString("MaDV"));
-                   data.addElement(tenDv);
-                   data.addElement(rs.getString("NgayGiolamDV"));
-                   model.addRow(data);
+                   String tamBienSoXe =rs.getString("BienSoXe"); 
+                   if(!locBienSoXe.contains(tamBienSoXe))
+                   {
+                        data =new Vector();
+                        data.addElement(tamBienSoXe);
+                        data.addElement(rs.getString("MaNV"));
+                        data.addElement(PhanCongForm.getTenNhanVien(rs.getString("MaNV")));
+                        String tenDv = traVeTenDichVu(rs.getString("BienSoXe"));
+                        data.addElement(tenDv);
+                        data.addElement(rs.getString("NgayGiolamDV"));
+                        model.addRow(data);
+                        locBienSoXe.add(tamBienSoXe);
+                   }
                }
             rs.close();
             st.close();

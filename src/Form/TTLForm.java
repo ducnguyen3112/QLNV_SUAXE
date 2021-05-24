@@ -5,6 +5,17 @@
  */
 package Form;
 
+import Form.Xuli.KetNoiDB;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Vector;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author StarScream
@@ -12,6 +23,10 @@ package Form;
 public class TTLForm extends javax.swing.JDialog {
 
     /** Creates new form TTLForm */
+    private  int namDuocChon, thangDuocChon;
+    private  HashMap NVvoiMaCong = new HashMap();
+    private  HashMap MaCongvoiNgayLam = new HashMap();
+    private int luongCB = 250000;
     public TTLForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -29,12 +44,13 @@ public class TTLForm extends javax.swing.JDialog {
 
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        bangLuong = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jMonthChooser1 = new com.toedter.calendar.JMonthChooser();
-        jSpinField1 = new com.toedter.components.JSpinField();
+        chonThang = new com.toedter.calendar.JMonthChooser();
+        chonNam = new com.toedter.components.JSpinField();
         jButton2 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -42,7 +58,7 @@ public class TTLForm extends javax.swing.JDialog {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("BẢNG LƯƠNG");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        bangLuong.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -50,7 +66,12 @@ public class TTLForm extends javax.swing.JDialog {
                 "Mã nhân viên", "Tên nhân viên", "Mã công", "Thực lĩnh", "Đã thanh toán"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        bangLuong.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bangLuongMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(bangLuong);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Chọn năm:");
@@ -58,12 +79,24 @@ public class TTLForm extends javax.swing.JDialog {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Chọn tháng:");
 
-        jMonthChooser1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        chonThang.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        jSpinField1.setMaximum(9999);
-        jSpinField1.setMinimum(1900);
+        chonNam.setMaximum(9999);
+        chonNam.setMinimum(1900);
 
         jButton2.setText("Thoát");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Tìm kiếm");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -77,11 +110,13 @@ public class TTLForm extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSpinField1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(chonNam, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jMonthChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(chonThang, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
@@ -98,8 +133,9 @@ public class TTLForm extends javax.swing.JDialog {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel3)
                         .addComponent(jLabel2))
-                    .addComponent(jMonthChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSpinField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(chonThang, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(chonNam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
@@ -109,6 +145,205 @@ public class TTLForm extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    public void themMaThucLinh(){
+         
+    }
+    public void layDuLieuCong(){
+        String sql = "select MaCong,MaNV,NgayCong from CONG where (Thang = "+thangDuocChon+"and Nam ="+namDuocChon+")";
+        Connection ketNoi = KetNoiDB.getConnection();
+        try {
+            Statement st = ketNoi.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            NVvoiMaCong.clear();
+            MaCongvoiNgayLam.clear();
+            while(rs.next()){
+                NVvoiMaCong.put(rs.getString("MaNV"), rs.getString("MaCong"));
+                MaCongvoiNgayLam.put(rs.getString("MaCong"), rs.getInt("NgayCong"));
+            }
+            rs.close();
+            st.close();
+            ketNoi.close();
+        } catch (SQLException e) {
+                     }
+       
+    }
+    public int traVeHeSoLuong(String maNv){
+        String sql = "select HSL from HOPDONG where MaNV = '"+maNv+"'";
+         Connection ketNoi = KetNoiDB.getConnection();
+         int tamp = 0;
+        try {
+            Statement st = ketNoi.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while(rs.next()){
+                 tamp = rs.getInt("HSL");
+            }
+            rs.close();
+            st.close();
+            ketNoi.close();
+        } catch (SQLException e) {
+                     }
+       return tamp;
+    }
+    public String traVeMaHD(String maNv){
+         String sql = "select MaHD from HOPDONG where MaNV = '"+maNv+"'";
+         Connection ketNoi = KetNoiDB.getConnection();
+         String tamp = null;
+        try {
+            Statement st = ketNoi.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while(rs.next()){
+                 tamp = rs.getString("MaHD");
+            }
+            rs.close();
+            st.close();
+            ketNoi.close();
+        } catch (SQLException e) {
+                     }
+       return tamp;
+    
+    }
+    public int traVeTienThuong(String maNv){
+        String sql = "select SoTien from CTTHUONG where MaNV = '"+maNv+"'";
+        Connection ketNoi = KetNoiDB.getConnection();
+        int tamp = 0;
+        try {
+            Statement st = ketNoi.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while(rs.next()){
+                 tamp +=rs.getInt("SoTien");
+            }
+            rs.close();
+            st.close();
+            ketNoi.close();
+        } catch (SQLException e) {
+                     }
+       return tamp;
+    }
+    public int traVeTienPhat(String maNv){
+        String sql = "select SoTien from CTPHAT where MaNV = '"+maNv+"'";
+        Connection ketNoi = KetNoiDB.getConnection();
+        int tamp = 0;
+        try {
+            Statement st = ketNoi.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while(rs.next()){
+                 tamp +=rs.getInt("SoTien");
+            }
+            rs.close();
+            st.close();
+            ketNoi.close();
+        } catch (SQLException e) {
+                     }
+       return tamp;
+    }
+    public void tinhToanLuong(){
+        layDuLieuCong();
+        String sql = "insert into THANHTOANLUONG(MaTTL,MaNV,MaCong,ThucLinh,MaHD,TrangThai) values(?,?,?,?,?,?)";
+        Connection ketNoi = KetNoiDB.getConnection();
+        try {
+                for (Object i : NVvoiMaCong.keySet()) {
+                    PreparedStatement ps = ketNoi.prepareStatement(sql);
+                    String MaCong = (String) NVvoiMaCong.get(i);
+                    String MaTTL = "TTL"+"-"+MaCong;
+                    int ngayCong = (int) MaCongvoiNgayLam.get(MaCong);
+                    int ThucLinh = luongCB * traVeHeSoLuong((String) i) * ngayCong+ traVeTienThuong((String) i)- traVeTienPhat((String) i);
+                    String MaHD = traVeMaHD((String) i );
+                    ps.setString(1, MaTTL);
+                    ps.setString(2, (String) i);
+                    ps.setString(3, MaCong);
+                    ps.setInt(4, ThucLinh);
+                    ps.setString(5, MaHD);
+                    ps.setInt(6, 0);
+                    ps.executeQuery();
+                    ps.close();
+            }
+         ketNoi.close();
+        } catch (Exception e) {
+        }
+
+    }
+    public void hienThiLuong(){
+       Connection ketNoi = KetNoiDB.getConnection();
+       DefaultTableModel model=(DefaultTableModel) bangLuong.getModel();
+       model.setRowCount(0);
+       int ktraHienThi = 0;
+        try {
+            for(Object i :NVvoiMaCong.keySet()){
+            String sql = "select MaNV,ThucLinh,TrangThai from THANHTOANLUONG where MaTTL = 'TTL-"+NVvoiMaCong.get(i)+"'";
+            Statement st = ketNoi.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            Vector tamp;
+            while(rs.next()){
+              tamp =new Vector();
+              String maNv = rs.getString("MaNV");
+              tamp.addElement(maNv);
+              tamp.addElement(PhanCongForm.getTenNhanVien(maNv));
+              tamp.addElement(NVvoiMaCong.get(i));
+              tamp.addElement(rs.getString("ThucLinh"));
+                switch (rs.getInt("TrangThai")) {
+                    case 0:
+                        tamp.addElement("Chưa thanh toán");
+                        break;
+                    case 1:
+                        tamp.addElement("Đã thanh toán");
+                    default:
+                        break;
+                }
+              model.addRow(tamp);
+              ktraHienThi = 1;
+            }
+            st.close();
+            rs.close();
+            }
+        ketNoi.close();
+        } catch (Exception e) {
+        }
+        if(ktraHienThi == 0){
+            JOptionPane.showMessageDialog(rootPane, "Không được vượt qua tháng hiện tại");
+        }
+    }
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        namDuocChon = chonNam.getValue();
+        thangDuocChon = chonThang.getMonth() + 1; 
+        tinhToanLuong();
+        hienThiLuong();
+    }//GEN-LAST:event_jButton1ActionPerformed
+    public void thanhToanLuong(String maCong){
+          String sql = "UPDATE THANHTOANLUONG SET TrangThai = ? where MaTTL = ?";
+           Connection ketNoi = KetNoiDB.getConnection();
+           try {
+            PreparedStatement ps = ketNoi.prepareStatement(sql);
+            ps.setInt(1, 1);
+            ps.setString(2, "TTL-"+maCong);
+            ps.executeUpdate();
+            ps.close();
+            ketNoi.close();
+        } catch (Exception e) {
+        }
+  
+    }
+    private void bangLuongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bangLuongMouseClicked
+        // TODO add your handling code here:
+        int index  =  bangLuong.getSelectedRow();
+        String check = (String) bangLuong.getValueAt(index, 4);
+        if(check.equals("Chưa thanh toán")){
+           int ktra = JOptionPane.showConfirmDialog(rootPane, "Bạn có chắc trả thanh toán lương không ??");
+           if(ktra == 0){
+               check  = (String) bangLuong.getValueAt(index, 2);
+               thanhToanLuong(check);
+               hienThiLuong();
+           }
+        }
+        else{
+            JOptionPane.showMessageDialog(rootPane, "Nhân viên đã được thanh toán");
+        }
+    }//GEN-LAST:event_bangLuongMouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -153,13 +388,14 @@ public class TTLForm extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable bangLuong;
+    private com.toedter.components.JSpinField chonNam;
+    private com.toedter.calendar.JMonthChooser chonThang;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private com.toedter.calendar.JMonthChooser jMonthChooser1;
     private javax.swing.JScrollPane jScrollPane1;
-    private com.toedter.components.JSpinField jSpinField1;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
