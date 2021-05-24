@@ -202,11 +202,6 @@ public class AdminForm extends javax.swing.JFrame {
                 btnChamCongMouseClicked(evt);
             }
         });
-        btnChamCong.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnChamCongActionPerformed(evt);
-            }
-        });
         pnMenu.add(btnChamCong);
         btnChamCong.setBounds(550, 290, 150, 140);
 
@@ -438,14 +433,12 @@ public class AdminForm extends javax.swing.JFrame {
 
     private void btnChamCongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnChamCongMouseClicked
         // TODO add your handling code here:
+        new ChamCongForm(this, rootPaneCheckingEnabled).setVisible(true);
     }//GEN-LAST:event_btnChamCongMouseClicked
-
-    private void btnChamCongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChamCongActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnChamCongActionPerformed
 
     private void btnBangLuongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBangLuongMouseClicked
         // TODO add your handling code here:
+        new TTLForm(this, rootPaneCheckingEnabled).setVisible(true);
     }//GEN-LAST:event_btnBangLuongMouseClicked
 
     private void btnPCDVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPCDVActionPerformed
