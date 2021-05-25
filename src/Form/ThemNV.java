@@ -52,6 +52,7 @@ public class ThemNV extends javax.swing.JDialog {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
         pnTT = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -114,16 +115,19 @@ public class ThemNV extends javax.swing.JDialog {
         jLabel5.setText("Giới tính:");
 
         rbtnNam.setBackground(new java.awt.Color(144, 55, 73));
+        buttonGroup2.add(rbtnNam);
         rbtnNam.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         rbtnNam.setForeground(new java.awt.Color(255, 255, 255));
         rbtnNam.setText("Nam");
 
         rbtnNu.setBackground(new java.awt.Color(144, 55, 73));
+        buttonGroup2.add(rbtnNu);
         rbtnNu.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         rbtnNu.setForeground(new java.awt.Color(255, 255, 255));
         rbtnNu.setText("Nữ");
 
         rbtnKhac.setBackground(new java.awt.Color(144, 55, 73));
+        buttonGroup2.add(rbtnKhac);
         rbtnKhac.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         rbtnKhac.setForeground(new java.awt.Color(255, 255, 255));
         rbtnKhac.setText("Khác");
@@ -520,6 +524,7 @@ public class ThemNV extends javax.swing.JDialog {
             ps.setString(10, txtDiaChi.getText());
             ps.setInt(11, 1);
             ps.setInt(12, cbChucVu.getSelectedIndex());
+            System.out.println(cbChucVu.getSelectedIndex());
             if (ps.executeUpdate()>0) {
                 JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!");
             }else{
@@ -633,6 +638,7 @@ public class ThemNV extends javax.swing.JDialog {
     private javax.swing.JButton btnHuy;
     private javax.swing.JButton btnLuu;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JComboBox<String> cbChucVu;
     private com.toedter.calendar.JDateChooser dcNgayHetHan;
     private com.toedter.calendar.JDateChooser dcNgaySinh;

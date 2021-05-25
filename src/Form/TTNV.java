@@ -61,12 +61,12 @@ public class TTNV extends javax.swing.JFrame {
             ps.setString(6,txtQueQuan.getText());
             ps.setString(7,txtCMND.getText());
             ps.setString(8,txtDiaChi.getText());
+            ps.setInt(9, cbChucVu.getSelectedIndex());
             if (rbtnDangLam.isSelected()) {
                ps.setInt(10, 1);
             }else if (rbtnDaNghi.isSelected()) {
                 ps.setInt(10, 0);
             }
-            ps.setInt(9, cbChucVu.getSelectedIndex());
             int i=ps.executeUpdate();
             if (i>0) {
                 JOptionPane.showMessageDialog(this, "Chỉnh sửa thông tin nhân viên thành công.");

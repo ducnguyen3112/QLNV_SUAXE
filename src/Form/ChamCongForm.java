@@ -238,9 +238,8 @@ public class ChamCongForm extends javax.swing.JDialog {
         SimpleDateFormat datefm=new SimpleDateFormat("yyyy-MM-dd");
         nam = Integer.parseInt(txtNam.getText());
         thang = cbThang.getMonth() + 1;
-        date = nam+"-"+thang+"-01";  
-        System.out.println(thang);
-        String a = datefm.format(checkData);
+        date = nam+"-"+thang+"-01";
+        String a = datefm.format(checkData.getMonth());
         try {
             Date date1 = datefm.parse(date);
             Date date2 = datefm.parse(a);

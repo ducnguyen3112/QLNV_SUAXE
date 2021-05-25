@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author StarScream
@@ -113,77 +114,31 @@ public class KetNoiDB {
                  ex.printStackTrace();
              }
         }
-        
-//    int res = JOptionPane.showConfirmDialog(null, "Bạn có Chắc Chắn Muốn Xóa ?");
-//        if(res == 0)
-//        {
-//        int position = table.getSelectedRow();
-//        
-//        String data = table.getModel().getValueAt(position, 0).toString();
-//        String data2 = table.getModel().getValueAt(position, 1).toString();
-//        con = KetNoiDB.getConnection();
-//        String sql="select * from CT_SDDV where MaNV = '"+data+"'";
-//        String sql0="select * from XE where MaNV = '"+data+"'";
-//            try {
-//                st=con.createStatement();
-//                rs=st.executeQuery(sql0);
-//                if (rs.next()) {
-//                    JOptionPane.showMessageDialog(this, "Nhân viên "+data+" đang "
-//                            + "làm việc không thể xoá!");
-//                    rs.close();
-//                    st.close();
-//                    con.close();
-//                }
-//                        } catch (SQLException ex) {
-//                Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//            try {
-//                st=con.createStatement();
-//                rs=st.executeQuery(sql);
-//                if (rs.next()) {
-//                    JOptionPane.showMessageDialog(this, "Nhân viên "+data+" đang "
-//                            + "làm việc không thể xoá!");
-//                    rs.close();
-//                    st.close();
-//                    con.close();
-//                }else{
-//                    try {
-//            String sql3 = "DELETE FROM dbo.[HOPDONG] WHERE MaNV = ?";
-//            PreparedStatement ps3 = con.prepareStatement(sql3);
-//            ps3.setString(1, data);
-//            ps3.executeUpdate();
-//            
-//            String sql2 = "DELETE FROM dbo.[TAIKHOAN] WHERE MaNV = ?";
-//            PreparedStatement ps2 = con.prepareStatement(sql2);
-//            ps2.setString(1, data);
-//            ps2.executeUpdate();
-//            String sql1 = "DELETE FROM dbo.[NHANVIEN] WHERE MaNV = ?";
-//            PreparedStatement ps = con.prepareStatement(sql1);
-//            ps.setString(1, data);
-//            ps.executeUpdate();
-//            
-//            JOptionPane.showMessageDialog(null, "Bạn Đã Xoa Nhân Viên có Tên: "+ data2 +"  ra khỏi danh sách");
-//            showDuLieu();
-//            
-//        } catch (SQLException ex) {
-//            Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//                }
-//            } catch (SQLException ex) {
-//                Logger.getLogger(AdminForm.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        
-//        }
+    }
+    public static void deleteTableData(DefaultTableModel model){
+        for( int i = model.getRowCount() - 1; i >= 0; i-- )
+            {
+                model.removeRow(i);
+            }   
+    }
+    public static String tinhTongCot(JTable tb,int cl){
+            int total=0;
+         for(int i = 0; i < tb.getRowCount(); i++){
+             total= total+Integer.parseInt(tb.getValueAt(i, cl).toString());
+            }
+         String tong=String.valueOf(total);
+         return tong;
     }
     public static void main(String[] args) {
         String text;
         Scanner sc=new Scanner(System.in);
         text=sc.nextLine();
-        if (text.matches("^[0]{1}[0-9]{9}")) {
+        if (text.matches("^[a-zA-Z]%")) {
             System.out.println(text);
         }else{
             System.out.println("khong");
             System.out.println(text);
         }
     }
+    
 }
