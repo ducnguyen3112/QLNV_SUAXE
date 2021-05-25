@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -174,7 +175,7 @@ public class ChamCongForm extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     public void timkiemTheoNgayThang(){
-        String sql = "select MaNV from HOPDONG where NgayKy < '"+date+"'";
+        String sql = "select MaNV from HOPDONG where NgayKy <= '"+date+"'";
         ListNV.clear();
         Connection ketNoi = KetNoiDB.getConnection();
         try {
@@ -234,28 +235,32 @@ public class ChamCongForm extends javax.swing.JDialog {
     }
     private void tiemKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tiemKiemActionPerformed
         // TODO add your handling code here:
-        java.util.Date checkData=new java.util.Date();
-        SimpleDateFormat datefm=new SimpleDateFormat("yyyy-MM-dd");
+        
         nam = Integer.parseInt(txtNam.getText());
         thang = cbThang.getMonth() + 1;
-        date = nam+"-"+thang+"-01";  
-        System.out.println(thang);
-        String a = datefm.format(checkData);
-        try {
-            Date date1 = datefm.parse(date);
-            Date date2 = datefm.parse(a);
-            if(date1.compareTo(date2) <= 0){
+        if((thang == 4 || thang == 6 || thang == 9 ||thang == 11)){
+            date = nam+"-"+thang+"-31";  
+        }
+        if ((thang == 1 || thang == 3 || thang == 5 ||thang == 7 ||thang  == 8 || thang == 10 || thang == 12)){
+            date = nam+"-"+thang+"-30";  
+        }
+        else {
+            date = nam+"-"+thang+"-28";
+        }  
+        LocalDate localDate = LocalDate.now();
+            if(thang == localDate.getMonthValue()){
                 timkiemTheoNgayThang();
                 for (int i = 0; i < ListNV.size(); i++) {
                     themCong((String) ListNV.get(i));
                  }
+                hienThiData();    
+            } else if (thang < localDate.getMonthValue()){
                 hienThiData();
-            }else{
+            }
+            else{
                 JOptionPane.showMessageDialog(rootPane, "Vượt quá ngày của hiện tại");
             }
-        } catch (ParseException ex) {
-            Logger.getLogger(ChamCongForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
+      
         
     }//GEN-LAST:event_tiemKiemActionPerformed
     public String traVeMaCong(String NV){
@@ -301,10 +306,16 @@ public class ChamCongForm extends javax.swing.JDialog {
     }
     private void bangCongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bangCongMouseClicked
         // TODO add your handling code here:
-        int index = bangCong.getSelectedRow();
-        String tamNV = (String) bangCong.getValueAt(index, 0);
-        themSoNgayLamViec(tamNV);
-        hienThiData();
+        LocalDate localDate = LocalDate.now();
+        if (thang == localDate.getMonthValue()){
+            int index = bangCong.getSelectedRow();
+            String tamNV = (String) bangCong.getValueAt(index, 0);
+            themSoNgayLamViec(tamNV);
+            hienThiData();
+        }
+        if (thang < localDate.getMonthValue()){
+            JOptionPane.showMessageDialog(rootPane, "Không được sửa công của tháng :"+thang);
+        }
     }//GEN-LAST:event_bangCongMouseClicked
 
     private void huyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_huyActionPerformed
