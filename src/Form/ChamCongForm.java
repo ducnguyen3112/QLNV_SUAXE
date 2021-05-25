@@ -174,7 +174,7 @@ public class ChamCongForm extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     public void timkiemTheoNgayThang(){
-        String sql = "select MaNV from HOPDONG where NgayKy < '"+date+"'";
+        String sql = "select MaNV from HOPDONG where NgayKy <  '"+date+"'";
         ListNV.clear();
         Connection ketNoi = KetNoiDB.getConnection();
         try {

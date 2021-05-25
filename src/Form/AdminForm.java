@@ -6,16 +6,25 @@
 package Form;
 
 import Form.Xuli.KetNoiDB;
+import java.awt.BorderLayout;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Locale;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.plot.PiePlot3D;
+import org.jfree.data.general.DefaultPieDataset;
 
 /**
  *
@@ -28,6 +37,7 @@ public class AdminForm extends javax.swing.JFrame {
         initComponents();
         setSize(1168, 650);
         lbTenDN.setText(LoginForm.ten);
+        //bieuDoTron();
         setLocationRelativeTo(null);
     }
     Connection con=null;
@@ -78,9 +88,44 @@ public class AdminForm extends javax.swing.JFrame {
         } catch (SQLException e) {
         }
     }
-   
-    
-
+    private void bieuDoGioiTinh(){
+        DefaultPieDataset piedata=new DefaultPieDataset();
+        String sql="select GioiTinh ,count(MaNV) as sl " +
+                    "from NHANVIEN " +
+                    "group by GioiTinh";
+        int slNam=0,slNu=0,slKhac=0;
+        int[] slGioiTinh=new int[3];
+        int i=0;
+        try{
+        con=KetNoiDB.getConnection();
+        st=con.createStatement();
+        rs=st.executeQuery(sql);
+        while(rs.next()){
+            slGioiTinh[i]=rs.getInt("sl");
+            i++;
+        }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        slNam=slGioiTinh[0];
+        slNu=slGioiTinh[1];
+        slKhac=slGioiTinh[2];
+        int tongSLNV=slNam+slNu+slKhac;
+        double pcNam=(double)slNam/tongSLNV;
+        double pcNu=(double)slNu/tongSLNV;
+        double pcKhac=(double)slKhac/tongSLNV;
+        System.out.println(pcNam);
+        piedata.setValue("Nam", pcNam);
+        piedata.setValue("Nữ",pcNu );
+        piedata.setValue("Khác",pcKhac );
+        JFreeChart chart =ChartFactory.createPieChart3D("Thống kê giới tính", piedata, true, true, false);
+        PiePlot3D p=(PiePlot3D)chart.getPlot();
+        ChartPanel pnpie=new ChartPanel(chart);
+        pnpie.setPreferredSize(pnchart.getSize());
+        pnchart.setLayout(new java.awt.BorderLayout());
+        pnchart.add(pnpie,BorderLayout.CENTER);
+        pnchart.validate();
+    }
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -147,6 +192,7 @@ public class AdminForm extends javax.swing.JFrame {
         jPanel9 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
+        pnchart = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -199,6 +245,11 @@ public class AdminForm extends javax.swing.JFrame {
         btnTK.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnTK.setPreferredSize(new java.awt.Dimension(150, 140));
         btnTK.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnTK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTKActionPerformed(evt);
+            }
+        });
         pnMenu.add(btnTK);
         btnTK.setBounds(380, 440, 150, 140);
 
@@ -624,6 +675,19 @@ public class AdminForm extends javax.swing.JFrame {
                 .addGap(26, 26, 26))
         );
 
+        pnchart.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        javax.swing.GroupLayout pnchartLayout = new javax.swing.GroupLayout(pnchart);
+        pnchart.setLayout(pnchartLayout);
+        pnchartLayout.setHorizontalGroup(
+            pnchartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 203, Short.MAX_VALUE)
+        );
+        pnchartLayout.setVerticalGroup(
+            pnchartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 185, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -635,9 +699,11 @@ public class AdminForm extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(pnchart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(429, Short.MAX_VALUE))
+                .addContainerGap(212, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -645,7 +711,8 @@ public class AdminForm extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pnchart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -744,6 +811,12 @@ public class AdminForm extends javax.swing.JFrame {
     private void btnPCDVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPCDVActionPerformed
         new LeTanform().setVisible(true);
     }//GEN-LAST:event_btnPCDVActionPerformed
+
+    private void btnTKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTKActionPerformed
+        pnMenu.setVisible(false);
+        pnThongKe.setVisible(true);
+        bieuDoGioiTinh();
+    }//GEN-LAST:event_btnTKActionPerformed
            
     /**
      * @param args the command line arguments
@@ -837,6 +910,7 @@ public class AdminForm extends javax.swing.JFrame {
     private javax.swing.JPanel pnMenu;
     private javax.swing.JPanel pnNV;
     private javax.swing.JPanel pnThongKe;
+    private javax.swing.JPanel pnchart;
     private javax.swing.JTable tbDSNV;
     private javax.swing.JLabel txtTenAD;
     private javax.swing.JTextField txtTimKiem;

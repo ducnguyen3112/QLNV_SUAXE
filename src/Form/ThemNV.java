@@ -506,9 +506,9 @@ public class ThemNV extends javax.swing.JDialog {
             
             if(rbtnNam.isSelected())
                 ps.setInt(4, 0);
-            else if(rbtnNu.isSelected())
+            if(rbtnNu.isSelected())
                 ps.setInt(4, 1);
-            else if (rbtnKhac.isSelected()) 
+            if (rbtnKhac.isSelected()) 
                 ps.setInt(4, 2);
             
             
