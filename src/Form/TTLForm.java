@@ -26,7 +26,7 @@ public class TTLForm extends javax.swing.JDialog {
     private  int namDuocChon, thangDuocChon;
     private  HashMap NVvoiMaCong = new HashMap();
     private  HashMap MaCongvoiNgayLam = new HashMap();
-    private int luongCB = 250000;
+   
     public TTLForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -167,10 +167,10 @@ public class TTLForm extends javax.swing.JDialog {
                      }
        
     }
-    public int traVeHeSoLuong(String maNv){
+    public static  int traVeHeSoLuong(String maNv){
         String sql = "select HSL from HOPDONG where MaNV = '"+maNv+"'";
-         Connection ketNoi = KetNoiDB.getConnection();
-         int tamp = 0;
+        Connection ketNoi = KetNoiDB.getConnection();
+        int tamp = 0;
         try {
             Statement st = ketNoi.createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -184,7 +184,7 @@ public class TTLForm extends javax.swing.JDialog {
                      }
        return tamp;
     }
-    public String traVeMaHD(String maNv){
+    public static  String traVeMaHD(String maNv){
          String sql = "select MaHD from HOPDONG where MaNV = '"+maNv+"'";
          Connection ketNoi = KetNoiDB.getConnection();
          String tamp = null;
@@ -202,7 +202,7 @@ public class TTLForm extends javax.swing.JDialog {
        return tamp;
     
     }
-    public int traVeTienThuong(String maNv){
+    public static int traVeTienThuong(String maNv){
         String sql = "select SoTien from CTTHUONG where MaNV = '"+maNv+"'";
         Connection ketNoi = KetNoiDB.getConnection();
         int tamp = 0;
@@ -219,7 +219,7 @@ public class TTLForm extends javax.swing.JDialog {
                      }
        return tamp;
     }
-    public int traVeTienPhat(String maNv){
+    public static  int traVeTienPhat(String maNv){
         String sql = "select SoTien from CTPHAT where MaNV = '"+maNv+"'";
         Connection ketNoi = KetNoiDB.getConnection();
         int tamp = 0;
@@ -236,32 +236,7 @@ public class TTLForm extends javax.swing.JDialog {
                      }
        return tamp;
     }
-    public void tinhToanLuong(){
-        layDuLieuCong();
-        String sql = "insert into THANHTOANLUONG(MaTTL,MaNV,MaCong,ThucLinh,MaHD,TrangThai) values(?,?,?,?,?,?)";
-        Connection ketNoi = KetNoiDB.getConnection();
-        try {
-                for (Object i : NVvoiMaCong.keySet()) {
-                    PreparedStatement ps = ketNoi.prepareStatement(sql);
-                    String MaCong = (String) NVvoiMaCong.get(i);
-                    String MaTTL = "TTL"+MaCong;
-                    int ngayCong = (int) MaCongvoiNgayLam.get(MaCong);
-                    int ThucLinh = luongCB * traVeHeSoLuong((String) i) * ngayCong + traVeTienThuong((String) i)- traVeTienPhat((String) i);
-                    String MaHD = traVeMaHD((String) i );
-                    ps.setString(1, MaTTL);
-                    ps.setString(2, (String) i);
-                    ps.setString(3, MaCong);
-                    ps.setInt(4, ThucLinh);
-                    ps.setString(5, MaHD);
-                    ps.setInt(6, 0);
-                    ps.executeQuery();
-                    ps.close();
-            }
-         ketNoi.close();
-        } catch (Exception e) {
-        }
-
-    }
+  
     public void hienThiLuong(){
        Connection ketNoi = KetNoiDB.getConnection();
        DefaultTableModel model=(DefaultTableModel) bangLuong.getModel();
@@ -306,7 +281,7 @@ public class TTLForm extends javax.swing.JDialog {
         // TODO add your handling code here:
         namDuocChon = chonNam.getValue();
         thangDuocChon = chonThang.getMonth() + 1; 
-        tinhToanLuong();
+        layDuLieuCong();
         hienThiLuong();
     }//GEN-LAST:event_jButton1ActionPerformed
     public void thanhToanLuong(String maCong){
