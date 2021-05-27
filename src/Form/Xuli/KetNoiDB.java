@@ -130,15 +130,20 @@ public class KetNoiDB {
          return tong;
     }
     public static void main(String[] args) {
-        String text;
-        Scanner sc=new Scanner(System.in);
-        text=sc.nextLine();
-        if (text.matches("^[a-zA-Z]%")) {
-            System.out.println(text);
-        }else{
-            System.out.println("khong");
-            System.out.println(text);
-        }
+//        String text;
+//        Scanner sc=new Scanner(System.in);
+//        text=sc.nextLine();
+//        if (text.matches("^[a-zA-Z]%")) {
+//            System.out.println(text);
+//        }else{
+//            System.out.println("khong");
+//            System.out.println(text);
+//        }
+       java.util.Date date=new java.util.Date();
+       SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+       String thang=sdf.format(date).substring(3,5);
+       String nam=sdf.format(date).substring(6);
+        System.out.println(thang+" "+nam);
     }
     
 }

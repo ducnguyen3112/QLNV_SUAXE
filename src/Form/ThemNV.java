@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 
@@ -33,12 +34,12 @@ public class ThemNV extends javax.swing.JDialog {
     SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yyyy");
     public ThemNV(java.awt.Frame parent,boolean model) {
         super(parent,model);
+        Date date=new Date();
         initComponents();
         setLocationRelativeTo(null);
         rbtnNam.setSelected(true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        txtNgayKiHD.setText(sdf2.format(new java.util.Date()));
-        txtNgayKiHD.setEditable(false);
+        dcNgayKi.setDate(date);
     }
 
    
@@ -82,7 +83,7 @@ public class ThemNV extends javax.swing.JDialog {
         jLabel15 = new javax.swing.JLabel();
         txtHSL = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
-        txtNgayKiHD = new javax.swing.JTextField();
+        dcNgayKi = new com.toedter.calendar.JDateChooser();
         jPanel1 = new javax.swing.JPanel();
         lbHinhAnh = new javax.swing.JLabel();
         btTaiAnh = new javax.swing.JButton();
@@ -323,11 +324,8 @@ public class ThemNV extends javax.swing.JDialog {
         jLabel16.setText("Ngày kí:");
         jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 80, -1, -1));
 
-        txtNgayKiHD.setBackground(new java.awt.Color(144, 55, 73));
-        txtNgayKiHD.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        txtNgayKiHD.setForeground(new java.awt.Color(255, 255, 255));
-        txtNgayKiHD.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jPanel2.add(txtNgayKiHD, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 100, 174, 20));
+        dcNgayKi.setDateFormatString("dd-MM-yyyy");
+        jPanel2.add(dcNgayKi, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 100, 190, -1));
 
         javax.swing.GroupLayout pnTTLayout = new javax.swing.GroupLayout(pnTT);
         pnTT.setLayout(pnTTLayout);
@@ -546,9 +544,8 @@ public class ThemNV extends javax.swing.JDialog {
             PreparedStatement ps3 = con.prepareStatement(sql3);
             String maHD="hd"+str;
             ps3.setString(1,maHD );
-            ps3.setString(2, sdf1.format(new java.util.Date()));
-            date = sdf1.format(dcNgayHetHan.getDate());
-            ps3.setString(3, date);
+            ps3.setString(2,dcNgayKi.getDateFormatString());
+            ps3.setString(3, dcNgayHetHan.getDateFormatString());
             ps3.setString(4, str);
             ps3.setFloat(5, Float.parseFloat(txtHSL.getText()));
             ps3.execute();
@@ -641,6 +638,7 @@ public class ThemNV extends javax.swing.JDialog {
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JComboBox<String> cbChucVu;
     private com.toedter.calendar.JDateChooser dcNgayHetHan;
+    private com.toedter.calendar.JDateChooser dcNgayKi;
     private com.toedter.calendar.JDateChooser dcNgaySinh;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
@@ -667,7 +665,6 @@ public class ThemNV extends javax.swing.JDialog {
     private javax.swing.JTextField txtDanToc;
     private javax.swing.JTextField txtDiaChi;
     private javax.swing.JTextField txtHSL;
-    private javax.swing.JTextField txtNgayKiHD;
     private javax.swing.JTextField txtQueQuan;
     private javax.swing.JTextField txtSDT;
     private javax.swing.JTextField txtTen;
