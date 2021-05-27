@@ -221,6 +221,7 @@ public class PhatForm extends javax.swing.JDialog {
                       JOptionPane.showMessageDialog(rootPane, "Thất bại");
                    ps.close();                   
                    ketNoi.close();
+                   this.dispose();
         } catch (Exception e) {
                    JOptionPane.showMessageDialog(rootPane, e);
         }
@@ -233,7 +234,7 @@ public class PhatForm extends javax.swing.JDialog {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         luuDuLieu();
-        this.dispose();
+      
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void CBPhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CBPhatActionPerformed
