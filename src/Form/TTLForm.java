@@ -11,7 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Vector;
 import javax.swing.JOptionPane;
@@ -242,11 +241,12 @@ public class TTLForm extends javax.swing.JDialog {
         }
         return tamp;
     }
-  
-    public void hienThiLuong(){
-       Connection ketNoi = KetNoiDB.getConnection();
-       DefaultTableModel model=(DefaultTableModel) bangLuong.getModel();
-       model.setRowCount(0);
+
+    public void hienThiLuong() {
+        Connection ketNoi = KetNoiDB.getConnection();
+        DefaultTableModel model = (DefaultTableModel) bangLuong.getModel();
+        model.setRowCount(0);
+        int ktraHienThi = 0;
         try {
             for (Object i : NVvoiMaCong.keySet()) {
                 String sql = "select MaNV,ThucLinh,TrangThai from THANHTOANLUONG where MaTTL = 'TTL" + NVvoiMaCong.get(i) + "'";
@@ -272,26 +272,22 @@ public class TTLForm extends javax.swing.JDialog {
                     model.addRow(tamp);
                     ktraHienThi = 1;
                 }
-              model.addRow(tamp);
-            }
-            st.close();
-            rs.close();
+                st.close();
+                rs.close();
             }
             ketNoi.close();
         } catch (Exception e) {
         }
+        if (ktraHienThi == 0) {
+            JOptionPane.showMessageDialog(rootPane, "Không được vượt qua tháng hiện tại");
+        }
     }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-         LocalDate localDate = LocalDate.now();
         namDuocChon = chonNam.getValue();
-        thangDuocChon = chonThang.getMonth() + 1; 
-        if(thangDuocChon > localDate.getMonthValue() || namDuocChon > localDate.getYear()){
-            JOptionPane.showMessageDialog(rootPane, "Chọn sai thời gian hiển thị");
-        }else{
-                layDuLieuCong();
-                hienThiLuong();
-        }
+        thangDuocChon = chonThang.getMonth() + 1;
+        layDuLieuCong();
+        hienThiLuong();
     }//GEN-LAST:event_jButton1ActionPerformed
     public void thanhToanLuong(String maCong) {
         String sql = "UPDATE THANHTOANLUONG SET TrangThai = ? where MaTTL = ?";
