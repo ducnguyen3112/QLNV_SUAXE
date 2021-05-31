@@ -23,10 +23,10 @@ import javax.swing.table.DefaultTableModel;
 public class TTLForm extends javax.swing.JDialog {
 
     /** Creates new form TTLForm */
-    private  int namDuocChon, thangDuocChon;
-    private  HashMap NVvoiMaCong = new HashMap();
-    private  HashMap MaCongvoiNgayLam = new HashMap();
-   
+    private int namDuocChon, thangDuocChon;
+    private HashMap NVvoiMaCong = new HashMap();
+    private HashMap MaCongvoiNgayLam = new HashMap();
+
     public TTLForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -145,18 +145,19 @@ public class TTLForm extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    public void themMaThucLinh(){
-         
+    public void themMaThucLinh() {
+
     }
-    public void layDuLieuCong(){
-        String sql = "select MaCong,MaNV,NgayCong from CONG where (Thang = "+thangDuocChon+"and Nam ="+namDuocChon+")";
+
+    public void layDuLieuCong() {
+        String sql = "select MaCong,MaNV,NgayCong from CONG where (Thang = " + thangDuocChon + "and Nam =" + namDuocChon + ")";
         Connection ketNoi = KetNoiDB.getConnection();
         try {
             Statement st = ketNoi.createStatement();
             ResultSet rs = st.executeQuery(sql);
             NVvoiMaCong.clear();
             MaCongvoiNgayLam.clear();
-            while(rs.next()){
+            while (rs.next()) {
                 NVvoiMaCong.put(rs.getString("MaNV"), rs.getString("MaCong"));
                 MaCongvoiNgayLam.put(rs.getString("MaCong"), rs.getInt("NgayCong"));
             }
@@ -164,153 +165,156 @@ public class TTLForm extends javax.swing.JDialog {
             st.close();
             ketNoi.close();
         } catch (SQLException e) {
-                     }
-       
+        }
+
     }
-    public static  int traVeHeSoLuong(String maNv){
-        String sql = "select HSL from HOPDONG where MaNV = '"+maNv+"'";
+
+    public static int traVeHeSoLuong(String maNv) {
+        String sql = "select HSL from HOPDONG where MaNV = '" + maNv + "'";
         Connection ketNoi = KetNoiDB.getConnection();
         int tamp = 0;
         try {
             Statement st = ketNoi.createStatement();
             ResultSet rs = st.executeQuery(sql);
-            while(rs.next()){
-                 tamp = rs.getInt("HSL");
+            while (rs.next()) {
+                tamp = rs.getInt("HSL");
             }
             rs.close();
             st.close();
             ketNoi.close();
         } catch (SQLException e) {
-                     }
-       return tamp;
+        }
+        return tamp;
     }
-    public static  String traVeMaHD(String maNv){
-         String sql = "select MaHD from HOPDONG where MaNV = '"+maNv+"'";
-         Connection ketNoi = KetNoiDB.getConnection();
-         String tamp = null;
+
+    public static String traVeMaHD(String maNv) {
+        String sql = "select MaHD from HOPDONG where MaNV = '" + maNv + "'";
+        Connection ketNoi = KetNoiDB.getConnection();
+        String tamp = null;
         try {
             Statement st = ketNoi.createStatement();
             ResultSet rs = st.executeQuery(sql);
-            while(rs.next()){
-                 tamp = rs.getString("MaHD");
+            while (rs.next()) {
+                tamp = rs.getString("MaHD");
             }
             rs.close();
             st.close();
             ketNoi.close();
         } catch (SQLException e) {
-                     }
-       return tamp;
-    
+        }
+        return tamp;
+
     }
-    public static int traVeTienThuong(String maNv){
-        String sql = "select SoTien from CTTHUONG where MaNV = '"+maNv+"'";
+
+    public static int traVeTienThuong(String maNv) {
+        String sql = "select SoTien from CTTHUONG where MaNV = '" + maNv + "'";
         Connection ketNoi = KetNoiDB.getConnection();
         int tamp = 0;
         try {
             Statement st = ketNoi.createStatement();
             ResultSet rs = st.executeQuery(sql);
-            while(rs.next()){
-                 tamp +=rs.getInt("SoTien");
+            while (rs.next()) {
+                tamp += rs.getInt("SoTien");
             }
             rs.close();
             st.close();
             ketNoi.close();
         } catch (SQLException e) {
-                     }
-       return tamp;
+        }
+        return tamp;
     }
-    public static  int traVeTienPhat(String maNv){
-        String sql = "select SoTien from CTPHAT where MaNV = '"+maNv+"'";
+
+    public static int traVeTienPhat(String maNv) {
+        String sql = "select SoTien from CTPHAT where MaNV = '" + maNv + "'";
         Connection ketNoi = KetNoiDB.getConnection();
         int tamp = 0;
         try {
             Statement st = ketNoi.createStatement();
             ResultSet rs = st.executeQuery(sql);
-            while(rs.next()){
-                 tamp +=rs.getInt("SoTien");
+            while (rs.next()) {
+                tamp += rs.getInt("SoTien");
             }
             rs.close();
             st.close();
             ketNoi.close();
         } catch (SQLException e) {
-                     }
-       return tamp;
+        }
+        return tamp;
     }
-  
-    public void hienThiLuong(){
-       Connection ketNoi = KetNoiDB.getConnection();
-       DefaultTableModel model=(DefaultTableModel) bangLuong.getModel();
-       model.setRowCount(0);
-       int ktraHienThi = 0;
+
+    public void hienThiLuong() {
+        Connection ketNoi = KetNoiDB.getConnection();
+        DefaultTableModel model = (DefaultTableModel) bangLuong.getModel();
+        model.setRowCount(0);
+        int ktraHienThi = 0;
         try {
-            for(Object i :NVvoiMaCong.keySet()){
-            String sql = "select MaNV,ThucLinh,TrangThai from THANHTOANLUONG where MaTTL = 'TTL"+NVvoiMaCong.get(i)+"'";
-            Statement st = ketNoi.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            Vector tamp;
-            while(rs.next()){
-              tamp =new Vector();
-              String maNv = rs.getString("MaNV");
-              tamp.addElement(maNv);
-              tamp.addElement(PhanCongForm.getTenNhanVien(maNv));
-              tamp.addElement(NVvoiMaCong.get(i));
-              tamp.addElement(rs.getString("ThucLinh"));
-                switch (rs.getInt("TrangThai")) {
-                    case 0:
-                        tamp.addElement("Chưa thanh toán");
-                        break;
-                    case 1:
-                        tamp.addElement("Đã thanh toán");
-                    default:
-                        break;
+            for (Object i : NVvoiMaCong.keySet()) {
+                String sql = "select MaNV,ThucLinh,TrangThai from THANHTOANLUONG where MaTTL = 'TTL" + NVvoiMaCong.get(i) + "'";
+                Statement st = ketNoi.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                Vector tamp;
+                while (rs.next()) {
+                    tamp = new Vector();
+                    String maNv = rs.getString("MaNV");
+                    tamp.addElement(maNv);
+                    tamp.addElement(PhanCongForm.getTenNhanVien(maNv));
+                    tamp.addElement(NVvoiMaCong.get(i));
+                    tamp.addElement(rs.getString("ThucLinh"));
+                    switch (rs.getInt("TrangThai")) {
+                        case 0:
+                            tamp.addElement("Chưa thanh toán");
+                            break;
+                        case 1:
+                            tamp.addElement("Đã thanh toán");
+                        default:
+                            break;
+                    }
+                    model.addRow(tamp);
+                    ktraHienThi = 1;
                 }
-              model.addRow(tamp);
-              ktraHienThi = 1;
+                st.close();
+                rs.close();
             }
-            st.close();
-            rs.close();
-            }
-        ketNoi.close();
+            ketNoi.close();
         } catch (Exception e) {
         }
-        if(ktraHienThi == 0){
+        if (ktraHienThi == 0) {
             JOptionPane.showMessageDialog(rootPane, "Không được vượt qua tháng hiện tại");
         }
     }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         namDuocChon = chonNam.getValue();
-        thangDuocChon = chonThang.getMonth() + 1; 
+        thangDuocChon = chonThang.getMonth() + 1;
         layDuLieuCong();
         hienThiLuong();
     }//GEN-LAST:event_jButton1ActionPerformed
-    public void thanhToanLuong(String maCong){
-          String sql = "UPDATE THANHTOANLUONG SET TrangThai = ? where MaTTL = ?";
-           Connection ketNoi = KetNoiDB.getConnection();
-           try {
+    public void thanhToanLuong(String maCong) {
+        String sql = "UPDATE THANHTOANLUONG SET TrangThai = ? where MaTTL = ?";
+        Connection ketNoi = KetNoiDB.getConnection();
+        try {
             PreparedStatement ps = ketNoi.prepareStatement(sql);
             ps.setInt(1, 1);
-            ps.setString(2, "TTL"+maCong);
+            ps.setString(2, "TTL" + maCong);
             ps.executeUpdate();
             ps.close();
             ketNoi.close();
         } catch (Exception e) {
         }
-  
+
     }
     private void bangLuongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bangLuongMouseClicked
         // TODO add your handling code here:
-        int index  =  bangLuong.getSelectedRow();
+        int index = bangLuong.getSelectedRow();
         String check = (String) bangLuong.getValueAt(index, 4);
-        if(check.equals("Chưa thanh toán")){
-           int ktra = JOptionPane.showConfirmDialog(rootPane, "Bạn có chắc trả thanh toán lương không ??");
-           if(ktra == 0){
-               check  = (String) bangLuong.getValueAt(index, 2);
-               thanhToanLuong(check);
-               hienThiLuong();
-           }
-        }
-        else{
+        if (check.equals("Chưa thanh toán")) {
+            int ktra = JOptionPane.showConfirmDialog(rootPane, "Bạn có chắc trả thanh toán lương không ??");
+            if (ktra == 0) {
+                check = (String) bangLuong.getValueAt(index, 2);
+                thanhToanLuong(check);
+                hienThiLuong();
+            }
+        } else {
             JOptionPane.showMessageDialog(rootPane, "Nhân viên đã được thanh toán");
         }
     }//GEN-LAST:event_bangLuongMouseClicked

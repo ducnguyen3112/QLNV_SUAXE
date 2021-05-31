@@ -28,13 +28,15 @@ import javax.swing.JFileChooser;
  * @author StarScream
  */
 public class ThemNV extends javax.swing.JDialog {
+
     String filename = null;
     byte[] person_image = null;
     /** Creates new form ThemNV */
     SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yyyy");
-    public ThemNV(java.awt.Frame parent,boolean model) {
-        super(parent,model);
-        Date date=new Date();
+
+    public ThemNV(java.awt.Frame parent, boolean model) {
+        super(parent, model);
+        Date date = new Date();
         initComponents();
         setLocationRelativeTo(null);
         rbtnNam.setSelected(true);
@@ -42,7 +44,6 @@ public class ThemNV extends javax.swing.JDialog {
         dcNgayKi.setDate(date);
     }
 
-   
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -432,88 +433,98 @@ public class ThemNV extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
+
     private void btnLuuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLuuMouseClicked
 
-        check:  if (lbHinhAnh.getIcon()==null) {
+        check:
+        if (lbHinhAnh.getIcon() == null) {
             JOptionPane.showMessageDialog(rootPane, "Xin hãy chọn ảnh");
             return;
         }
         if (txtTen.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống họ tên");
-           return;
-        }else if (!txtTen.getText().matches("^[^0-9]{7,}$")) {
+            return;
+        } else if (!txtTen.getText().matches("^[^0-9]{7,}$")) {
             JOptionPane.showMessageDialog(rootPane, "Họ tên không đúng xin kiểm tra lại.");
-           return;
-        }if (txtQueQuan.getText().equals("")) {
+            return;
+        }
+        if (txtQueQuan.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống quê quán");
             return;
-        }else if (!txtQueQuan.getText().matches("^[^0-9]{3,}$")) {
+        } else if (!txtQueQuan.getText().matches("^[^0-9]{3,}$")) {
             JOptionPane.showMessageDialog(rootPane, "Quê quán không đúng xin kiểm tra lại.");
             return;
-        }if (txtDanToc.getText().equals("")) {
+        }
+        if (txtDanToc.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống dân tộc");
             return;
-        }else if (!txtDanToc.getText().matches("^[^1-9]{3,}$")) {
+        } else if (!txtDanToc.getText().matches("^[^1-9]{3,}$")) {
             JOptionPane.showMessageDialog(rootPane, "Dân tộc không đúng xin kiểm tra lại.");
             return;
-        }if (txtDiaChi.getText().equals("")) {
+        }
+        if (txtDiaChi.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống địa chỉ");
             return;
-        }if (txtCMND.getText().equals("")) {
+        }
+        if (txtCMND.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống CMND");
             return;
-        }if (!txtCMND.getText().matches("^[0-9]{9,12}$")) {
+        }
+        if (!txtCMND.getText().matches("^[0-9]{9,12}$")) {
             JOptionPane.showMessageDialog(rootPane, "CMND không đúng xin kiểm tra lại.");
             return;
-        }if (txtSDT.getText().equals("")) {
+        }
+        if (txtSDT.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống số điện thoại");
             return;
-        }else if (!txtSDT.getText().matches("^[0]{1}[0-9]{9}$")) {
+        } else if (!txtSDT.getText().matches("^[0]{1}[0-9]{9}$")) {
             JOptionPane.showMessageDialog(rootPane, "Số điện thoại không đúng xin kiểm tra lại.");
             return;
-        }if (txtHSL.getText().equals("")) {
+        }
+        if (txtHSL.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống hệ số lương");
             return;
-        }else if(!txtHSL.getText().matches("^[0-9]{1}[.]{1}[0-9]{1,}$")){
+        } else if (!txtHSL.getText().matches("^[0-9]{1}[.]{1}[0-9]{1,}$")) {
             JOptionPane.showMessageDialog(rootPane, "Hệ số lương không đúng xin kiểm tra lại");
             return;
         }
-        if (cbChucVu.getSelectedIndex()==-1) {
+        if (cbChucVu.getSelectedIndex() == -1) {
             JOptionPane.showMessageDialog(rootPane, "Xin hãy chọn một chức vụ");
             return;
         }
-        if (dcNgaySinh.getDate()==null) {
+        if (dcNgaySinh.getDate() == null) {
             JOptionPane.showMessageDialog(rootPane, "Xin hãy chọn ngày sinh");
             return;
         }
-        if(dcNgayHetHan.getDate()==null){
+        if (dcNgayHetHan.getDate() == null) {
             JOptionPane.showMessageDialog(rootPane, "Xin hãy chọn ngày hết hạn hợp đồng");
             return;
         }
         String sql = "INSERT INTO NHANVIEN (MaNV,HoTen,NgaySinh,GioiTinh,SDT,DanToc,QueQuan,HinhAnh,CMND,DiaChi,TrangThai,ChucVu)" + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
         String str;
-         
-          SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-          String date;
+
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+        String date;
         try {
             //THÊM vào dbo NHANVIEN
-            Connection con=KetNoiDB.getConnection();
+            Connection con = KetNoiDB.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
-            str =KetNoiDB.taoMaNV(cbChucVu.getSelectedIndex());
+            str = KetNoiDB.taoMaNV(cbChucVu.getSelectedIndex());
             ps.setString(1, str);
             ps.setString(2, txtTen.getText());
             date = sdf1.format(dcNgaySinh.getDate());
             ps.setString(3, date);
-            
-            if(rbtnNam.isSelected())
+
+            if (rbtnNam.isSelected()) {
                 ps.setInt(4, 0);
-            if(rbtnNu.isSelected())
+            }
+            if (rbtnNu.isSelected()) {
                 ps.setInt(4, 1);
-            if (rbtnKhac.isSelected()) 
+            }
+            if (rbtnKhac.isSelected()) {
                 ps.setInt(4, 2);
-            
-            
+            }
+
             ps.setString(5, txtSDT.getText());
             ps.setString(6, txtDanToc.getText());
             ps.setString(7, txtQueQuan.getText());
@@ -523,29 +534,28 @@ public class ThemNV extends javax.swing.JDialog {
             ps.setInt(11, 1);
             ps.setInt(12, cbChucVu.getSelectedIndex());
             System.out.println(cbChucVu.getSelectedIndex());
-            if (ps.executeUpdate()>0) {
+            if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!");
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(this, "Lỗi! Thêm nhân viên không thành công");
             }
-            
+
             //thêm bào table TAIKHOAN
             String sql2 = "INSERT INTO TAIKHOAN (MaNV,MatKhau)" + "VALUES(?,?)";
-            
+
             ps = con.prepareStatement(sql2);
             ps.setString(1, str);
             ps.setString(2, "123456");
-            
+
             ps.execute();
-            
-                         
+
             //thêm vào dboHOPDONG
-            String sql3 = "INSERT INTO HOPDONG (MaHD,NgayKy,HanHD,MaNV,HSL)" + "VALUES(?,?,?,?,?)" ;
+            String sql3 = "INSERT INTO HOPDONG (MaHD,NgayKy,HanHD,MaNV,HSL)" + "VALUES(?,?,?,?,?)";
             PreparedStatement ps3 = con.prepareStatement(sql3);
-            String maHD="hd"+str;
-            ps3.setString(1,maHD );
-            ps3.setString(2,dcNgayKi.getDateFormatString());
-            ps3.setString(3, dcNgayHetHan.getDateFormatString());
+            String maHD = "hd" + str;
+            ps3.setString(1, maHD);
+            ps3.setString(2, sdf1.format(dcNgayKi.getDate()));
+            ps3.setString(3, sdf1.format(dcNgayHetHan.getDate()));
             ps3.setString(4, str);
             ps3.setFloat(5, Float.parseFloat(txtHSL.getText()));
             ps3.execute();
@@ -555,9 +565,10 @@ public class ThemNV extends javax.swing.JDialog {
         } catch (SQLException ex) {
             Logger.getLogger(ThemNV.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, ex);
+            ex.printStackTrace();
         }
         this.dispose();
-        
+
     }//GEN-LAST:event_btnLuuMouseClicked
 
     private void btnHuyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHuyMouseClicked
@@ -565,24 +576,25 @@ public class ThemNV extends javax.swing.JDialog {
     }//GEN-LAST:event_btnHuyMouseClicked
 
     private void btTaiAnhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btTaiAnhMouseClicked
-       JFileChooser chooser = new JFileChooser();
+        JFileChooser chooser = new JFileChooser();
         chooser.showOpenDialog(null);
         File f = chooser.getSelectedFile();
         filename = f.getAbsolutePath();
         ImageIcon imageicon = new ImageIcon(new ImageIcon(filename).getImage().getScaledInstance(lbHinhAnh.getWidth(), lbHinhAnh.getHeight(), Image.SCALE_SMOOTH));
         lbHinhAnh.setIcon(imageicon);
-        
+
         try {
             File image = new File(filename);
             FileInputStream fis = new FileInputStream(image);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            byte [] buf = new byte [1024];
-            
-            for(int readNum;(readNum = fis.read(buf))!=-1;)
-                bos.write(buf,0,readNum);
-            
+            byte[] buf = new byte[1024];
+
+            for (int readNum; (readNum = fis.read(buf)) != -1;) {
+                bos.write(buf, 0, readNum);
+            }
+
             person_image = bos.toByteArray();
-            
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
@@ -617,9 +629,10 @@ public class ThemNV extends javax.swing.JDialog {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
-                      ThemNV dialog = new ThemNV(new javax.swing.JFrame(), true);
-                      dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                ThemNV dialog = new ThemNV(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
                         System.exit(0);

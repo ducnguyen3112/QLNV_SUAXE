@@ -22,41 +22,45 @@ import javax.swing.JOptionPane;
 public class ThuongForm extends javax.swing.JDialog {
 
     /** Creates new form ThuongForm */
-    private String MaNVThuong="";
-    private String MaThuong="";
-    private HashMap ListThuong; 
+    private String MaNVThuong = "";
+    private String MaThuong = "";
+    private HashMap ListThuong;
+
     public ThuongForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        MaNVThuong =AdminForm.maNV;
+        MaNVThuong = AdminForm.maNV;
         loadDaTa();
     }
-    public void loadLoaiKhenThuong̣̣̣̣̣(){
-         CBKhenThuong.removeAllItems();
-         ListThuong = new HashMap();
-         ListThuong.clear();
-         String sql = "select MaThuong,TenThuong from THUONG";
-         Connection ketNoi = KetNoiDB.getConnection();
-         try {
-             Statement st = ketNoi.createStatement();
-             ResultSet rs = st.executeQuery(sql);
-             while(rs.next()){
-                 ListThuong.put(rs.getString("MaThuong"), rs.getString("TenThuong"));
-                 CBKhenThuong.addItem(rs.getString("TenThuong"));
-             }
-             CBKhenThuong.addItem("Thêm loại thưởng");
-             st.close();
-             rs.close();
-             ketNoi.close();
-         } catch (Exception e) {
-         }
- 
-       }
-       public void loadDaTa(){
-           txtMaNV.setText(MaNVThuong);
-           txtHoTen.setText(PhanCongForm.getTenNhanVien(MaNVThuong));
-           loadLoaiKhenThuong̣̣̣̣̣();
-       }
+
+    public void loadLoaiKhenThuong̣̣̣̣̣() {
+        CBKhenThuong.removeAllItems();
+        ListThuong = new HashMap();
+        ListThuong.clear();
+        String sql = "select MaThuong,TenThuong from THUONG";
+        Connection ketNoi = KetNoiDB.getConnection();
+        try {
+            Statement st = ketNoi.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                ListThuong.put(rs.getString("MaThuong"), rs.getString("TenThuong"));
+                CBKhenThuong.addItem(rs.getString("TenThuong"));
+            }
+            CBKhenThuong.addItem("Thêm loại thưởng");
+            st.close();
+            rs.close();
+            ketNoi.close();
+        } catch (Exception e) {
+        }
+
+    }
+
+    public void loadDaTa() {
+        txtMaNV.setText(MaNVThuong);
+        txtHoTen.setText(PhanCongForm.getTenNhanVien(MaNVThuong));
+        loadLoaiKhenThuong̣̣̣̣̣();
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -165,80 +169,80 @@ public class ThuongForm extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    public void themThuong(String s){
-            String sql = "insert into THUONG(MaThuong,TenThuong) values(?,?)";
-            Connection ketNoi = KetNoiDB.getConnection();
-            Random rd = new Random();
-            MaThuong = "Thuong" + (String.valueOf(rd.nextInt(1000)));
-            try {
+    public void themThuong(String s) {
+        String sql = "insert into THUONG(MaThuong,TenThuong) values(?,?)";
+        Connection ketNoi = KetNoiDB.getConnection();
+        Random rd = new Random();
+        MaThuong = "Thuong" + (String.valueOf(rd.nextInt(1000)));
+        try {
             PreparedStatement ps = ketNoi.prepareStatement(sql);
             ps.setString(1, MaThuong);
-            ps.setString(2,s);
-            if (ps.executeUpdate()>0) {
+            ps.setString(2, s);
+            if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(this, "Thêm thưởng thành công!");
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(this, "Lỗi!Không thành công");
             }
-           ps.close();
-           ketNoi.close();
+            ps.close();
+            ketNoi.close();
         } catch (Exception e) {
         }
-        
+
     }
-    public  String traVeMaThuong̣̣(String s){
-            for (Object i : ListThuong.keySet()) {
-                    System.out.println(ListThuong.get(i));  
-                    if(s.equals(ListThuong.get(i)))
-                            return (String) i;
-                
+
+    public String traVeMaThuong̣̣(String s) {
+        for (Object i : ListThuong.keySet()) {
+            System.out.println(ListThuong.get(i));
+            if (s.equals(ListThuong.get(i))) {
+                return (String) i;
             }
-       return null;
+
+        }
+        return null;
     }
     private void CBKhenThuongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CBKhenThuongActionPerformed
         // TODO add your handling code here:
-        if(CBKhenThuong.getSelectedItem().equals("Thêm loại thưởng")){
-                 String  inputThuong = JOptionPane.showInputDialog("Thêm loại thưởng");
-                 if(inputThuong != null)
-                 {
-                     themThuong(inputThuong);
-                     loadLoaiKhenThuong̣̣̣̣̣();
-                 }
+        if (CBKhenThuong.getSelectedItem().equals("Thêm loại thưởng")) {
+            String inputThuong = JOptionPane.showInputDialog("Thêm loại thưởng");
+            if (inputThuong != null) {
+                themThuong(inputThuong);
+                loadLoaiKhenThuong̣̣̣̣̣();
             }
-       else{
-                   MaThuong= traVeMaThuong̣̣((String) CBKhenThuong.getSelectedItem());     
-            } 
+        } else {
+            MaThuong = traVeMaThuong̣̣((String) CBKhenThuong.getSelectedItem());
+        }
     }//GEN-LAST:event_CBKhenThuongActionPerformed
-    public void luuThuong(){
-       SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-       String date = sdf1.format(ngayThuong.getDate());
-       String tienThuong  = jtienThuong.getText();
+    public void luuThuong() {
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+        String date = sdf1.format(ngayThuong.getDate());
+        String tienThuong = jtienThuong.getText();
         if (ChamCongForm.kiemTraNhapSo(tienThuong)) {
             int Tien = Integer.parseInt(tienThuong);
-            String sql ="INSERT INTO CTTHUONG(MaNV,MaThuong,CTThuong,SoTien,NgayThuong)  VALUES(?,?,?,?,?)";
-            Connection ketNoi =KetNoiDB.getConnection();
-             try {
-                          PreparedStatement ps = ketNoi.prepareStatement(sql);
-                          ps.setString(1, MaNVThuong);
-                          ps.setString(2,MaThuong);
-                          ps.setString(3, CTThuong.getText());
-                          ps.setInt(4, Tien);
-                          ps.setString(5, date);
-                        if(ps.executeUpdate() > 0 )
-                            JOptionPane.showMessageDialog(rootPane, "Thưởng thành công");
-                        else 
-                           JOptionPane.showMessageDialog(rootPane, "Thưởng thất bại");
-                        ps.close();                   
-                        ketNoi.close();
-             } catch (Exception e) {
-                        JOptionPane.showMessageDialog(rootPane, e);
-             }    
-        }
-        else {
+            String sql = "INSERT INTO CTTHUONG(MaNV,MaThuong,CTThuong,SoTien,NgayThuong)  VALUES(?,?,?,?,?)";
+            Connection ketNoi = KetNoiDB.getConnection();
+            try {
+                PreparedStatement ps = ketNoi.prepareStatement(sql);
+                ps.setString(1, MaNVThuong);
+                ps.setString(2, MaThuong);
+                ps.setString(3, CTThuong.getText());
+                ps.setInt(4, Tien);
+                ps.setString(5, date);
+                if (ps.executeUpdate() > 0) {
+                    JOptionPane.showMessageDialog(rootPane, "Thưởng thành công");
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Thưởng thất bại");
+                }
+                ps.close();
+                ketNoi.close();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(rootPane, e);
+            }
+        } else {
             JOptionPane.showMessageDialog(rootPane, "Nhập vào phải là số nguyên");
-        }    
-       
+        }
+
     }
-    
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         luuThuong();

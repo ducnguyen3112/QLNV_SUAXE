@@ -102,11 +102,11 @@ public class TuyChinhFrom extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        int op=JOptionPane.showConfirmDialog(rootPane, "Bạn có muốn đăng xuất không?");
-        if (op==0) {
+        int op = JOptionPane.showConfirmDialog(rootPane, "Bạn có muốn đăng xuất không?");
+        if (op == 0) {
             System.exit(0);
         }
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

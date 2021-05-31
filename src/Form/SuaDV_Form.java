@@ -27,111 +27,118 @@ public class SuaDV_Form extends javax.swing.JDialog {
     private HashMap bangDV = new HashMap();
     private HashMap listDichVuDangSuDung = new HashMap();
     private String luuThoiGian = null,
-                   luuMaNhanVien=null,
-                   luuMoTa=null;
+            luuMaNhanVien = null,
+            luuMoTa = null;
+
     public SuaDV_Form(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         loadData();
     }
-    
-   public void loadDataComboxDV(){
-         jCBDichVu.removeAllItems();
-         bangDV.clear();
-         String sql = "select MaDV,TenDV from DICHVU";
-         Connection ketNoi = KetNoiDB.getConnection();
-         try {
-             Statement st = ketNoi.createStatement();
-             ResultSet rs = st.executeQuery(sql);
-             while(rs.next()){
-                 bangDV.put(rs.getString("TenDV"), rs.getString("MaDV"));
-                 jCBDichVu.addItem(rs.getString("TenDV"));
-             }
-             st.close();
-             rs.close();
-             ketNoi.close();
-         } catch (Exception e) {
-         }
-            
-    } 
-   public String getMaDV(String TenDV){
-       String MaDV="";
-          for (Object i : bangDV.keySet()) {
-                if(i.equals(TenDV))
-                {
-                    MaDV = (String) bangDV.get(i);
-                }
+
+    public void loadDataComboxDV() {
+        jCBDichVu.removeAllItems();
+        bangDV.clear();
+        String sql = "select MaDV,TenDV from DICHVU";
+        Connection ketNoi = KetNoiDB.getConnection();
+        try {
+            Statement st = ketNoi.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                bangDV.put(rs.getString("TenDV"), rs.getString("MaDV"));
+                jCBDichVu.addItem(rs.getString("TenDV"));
+            }
+            st.close();
+            rs.close();
+            ketNoi.close();
+        } catch (Exception e) {
         }
-      return MaDV;     
+
     }
-    public String traVeTenDichVu(String maDV){
+
+    public String getMaDV(String TenDV) {
+        String MaDV = "";
         for (Object i : bangDV.keySet()) {
-                if (maDV.equals(bangDV.get(i))){
-                    return (String) i;
-                }
+            if (i.equals(TenDV)) {
+                MaDV = (String) bangDV.get(i);
+            }
         }
-      return null;
-   }
-   public static  String traVeMaNhanVien(String s){
-       String sql = "select MaNV from CT_SDDV where BienSoXe = '" + s + "'";
-       Connection ketNoi = KetNoiDB.getConnection();
+        return MaDV;
+    }
+
+    public String traVeTenDichVu(String maDV) {
+        for (Object i : bangDV.keySet()) {
+            if (maDV.equals(bangDV.get(i))) {
+                return (String) i;
+            }
+        }
+        return null;
+    }
+
+    public static String traVeMaNhanVien(String s) {
+        String sql = "select MaNV from CT_SDDV where BienSoXe = '" + s + "'";
+        Connection ketNoi = KetNoiDB.getConnection();
         String tamp = null;
         try {
             Statement st = ketNoi.createStatement();
-            ResultSet rs  =st.executeQuery(sql);
-            while (rs.next()){
-                tamp = rs.getString("MaNV"); 
-            }  
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                tamp = rs.getString("MaNV");
+            }
             st.close();
             rs.close();
             ketNoi.close();
         } catch (SQLException e) {
         }
         return tamp;
-   }
-   public  void loadDataVaoBangDichVu(){
-       String sql = "select MaNV,MaDV,NgayGioLamDV,MoTa from CT_SDDV where BienSoXe = '" + NVSX_Form.dataSuaDichVu + "'";
-       Connection ketNoi = KetNoiDB.getConnection();
-       listDichVuDangSuDung.clear();
+    }
+
+    public void loadDataVaoBangDichVu() {
+        String sql = "select MaNV,MaDV,NgayGioLamDV,MoTa from CT_SDDV where BienSoXe = '" + NVSX_Form.dataSuaDichVu + "'";
+        Connection ketNoi = KetNoiDB.getConnection();
+        listDichVuDangSuDung.clear();
         try {
             Statement st = ketNoi.createStatement();
-            ResultSet rs  =st.executeQuery(sql);
-            while (rs.next()){
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
                 luuMaNhanVien = rs.getString("MaNV");
                 listDichVuDangSuDung.put(traVeTenDichVu(rs.getString("MaDV")), rs.getString("MaDV"));
                 luuThoiGian = rs.getString("NgayGioLamDV");
                 luuMoTa = rs.getString("MoTa");
-            }  
+            }
             st.close();
             rs.close();
             ketNoi.close();
         } catch (SQLException e) {
         }
-       
-   }
-   public void themDichVuVaoBang(){
-            DefaultTableModel model=(DefaultTableModel) tbDichVu.getModel();
-            model.setRowCount(0);
-            Vector thayThe;
-            int count  = 0;
-            for (Object i : listDichVuDangSuDung.keySet()) {
-                thayThe = new Vector();
-                count++;
-                thayThe.addElement(count);
-                thayThe.addElement(listDichVuDangSuDung.get(i));
-                thayThe.addElement(i);
-                model.addRow(thayThe);
+
+    }
+
+    public void themDichVuVaoBang() {
+        DefaultTableModel model = (DefaultTableModel) tbDichVu.getModel();
+        model.setRowCount(0);
+        Vector thayThe;
+        int count = 0;
+        for (Object i : listDichVuDangSuDung.keySet()) {
+            thayThe = new Vector();
+            count++;
+            thayThe.addElement(count);
+            thayThe.addElement(listDichVuDangSuDung.get(i));
+            thayThe.addElement(i);
+            model.addRow(thayThe);
         }
     }
-    public void loadData(){
-            jBienSoXe.setText(NVSX_Form.dataSuaDichVu);
-            jHoTen.setText(PhanCongForm.getTenNhanVien(traVeMaNhanVien(NVSX_Form.dataSuaDichVu)));
-            loadDataComboxDV();
-            loadDataVaoBangDichVu();
-            themDichVuVaoBang();
-            
+
+    public void loadData() {
+        jBienSoXe.setText(NVSX_Form.dataSuaDichVu);
+        jHoTen.setText(PhanCongForm.getTenNhanVien(traVeMaNhanVien(NVSX_Form.dataSuaDichVu)));
+        loadDataComboxDV();
+        loadDataVaoBangDichVu();
+        themDichVuVaoBang();
+
     }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -278,74 +285,73 @@ public class SuaDV_Form extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here: them dich vu
-            String tam  = (String) jCBDichVu.getSelectedItem();
-            listDichVuDangSuDung.put(tam, getMaDV(tam));
-            themDichVuVaoBang();
-        
+        String tam = (String) jCBDichVu.getSelectedItem();
+        listDichVuDangSuDung.put(tam, getMaDV(tam));
+        themDichVuVaoBang();
+
     }//GEN-LAST:event_jButton1ActionPerformed
-    public String chonDichVuTrongBangCanXoa(){
+    public String chonDichVuTrongBangCanXoa() {
         int index = tbDichVu.getSelectedRow();
         return (String) tbDichVu.getValueAt(index, 2);
     }
     private void tbDichVuKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbDichVuKeyPressed
         // TODO add your handling code here:
-       if(evt.getKeyCode()== KeyEvent.VK_DELETE){
-           String tem = chonDichVuTrongBangCanXoa();
-        if(tem == ""){
-            JOptionPane.showMessageDialog(rootPane, "Chọn dịch vụ để xóa");
+        if (evt.getKeyCode() == KeyEvent.VK_DELETE) {
+            String tem = chonDichVuTrongBangCanXoa();
+            if (tem == "") {
+                JOptionPane.showMessageDialog(rootPane, "Chọn dịch vụ để xóa");
+            } else {
+                int check = JOptionPane.showConfirmDialog(rootPane, "Bạn có muốn xóa dịch vụ");
+                if (check == 0) {
+                    listDichVuDangSuDung.remove(tem);
+                }
+            }
+            themDichVuVaoBang();
         }
-        else{
-            int check = JOptionPane.showConfirmDialog(rootPane, "Bạn có muốn xóa dịch vụ");
-                    if(check ==0)
-                    {
-                        listDichVuDangSuDung.remove(tem);
-                    }
-        }
-        themDichVuVaoBang();
-       }
     }//GEN-LAST:event_tbDichVuKeyPressed
 
     private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_jToggleButton2ActionPerformed
-    public void updateDichVu(){
+    public void updateDichVu() {
         xoaTruocKhiSua();
         int check = 0;
         for (Object i : listDichVuDangSuDung.keySet()) {
-                String  MaDV = (String) listDichVuDangSuDung.get(i);
-                Connection ketNoi = KetNoiDB.getConnection();
-                try {
-                     String sql ="INSERT INTO CT_SDDV(BienSoXe,MaNV,MaDV,NgayGiolamDV,NgayGioHT,MoTa)  VALUES(?,?,?,?,?,?)";
-                     PreparedStatement ps = ketNoi.prepareStatement(sql);
-                     ps.setString(1, NVSX_Form.dataSuaDichVu);
-                     ps.setString(2, luuMaNhanVien);
-                     ps.setString(3, MaDV);
-                     ps.setString(4, luuThoiGian);
-                     ps.setString(5, null);
-                     ps.setString(6,luuMoTa);
-                     check = ps.executeUpdate();
-                    ps.close();                   
-                    ketNoi.close(); 
-                } catch (Exception e) {
-                }
-      }
-        if (check>0) {
-                        JOptionPane.showMessageDialog(this, "Sửa thành công!");
-                    }else{
-                        JOptionPane.showMessageDialog(this, "Lỗi! Sửa không thành công");
-                    }
+            String MaDV = (String) listDichVuDangSuDung.get(i);
+            Connection ketNoi = KetNoiDB.getConnection();
+            try {
+                String sql = "INSERT INTO CT_SDDV(BienSoXe,MaNV,MaDV,NgayGiolamDV,NgayGioHT,MoTa)  VALUES(?,?,?,?,?,?)";
+                PreparedStatement ps = ketNoi.prepareStatement(sql);
+                ps.setString(1, NVSX_Form.dataSuaDichVu);
+                ps.setString(2, luuMaNhanVien);
+                ps.setString(3, MaDV);
+                ps.setString(4, luuThoiGian);
+                ps.setString(5, null);
+                ps.setString(6, luuMoTa);
+                check = ps.executeUpdate();
+                ps.close();
+                ketNoi.close();
+            } catch (Exception e) {
+            }
+        }
+        if (check > 0) {
+            JOptionPane.showMessageDialog(this, "Sửa thành công!");
+        } else {
+            JOptionPane.showMessageDialog(this, "Lỗi! Sửa không thành công");
+        }
     }
-    public void xoaTruocKhiSua(){
-      String sql ="Delete from CT_SDDV where BienSoXe = '"+ NVSX_Form.dataSuaDichVu+"'";
-       Connection ketNoi = KetNoiDB.getConnection();
+
+    public void xoaTruocKhiSua() {
+        String sql = "Delete from CT_SDDV where BienSoXe = '" + NVSX_Form.dataSuaDichVu + "'";
+        Connection ketNoi = KetNoiDB.getConnection();
         try {
-                  PreparedStatement st = ketNoi.prepareStatement(sql);
-                  st.executeUpdate(); 
-                  st.close();
+            PreparedStatement st = ketNoi.prepareStatement(sql);
+            st.executeUpdate();
+            st.close();
         } catch (Exception e) {
         }
-    
+
     }
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
         // TODO add your handling code here:

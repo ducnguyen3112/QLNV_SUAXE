@@ -4,9 +4,11 @@
  * and open the template in the editor.
  */
 package Form;
+
 import Form.Xuli.KetNoiDB;
 import java.sql.*;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author StarScream
@@ -15,36 +17,38 @@ public class ThemXe extends javax.swing.JDialog {
 
     /** Creates new form ThemXe */
     private LeTanform leTan;
-    public static String BienSoXe,HieuXe,TenChuXe;
+    public static String BienSoXe, HieuXe, TenChuXe;
+
     public ThemXe(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         initComponents();
         setSize(451, 511);
         setLocationRelativeTo(null);
-    
+
     }
-     public void themXe(){
-            String sql = "insert into XE(BienSoXe,HieuXe,ChuXe,NVTN) values(?,?,?,?)";
-            Connection ketNoi = KetNoiDB.getConnection();
-            try {
+
+    public void themXe() {
+        String sql = "insert into XE(BienSoXe,HieuXe,ChuXe,NVTN) values(?,?,?,?)";
+        Connection ketNoi = KetNoiDB.getConnection();
+        try {
             PreparedStatement ps = ketNoi.prepareStatement(sql);
             ps.setString(1, jBienSoXe.getText());
             ps.setString(2, jHieuXe.getText());
             ps.setString(3, jTenChuXe.getText());
             ps.setString(4, LeTanform.MaNVLeTan);
-            if (ps.executeUpdate()>0) {
+            if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!");
-                
-            }else{
+
+            } else {
                 JOptionPane.showMessageDialog(this, "Lỗi! Thêm nhân viên không thành công");
             }
-           ps.close();
-           ketNoi.close();
+            ps.close();
+            ketNoi.close();
         } catch (Exception e) {
         }
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -78,7 +82,7 @@ public class ThemXe extends javax.swing.JDialog {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("TIẾP NHÂN XE");
         jLabel2.setOpaque(true);
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 449, 79));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 450, 79));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Tên chủ xe:");
@@ -128,20 +132,17 @@ public class ThemXe extends javax.swing.JDialog {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         System.out.println(jBienSoXe.getText());
-          if (jBienSoXe.getText().equals("")) {
-                JOptionPane.showMessageDialog(this, "Không được để trong biến số xe");
-          }      
-          else if(jHieuXe.getText().equals("")){
-                 JOptionPane.showMessageDialog(this, "Không được để trống hiệu xe");
-          }
-          else if(jTenChuXe.getText().equals("")){
-               JOptionPane.showMessageDialog(this, "Không được để trống tên chủ xe");
-          }
-          else{
-              
-                    themXe();
-                    this.dispose();
-          }
+        if (jBienSoXe.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Không được để trong biến số xe");
+        } else if (jHieuXe.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Không được để trống hiệu xe");
+        } else if (jTenChuXe.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Không được để trống tên chủ xe");
+        } else {
+
+            themXe();
+            this.dispose();
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -176,7 +177,7 @@ public class ThemXe extends javax.swing.JDialog {
         //</editor-fold>
 
         /* Create and display the form */
-         java.awt.EventQueue.invokeLater(new Runnable() {
+        java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
                 ThemXe dialog = new ThemXe(new javax.swing.JFrame(), true);

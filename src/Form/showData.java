@@ -9,7 +9,9 @@ package Form;
  *
  * @author chautrieu
  */
-public interface showData{
+public interface showData {
+
     <T> void showDataXe();
+
     <T> void showDataPhanCong();
 }

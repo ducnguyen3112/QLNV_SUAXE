@@ -13,10 +13,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
@@ -36,135 +39,148 @@ import org.jfree.data.general.DefaultPieDataset;
  * @author StarScream
  */
 public class AdminForm extends javax.swing.JFrame {
+
     /** Creates new form AdminForm */
-    public static String maNV="";
+    public static String maNV = "";
+
     public AdminForm() {
         initComponents();
         setSize(1168, 650);
         lbTenDN.setText(LoginForm.ten);
         setLocationRelativeTo(null);
     }
-    Connection con=null;
-    Statement st=null;
-    ResultSet rs=null;
+    Connection con = null;
+    Statement st = null;
+    ResultSet rs = null;
     PreparedStatement ps;
-    public  void  showDuLieu()
-    {
+ 
+   
+    public void showDuLieu() {
+        
         try {
             tbDSNV.removeAll();
-            String[] arr = {"Mã NV","Họ Tên","Ngày Sinh","Giới Tính","Chức Vụ","Trạng Thái"}; 
-            
-            DefaultTableModel model = new DefaultTableModel(arr,0);
+            String[] arr = {"Mã NV", "Họ Tên", "Ngày Sinh", "Giới Tính", "Chức Vụ", "Trạng Thái"};
+
+            DefaultTableModel model = new DefaultTableModel(arr, 0);
             con = KetNoiDB.getConnection();
             String sql = "select MaNV,HoTen,CONVERT(varchar, NgaySinh, 105) as NgaySinh,"
-                + " GioiTinh,ChucVu,TrangThai"
-                + " from NHANVIEN";
-             ps = con.prepareStatement(sql);
-             rs = ps.executeQuery();
-            while(rs.next())
-            {
+                    + " GioiTinh,ChucVu,TrangThai"
+                    + " from NHANVIEN";
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
                 Vector vector = new Vector();
-                vector.add(rs.getString("MaNV"));
+                vector.add(rs.getString("MaNV"));  
                 vector.add(rs.getString("HoTen"));
                 vector.add(rs.getString("NgaySinh"));
                 switch (rs.getInt("GioiTinh")) {
-                    case 0 -> vector.add("Nam");
-                    case 1 -> vector.add("Nữ");
-                    case 2 -> vector.add("khác");
+                    case 0 ->
+                        vector.add("Nam");
+                    case 1 ->
+                        vector.add("Nữ");
+                    case 2 ->
+                        vector.add("khác");
                 }
                 switch (rs.getInt("ChucVu")) {
-                    case 0 -> vector.add("admin");
-                    case 1 -> vector.add("Lễ tân");
-                    case 2 -> vector.add("Nhân viên bảo dưỡng");
+                    case 0 ->
+                        vector.add("admin");
+                    case 1 ->
+                        vector.add("Lễ tân");
+                    case 2 ->
+                        vector.add("Nhân viên bảo dưỡng");
                     default -> {
                     }
                 }
-                switch(rs.getInt("TrangThai")){
-                    case 0 ->vector.add("Đã nghỉ");
-                    case 1 -> vector.add("Đang làm việc");
+                switch (rs.getInt("TrangThai")) {
+                    case 0 ->
+                        vector.add("Đã nghỉ");
+                    case 1 ->
+                        vector.add("Đang làm việc");
                 }
                 model.addRow(vector);
             }
             tbDSNV.setModel(model);
-           // rs.close();
+            // rs.close();
             //st.close();
-           // con.close();
+            // con.close();
         } catch (SQLException e) {
         }
     }
     int SLNV;
-    private void bieuDoGioiTinh(){
-        DefaultPieDataset piedata=new DefaultPieDataset();
-        String sql="select GioiTinh ,count(MaNV) as sl " +
-                    "from NHANVIEN " +
-                    "group by GioiTinh";
-        int slNam=0,slNu=0,slKhac=0;
-        int[] slGioiTinh=new int[4];
-        int i=0;
-        try{
-        con=KetNoiDB.getConnection();
-        st=con.createStatement();
-        rs=st.executeQuery(sql);
-        while(rs.next()){
-            slGioiTinh[i]=rs.getInt("sl");
-            i++;
-        }
-        }catch(Exception e){
+
+    private void bieuDoGioiTinh() {
+        DefaultPieDataset piedata = new DefaultPieDataset();
+        String sql = "select GioiTinh ,count(MaNV) as sl "
+                + "from NHANVIEN "
+                + "group by GioiTinh";
+        int slNam = 0, slNu = 0, slKhac = 0;
+        int[] slGioiTinh = new int[4];
+        int i = 0;
+        try {
+            con = KetNoiDB.getConnection();
+            st = con.createStatement();
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
+                slGioiTinh[i] = rs.getInt("sl");
+                i++;
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        slNam=slGioiTinh[0];
-        slNu=slGioiTinh[1];
-        slKhac=slGioiTinh[2];
-         SLNV=slNam+slNu+slKhac;
-        double pcNam=(double)slNam/SLNV;
-        double pcNu=(double)slNu/SLNV;
-        double pcKhac=(double)slKhac/SLNV;
+        slNam = slGioiTinh[0];
+        slNu = slGioiTinh[1];
+        slKhac = slGioiTinh[2];
+        SLNV = slNam + slNu + slKhac;
+        double pcNam = (double) slNam / SLNV;
+        double pcNu = (double) slNu / SLNV;
+        double pcKhac = (double) slKhac / SLNV;
         piedata.setValue("Nam", pcNam);
-        piedata.setValue("Nữ",pcNu);
-        piedata.setValue("Khác",pcKhac);
-        JFreeChart chart =ChartFactory.createPieChart3D("THỐNG KÊ GIỚI TÍNH", piedata, true, true, false);
-        PiePlot3D p=(PiePlot3D)chart.getPlot();
+        piedata.setValue("Nữ", pcNu);
+        piedata.setValue("Khác", pcKhac);
+        JFreeChart chart = ChartFactory.createPieChart3D("THỐNG KÊ GIỚI TÍNH", piedata, true, true, false);
+        PiePlot3D p = (PiePlot3D) chart.getPlot();
         p.setBackgroundPaint(new Color(69, 69, 69));
-        ChartPanel pnpie=new ChartPanel(chart);
+        ChartPanel pnpie = new ChartPanel(chart);
         pnpie.setPreferredSize(pnTKGT.getSize());
         pnTKGT.setLayout(new java.awt.BorderLayout());
-        pnTKGT.add(pnpie,BorderLayout.CENTER);
+        pnTKGT.add(pnpie, BorderLayout.CENTER);
         pnTKGT.validate();
     }
-    private void bieuDoSLNVvsTuoi(){
-        DefaultCategoryDataset dcd=new DefaultCategoryDataset();
-        String sql="SELECT hoten,ROUND(DATEDIFF(day,NgaySinh,CURRENT_TIMESTAMP)/360,0) AS age" +
-        " FROM NHANVIEN";
-        int c1825=0;
-        int c2530=0;
-        int c3035=0;
-        int c3540=0;
-        int c4045=0;
-        int c4550=0;
-        int ch50=0;
-        try{
-        con=KetNoiDB.getConnection();
-        st=con.createStatement();
-        rs=st.executeQuery(sql);
-        while(rs.next()){
-           int age=rs.getInt("age");
-            if (age>=18&&age<=25) {
-                c1825++;
-            }else if (age>=25&&age<=30) {
-                c2530++;
-            }else if (age>=25&&age<=30) {
-                c2530++;
-            }else if (age>=30&&age<=35) {
-                c3035++;
-            }else if (age>=35&&age<=40) {
-                c3540++;
-            }else if (age>=40&&age<=45) {
-                c4045++;
-            }else if (age>=50) {
-                ch50++;
+
+    private void bieuDoSLNVvsTuoi() {
+        DefaultCategoryDataset dcd = new DefaultCategoryDataset();
+        String sql = "SELECT hoten,ROUND(DATEDIFF(day,NgaySinh,CURRENT_TIMESTAMP)/360,0) AS age"
+                + " FROM NHANVIEN";
+        int c1825 = 0;
+        int c2530 = 0;
+        int c3035 = 0;
+        int c3540 = 0;
+        int c4045 = 0;
+        int c4550 = 0;
+        int ch50 = 0;
+        try {
+            con = KetNoiDB.getConnection();
+            st = con.createStatement();
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
+                int age = rs.getInt("age");
+                if (age >= 18 && age <= 25) {
+                    c1825++;
+                } else if (age >= 25 && age <= 30) {
+                    c2530++;
+                } else if (age >= 25 && age <= 30) {
+                    c2530++;
+                } else if (age >= 30 && age <= 35) {
+                    c3035++;
+                } else if (age >= 35 && age <= 40) {
+                    c3540++;
+                } else if (age >= 40 && age <= 45) {
+                    c4045++;
+                } else if (age >= 50) {
+                    ch50++;
+                }
             }
-        }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         dcd.setValue(c1825, "SLNV", "18-25");
@@ -174,112 +190,115 @@ public class AdminForm extends javax.swing.JFrame {
         dcd.setValue(c4045, "SLNV", "40-45");
         dcd.setValue(c4550, "SLNV", "45-50");
         dcd.setValue(ch50, "SLNV", ">50");
-        
-        JFreeChart jchart=ChartFactory.createBarChart3D("Biểu đồ số lượng nhân viên theo độ tuổi", "Độ tuổi", "SLNV", dcd);
-        CategoryPlot plot=jchart.getCategoryPlot();
+
+        JFreeChart jchart = ChartFactory.createBarChart3D("Biểu đồ số lượng nhân viên theo độ tuổi", "Độ tuổi", "SLNV", dcd);
+        CategoryPlot plot = jchart.getCategoryPlot();
         plot.setBackgroundPaint(new Color(69, 69, 69));
-        
-        ChartPanel pnchart=new ChartPanel(jchart);
+
+        ChartPanel pnchart = new ChartPanel(jchart);
         pnchart.setPreferredSize(pnSLNV_TUOI.getSize());
         pnSLNV_TUOI.setLayout(new java.awt.BorderLayout());
-        pnSLNV_TUOI.add(pnchart,BorderLayout.CENTER);
+        pnSLNV_TUOI.add(pnchart, BorderLayout.CENTER);
         pnSLNV_TUOI.validate();
     }
-    private void bieuDoChucVu(){
-        DefaultPieDataset piedata=new DefaultPieDataset();
-        String sql="select ChucVu ,count(MaNV) as sl " +
-                    "from NHANVIEN " +
-                    "group by ChucVu";
-        int cvAD=0,cvLT=0,cvNV=0;
-        int[] slCV=new int[4];
-        int i=0;
-        try{
-        con=KetNoiDB.getConnection();
-        st=con.createStatement();
-        rs=st.executeQuery(sql);
-        while(rs.next()){
-            slCV[i]=rs.getInt("sl");
-            i++;
-        }
-        }catch(Exception e){
+
+    private void bieuDoChucVu() {
+        DefaultPieDataset piedata = new DefaultPieDataset();
+        String sql = "select ChucVu ,count(MaNV) as sl "
+                + "from NHANVIEN "
+                + "group by ChucVu";
+        int cvAD = 0, cvLT = 0, cvNV = 0;
+        int[] slCV = new int[4];
+        int i = 0;
+        try {
+            con = KetNoiDB.getConnection();
+            st = con.createStatement();
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
+                slCV[i] = rs.getInt("sl");
+                i++;
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        cvAD=slCV[0];
-        cvLT=slCV[1];
-        cvNV=slCV[2];
-         SLNV=cvAD+cvLT+cvNV;
-        double pcAD=(double)cvAD/SLNV;
-        double pcLT=(double)cvLT/SLNV;
-        double pcNV=(double)cvNV/SLNV;
+        cvAD = slCV[0];
+        cvLT = slCV[1];
+        cvNV = slCV[2];
+        SLNV = cvAD + cvLT + cvNV;
+        double pcAD = (double) cvAD / SLNV;
+        double pcLT = (double) cvLT / SLNV;
+        double pcNV = (double) cvNV / SLNV;
         piedata.setValue("Admin", pcAD);
-        piedata.setValue("Lễ tân",pcLT);
-        piedata.setValue("Nhân viên bảo dưỡng",pcNV);
-        JFreeChart chart =ChartFactory.createPieChart3D("THỐNG KÊ CHỨC VỤ", piedata, true, true, false);
-        PiePlot3D p=(PiePlot3D)chart.getPlot();
+        piedata.setValue("Lễ tân", pcLT);
+        piedata.setValue("Nhân viên bảo dưỡng", pcNV);
+        JFreeChart chart = ChartFactory.createPieChart3D("THỐNG KÊ CHỨC VỤ", piedata, true, true, false);
+        PiePlot3D p = (PiePlot3D) chart.getPlot();
         p.setBackgroundPaint(new Color(69, 69, 69));
-        ChartPanel pnpie=new ChartPanel(chart);
+        ChartPanel pnpie = new ChartPanel(chart);
         pnpie.setPreferredSize(pnTKCV.getSize());
         pnTKCV.setLayout(new java.awt.BorderLayout());
-        pnTKCV.add(pnpie,BorderLayout.CENTER);
+        pnTKCV.add(pnpie, BorderLayout.CENTER);
         pnTKCV.validate();
     }
-    private void htTongNV(){
+
+    private void htTongNV() {
         lbTSNV.setText(String.valueOf(SLNV));
     }
-    private void bangSoXeDaSua(String nam,String thang){
-        String sql="select NHANVIEN.MaNV,HoTen, count(BienSoXe) as sl " +
-                    "from CT_SDDV,NHANVIEN " +
-                    "where ct_sddv.MaNV=NHANVIEN.MaNV and month(NgayGioHT)="+thang+
-                    " and year(NgayGioHT)="+nam+
-                    " group by HoTen,NHANVIEN.MANV";
-        DefaultTableModel model =(DefaultTableModel) tbSoXeDaSua.getModel();
+
+    private void bangSoXeDaSua(String nam, String thang) {
+        String sql = "select NHANVIEN.MaNV,HoTen, count(BienSoXe) as sl "
+                + "from CT_SDDV,NHANVIEN "
+                + "where ct_sddv.MaNV=NHANVIEN.MaNV and month(NgayGioHT)=" + thang
+                + " and year(NgayGioHT)=" + nam
+                + " group by HoTen,NHANVIEN.MANV";
+        DefaultTableModel model = (DefaultTableModel) tbSoXeDaSua.getModel();
         KetNoiDB.deleteTableData(model);
-        try{
-        con=KetNoiDB.getConnection();
-        st=con.createStatement();
-        rs=st.executeQuery(sql);
-        while(rs.next()){
-            Vector vector=new Vector();
-            vector.add(rs.getString("MaNV"));
-            vector.add(rs.getString("HoTen"));
-            vector.add(rs.getString("sl"));
-            model.addRow(vector);
-        }
-        tbSoXeDaSua.setModel(model);
-        lbTongXeDaSua.setText(KetNoiDB.tinhTongCot(tbSoXeDaSua, 2));
-        }
-        catch(Exception e){
+        try {
+            con = KetNoiDB.getConnection();
+            st = con.createStatement();
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
+                Vector vector = new Vector();
+                vector.add(rs.getString("MaNV"));
+                vector.add(rs.getString("HoTen"));
+                vector.add(rs.getString("sl"));
+                model.addRow(vector);
+            }
+            tbSoXeDaSua.setModel(model);
+            lbTongXeDaSua.setText(KetNoiDB.tinhTongCot(tbSoXeDaSua, 2));
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    private void bangTKLuong(String nam,String thang){
-        String sql="select NHANVIEN.MaNV,HoTen,NgayCong,THUCLINH " +
-                    "from NHANVIEN,THANHTOANLUONG,CONG " +
-                    "where THANHTOANLUONG.MaNV=NHANVIEN.MaNV and THANHTOANLUONG.MaNV=CONG.MaNV " +
-                    "and CONG.Thang="+thang
-                    + " and CONG.Nam="+nam
-                    + " and THANHTOANLUONG.TrangThai=1";
-        DefaultTableModel model =(DefaultTableModel) tbLuong.getModel();
+
+    private void bangTKLuong(String nam, String thang) {
+        String sql = "select NHANVIEN.MaNV,HoTen,NgayCong,THUCLINH "
+                + "from NHANVIEN,THANHTOANLUONG,CONG "
+                + "where THANHTOANLUONG.MaNV=NHANVIEN.MaNV and THANHTOANLUONG.MaNV=CONG.MaNV "
+                + "and CONG.Thang=" + thang
+                + " and CONG.Nam=" + nam
+                + " and THANHTOANLUONG.TrangThai=1";
+        DefaultTableModel model = (DefaultTableModel) tbLuong.getModel();
         KetNoiDB.deleteTableData(model);
-        try{
-        con=KetNoiDB.getConnection();
-        st=con.createStatement();
-        rs=st.executeQuery(sql);
-        while(rs.next()){
-            Vector vector=new Vector();
-            vector.add(rs.getString("MaNV"));
-            vector.add(rs.getString("HoTen"));
-            vector.add(rs.getString("NgayCong"));
-            vector.add(rs.getString("THUCLINH"));
-            model.addRow(vector);
-        }
-        tbLuong.setModel(model);
-        lbTongLuong.setText(KetNoiDB.tinhTongCot(tbLuong, 3));
-        }
-        catch(Exception e){
+        try {
+            con = KetNoiDB.getConnection();
+            st = con.createStatement();
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
+                Vector vector = new Vector();
+                vector.add(rs.getString("MaNV"));
+                vector.add(rs.getString("HoTen"));
+                vector.add(rs.getString("NgayCong"));
+                vector.add(rs.getString("THUCLINH"));
+                model.addRow(vector);
+            }
+            tbLuong.setModel(model);
+            lbTongLuong.setText(KetNoiDB.tinhTongCot(tbLuong, 3));
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -915,31 +934,31 @@ public class AdminForm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void btnDSNVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDSNVMouseClicked
-       
+
         pnMenu.setVisible(false);
         pnNV.setVisible(true);
         showDuLieu();
     }//GEN-LAST:event_btnDSNVMouseClicked
 
     private void txtTimKiemKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKeyReleased
-        DefaultTableModel model=(DefaultTableModel) tbDSNV.getModel();
-        TableRowSorter<DefaultTableModel>  tr=new TableRowSorter<>(model);
+        DefaultTableModel model = (DefaultTableModel) tbDSNV.getModel();
+        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<>(model);
         tbDSNV.setRowSorter(tr);
         tr.setRowFilter(RowFilter.regexFilter(txtTimKiem.getText().toLowerCase().trim()));
     }//GEN-LAST:event_txtTimKiemKeyReleased
-     
+
     private void btnTTNVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTTNVMouseClicked
-        int i=tbDSNV.getSelectedRow();
-        if (i<0) {
+        int i = tbDSNV.getSelectedRow();
+        if (i < 0) {
             JOptionPane.showMessageDialog(this, "Hãy chọn một nhân viên để xem thông tin");
-        }else{
-            maNV=tbDSNV.getValueAt(i, 0).toString();
+        } else {
+            maNV = tbDSNV.getValueAt(i, 0).toString();
             new TTNV().setVisible(true);
-            
+
         }
-        
+
     }//GEN-LAST:event_btnTTNVMouseClicked
 
     private void btnXoaNVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnXoaNVMouseClicked
@@ -948,8 +967,8 @@ public class AdminForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnXoaNVMouseClicked
 
     private void btnThemNVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemNVMouseClicked
-       new ThemNV(this, rootPaneCheckingEnabled).setVisible(true);
-             showDuLieu();
+        new ThemNV(this, rootPaneCheckingEnabled).setVisible(true);
+        showDuLieu();
     }//GEN-LAST:event_btnThemNVMouseClicked
 
     private void btnQuayLaiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnQuayLaiMouseClicked
@@ -978,10 +997,10 @@ public class AdminForm extends javax.swing.JFrame {
     private void btnTKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTKActionPerformed
         pnMenu.setVisible(false);
         pnThongKe.setVisible(true);
-        Date date=new Date();
-        SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
-        String thang=sdf.format(date).substring(3,5);
-        String nam=sdf.format(date).substring(6);
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        String thang = sdf.format(date).substring(3, 5);
+        String nam = sdf.format(date).substring(6);
         bangSoXeDaSua(nam, thang);
         bangTKLuong(nam, thang);
         txtNamSX.setText(nam);
@@ -995,19 +1014,19 @@ public class AdminForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTKActionPerformed
 
     private void btXemLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btXemLActionPerformed
-        String nam=txtNamL.getText();
-        String thang=cbThangL.getSelectedItem().toString();
-        bangTKLuong(nam,thang);
+        String nam = txtNamL.getText();
+        String thang = cbThangL.getSelectedItem().toString();
+        bangTKLuong(nam, thang);
     }//GEN-LAST:event_btXemLActionPerformed
 
     private void btXemSXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btXemSXActionPerformed
-        String nam=txtNamSX.getText();
-        String thang=cbThangSX.getSelectedItem().toString();
-        int namSX=Integer.parseInt(nam);
+        String nam = txtNamSX.getText();
+        String thang = cbThangSX.getSelectedItem().toString();
+        int namSX = Integer.parseInt(nam);
         if (nam.equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống năm");
             return;
-        }else if(namSX<2021||namSX<2021) {
+        } else if (namSX < 2021 || namSX < 2021) {
             System.out.println(namSX);
             JOptionPane.showMessageDialog(rootPane, "Giá trị không hợp lệ!Xin hãy nhập lại");
             return;
@@ -1016,14 +1035,14 @@ public class AdminForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Giá trị không hợp lệ!Xin hãy nhập lại");
             return;
         }
-        bangSoXeDaSua(nam,thang);
+        bangSoXeDaSua(nam, thang);
     }//GEN-LAST:event_btXemSXActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         pnThongKe.setVisible(false);
         pnMenu.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
-           
+
     /**
      * @param args the command line arguments
      */

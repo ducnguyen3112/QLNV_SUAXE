@@ -4,35 +4,40 @@
  * and open the template in the editor.
  */
 package Form;
+
 import Form.Xuli.KetNoiDB;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 /**
  *
  * @author StarScream
  */
 public class HopDongForm extends javax.swing.JFrame {
+
     Connection con;
     Statement st;
     ResultSet rs;
+
     /** Creates new form HopDongForm */
     public HopDongForm() {
         initComponents();
         setLocationRelativeTo(null);
         loadHD();
     }
-    public void loadHD(){
-        String sql="select HoTen,CONVERT(varchar, NgayKy, 105) as NgayKy,CONVERT(varchar, HanHD, 105) as NgayHH"
+
+    public void loadHD() {
+        String sql = "select HoTen,CONVERT(varchar, NgayKy, 105) as NgayKy,CONVERT(varchar, HanHD, 105) as NgayHH"
                 + ",HSL"
-                + " from HOPDONG,NHANVIEN where HOPDONG.MaNV=NHANVIEN.MaNV and NhanVien.MaNV= '"+AdminForm.maNV+"'";
-        con=KetNoiDB.getConnection();
+                + " from HOPDONG,NHANVIEN where HOPDONG.MaNV=NHANVIEN.MaNV and NhanVien.MaNV= '" + AdminForm.maNV + "'";
+        con = KetNoiDB.getConnection();
         try {
-            st=con.createStatement();
-            rs=st.executeQuery(sql);
-            while (rs.next()) {                
+            st = con.createStatement();
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
                 txtHoTen.setText(rs.getString("HoTen"));
                 txtNgayKi.setText(rs.getString("NgayKy"));
                 dcNgayHH.setDate(new SimpleDateFormat("dd-MM-yyyy").parse(rs.getString("NgayHH")));
@@ -46,8 +51,9 @@ public class HopDongForm extends javax.swing.JFrame {
         } catch (ParseException ex) {
             Logger.getLogger(HopDongForm.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -195,7 +201,7 @@ public class HopDongForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSuaMouseClicked
 
     private void btnLuuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLuuMouseClicked
-        
+
     }//GEN-LAST:event_btnLuuMouseClicked
 
     /**
