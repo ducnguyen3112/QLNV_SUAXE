@@ -353,8 +353,7 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
 
     public void deteleXeChuaPhanCong() {
         String sql = "DELETE FROM XE WHERE BienSoXe = ?";
-
-        Connection ketNoi = KetNoiDB.getConnection();
+        Connection ketNoi =KetNoiDB.getConnection();
         try {
             PreparedStatement st = ketNoi.prepareStatement(sql);
             st.setString(1, DeleteBienSoXe);

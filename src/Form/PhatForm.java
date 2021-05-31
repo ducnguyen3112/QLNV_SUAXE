@@ -202,7 +202,32 @@ public class PhatForm extends javax.swing.JDialog {
             if (s.equals(ListPhat.get(i))) {
                 return (String) i;
             }
-
+       return null;
+    }    
+    public void luuDuLieu(){
+       SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+       String date = sdf1.format(ngayPhat.getDate());
+       String soTien = jTienPhat.getText();
+       if (ChamCongForm.kiemTraNhapSo(soTien)){
+           int Tien = Integer.parseInt(soTien);
+           String sql ="INSERT INTO CTPHAT(MaNV,MaLoi,CTPL,SoTien,NgayPhat)  VALUES(?,?,?,?,?)";
+           Connection ketNoi =KetNoiDB.getConnection();
+        try {
+                     PreparedStatement ps = ketNoi.prepareStatement(sql);
+                     ps.setString(1, MaNVPhat);
+                     ps.setString(2,MaPhat);
+                     ps.setString(3,moTa.getText());
+                     ps.setInt(4, Tien);
+                     ps.setString(5, date);
+                   if(ps.executeUpdate() > 0 )
+                       JOptionPane.showMessageDialog(rootPane, "Hoàn thành phạt");
+                   else 
+                      JOptionPane.showMessageDialog(rootPane, "Thất bại");
+                   ps.close();                   
+                   ketNoi.close();
+                   this.dispose();
+        } catch (Exception e) {
+                   JOptionPane.showMessageDialog(rootPane, e);
         }
         return null;
     }
@@ -240,7 +265,7 @@ public class PhatForm extends javax.swing.JDialog {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         luuDuLieu();
-        this.dispose();
+      
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void CBPhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CBPhatActionPerformed
