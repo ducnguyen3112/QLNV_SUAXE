@@ -126,7 +126,7 @@ public class ThuongForm extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("KHEN THƯỞNG");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 54));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 410, 54));
 
         CBKhenThuong.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         CBKhenThuong.addActionListener(new java.awt.event.ActionListener() {

@@ -484,7 +484,7 @@ public class AdminForm extends javax.swing.JFrame {
         jLabel5.setBackground(new java.awt.Color(255, 204, 51));
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/photo-1517999144091-3d9dca6d1e43.png"))); // NOI18N
         pnMenu.add(jLabel5);
-        jLabel5.setBounds(0, 0, 1170, 600);
+        jLabel5.setBounds(0, 0, 1170, 610);
 
         jLayeredPane1.add(pnMenu, "card2");
 
@@ -510,7 +510,7 @@ public class AdminForm extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(28, Short.MAX_VALUE)
+                .addContainerGap(15, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 930, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
         );
@@ -623,7 +623,6 @@ public class AdminForm extends javax.swing.JFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("SỐ LIỆU SỬA XE MỖI NHÂN VIÊN");
 
-        tbSoXeDaSua.setBackground(null);
         tbSoXeDaSua.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -721,7 +720,6 @@ public class AdminForm extends javax.swing.JFrame {
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setText("TIỀN LƯƠNG MỖI NHÂN VIÊN");
 
-        tbLuong.setBackground(null);
         tbLuong.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -850,7 +848,7 @@ public class AdminForm extends javax.swing.JFrame {
         pnSLNV_TUOI.setLayout(pnSLNV_TUOILayout);
         pnSLNV_TUOILayout.setHorizontalGroup(
             pnSLNV_TUOILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 736, Short.MAX_VALUE)
         );
         pnSLNV_TUOILayout.setVerticalGroup(
             pnSLNV_TUOILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -917,9 +915,9 @@ public class AdminForm extends javax.swing.JFrame {
         pnThongKe.setLayout(pnThongKeLayout);
         pnThongKeLayout.setHorizontalGroup(
             pnThongKeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1178, Short.MAX_VALUE)
+            .addGap(0, 1165, Short.MAX_VALUE)
             .addGroup(pnThongKeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1178, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1165, Short.MAX_VALUE))
         );
         pnThongKeLayout.setVerticalGroup(
             pnThongKeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
