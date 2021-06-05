@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Vector;
 import javax.swing.JOptionPane;
@@ -31,6 +32,20 @@ public class TTLForm extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
+        LocalDate localDate = LocalDate.now();
+        if (localDate.getMonthValue() == 1 )
+        {
+            int tamp = localDate.getYear() - 1;
+            chonNam.setValue(tamp);
+            chonThang.setMonth(11);
+        }
+        chonNam.setValue(localDate.getYear());
+        chonThang.setMonth(localDate.getMonthValue() - 2);
+        namDuocChon = chonNam.getValue();
+        thangDuocChon = chonThang.getMonth() + 1; 
+        layDuLieuCong();
+        hienThiLuong();
+        
     }
 
     /** This method is called from within the constructor to
