@@ -128,6 +128,7 @@
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnPhatMouseClicked"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPhatActionPerformed"/>
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -238,6 +239,7 @@
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnThuongMouseClicked"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnThuongActionPerformed"/>
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -363,7 +365,7 @@
                                   <Group type="103" groupAlignment="1" attributes="0">
                                       <Component id="txtCMND" alignment="0" max="32767" attributes="0"/>
                                       <Component id="dcNgaySinh" pref="190" max="32767" attributes="0"/>
-                                      <Component id="cbChucVu" alignment="0" pref="190" max="32767" attributes="0"/>
+                                      <Component id="cbChucVu" alignment="0" pref="192" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="-2" pref="179" max="-2" attributes="0"/>
                               </Group>

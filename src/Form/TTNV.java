@@ -221,6 +221,11 @@ public class TTNV extends javax.swing.JFrame {
                 btnPhatMouseClicked(evt);
             }
         });
+        btnPhat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPhatActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnPhat, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 420, 190, 50));
 
         btnHopDong.setBackground(new java.awt.Color(83, 53, 74));
@@ -265,6 +270,11 @@ public class TTNV extends javax.swing.JFrame {
         btnThuong.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnThuongMouseClicked(evt);
+            }
+        });
+        btnThuong.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThuongActionPerformed(evt);
             }
         });
         jPanel1.add(btnThuong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 370, 190, 50));
@@ -386,7 +396,7 @@ public class TTNV extends javax.swing.JFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtCMND, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(dcNgaySinh, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
-                            .addComponent(cbChucVu, javax.swing.GroupLayout.Alignment.LEADING, 0, 190, Short.MAX_VALUE))
+                            .addComponent(cbChucVu, javax.swing.GroupLayout.Alignment.LEADING, 0, 192, Short.MAX_VALUE))
                         .addGap(179, 179, 179)))
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtDanToc, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -704,6 +714,16 @@ public class TTNV extends javax.swing.JFrame {
     private void btnThuongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThuongMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_btnThuongMouseClicked
+
+    private void btnThuongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThuongActionPerformed
+        // TODO add your handling code here:
+        new ThuongForm(this, rootPaneCheckingEnabled).setVisible(true);
+    }//GEN-LAST:event_btnThuongActionPerformed
+
+    private void btnPhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPhatActionPerformed
+        // TODO add your handling code here:
+        new PhanCongForm(this, rootPaneCheckingEnabled).setVisible(true);
+    }//GEN-LAST:event_btnPhatActionPerformed
 
     /**
      * @param args the command line arguments
