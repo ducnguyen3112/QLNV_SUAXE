@@ -4,29 +4,26 @@
  * and open the template in the editor.
  */
 package Form;
-
 import Form.Xuli.KetNoiDB;
 import java.awt.Image;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-
 /**
  *
  * @author StarScream
  */
 public class TTNV extends javax.swing.JFrame {
-
+    
     /** Creates new form TTNV */
     public TTNV() {
         initComponents();
         setLocationRelativeTo(null);
-        loadDB();
+       loadDB();
         btnLuu.setVisible(false);
         btnHuy.setVisible(false);
         btnTaiAnh.setVisible(false);
@@ -38,61 +35,59 @@ public class TTNV extends javax.swing.JFrame {
         txtQueQuan.setEditable(false);
         txtSDT.setEditable(false);
         txtTen.setEditable(false);
-
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE );
     }
-
-    public void luuChinhSuaNV() {
+    private void luuChinhSuaNV(){
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-        String date;
-        String sql = "update NHANVIEN set HoTen=?,NgaySinh=?,GioiTinh=?,SDT=?,DanToc=?,"
-                + " QueQuan=?,CMND=?,DiaChi=?,TrangThai=?,ChucVu=? where MaNV= '" + AdminForm.maNV + "'";
-        Connection con = KetNoiDB.getConnection();
+          String date;
+        String sql="update NHANVIEN set HoTen=?,NgaySinh=?,GioiTinh=?,SDT=?,DanToc=?,"
+                + " QueQuan=?,CMND=?,DiaChi=?,TrangThai=?,ChucVu=? where MaNV= '"+AdminForm.maNV+"'";
+        Connection con=KetNoiDB.getConnection();
         try {
-            PreparedStatement ps = con.prepareStatement(sql);
+            PreparedStatement ps =con.prepareStatement(sql);
             ps.setString(1, txtTen.getText());
             date = sdf1.format(dcNgaySinh.getDate());
             ps.setString(2, date);
             if (rbtnNam.isSelected()) {
                 ps.setInt(3, 1);
-            } else if (rbtnNu.isSelected()) {
+            }else if (rbtnNu.isSelected()) {
                 ps.setInt(3, 2);
-            } else if (rbtnKhac.isSelected()) {
-                ps.setInt(3, 3);
+            }else if (rbtnKhac.isSelected()) {
+                 ps.setInt(3, 3);
             }
             ps.setString(4, txtSDT.getText());
             ps.setString(5, txtDanToc.getText());
-            ps.setString(6, txtQueQuan.getText());
-            ps.setString(7, txtCMND.getText());
-            ps.setString(8, txtDiaChi.getText());
-            ps.setInt(9, cbChucVu.getSelectedIndex());
+            ps.setString(6,txtQueQuan.getText());
+            ps.setString(7,txtCMND.getText());
+            ps.setString(8,txtDiaChi.getText());
             if (rbtnDangLam.isSelected()) {
-                ps.setInt(10, 1);
-            } else if (rbtnDaNghi.isSelected()) {
+               ps.setInt(10, 1);
+            }else if (rbtnDaNghi.isSelected()) {
                 ps.setInt(10, 0);
             }
-            int i = ps.executeUpdate();
-            if (i > 0) {
+            ps.setInt(9, cbChucVu.getSelectedIndex());
+            int i=ps.executeUpdate();
+            if (i>0) {
                 JOptionPane.showMessageDialog(this, "Chỉnh sửa thông tin nhân viên thành công.");
-            } else {
+            }else{
                 JOptionPane.showMessageDialog(this, "Lỗi!");
             }
         } catch (SQLException ex) {
             Logger.getLogger(TTNV.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
     }
-   
-    private void loadDB() {
-        String sql = "select MaNV,HoTen,CONVERT(varchar, NgaySinh, 105) as NgaySinh,"
+    private void loadDB(){
+        String sql="select MaNV,HoTen,CONVERT(varchar, NgaySinh, 105) as NgaySinh,"
                 + " GioiTinh,ChucVu,TrangThai,TenCV,SDT,CMND,DanToc,DiaChi,QueQuan,"
-                + "HinhAnh from NHANVIEN,CHUCVU where NHANVIEN.ChucVu=CHUCVU.MaCV"
-                + " and NHANVIEN.MaNV= '" + AdminForm.maNV + "'";
+                + "HinhAnh from NHANVIEN,CHUCVU where NHANVIEN.ChucVu=CHUCVU.MaCV" 
+                + " and NHANVIEN.MaNV= '"+AdminForm.maNV+ "'";
         try {
-            Connection con = KetNoiDB.getConnection();
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            while (rs.next()) {
+           Connection con=KetNoiDB.getConnection();
+            Statement st=con.createStatement();
+            ResultSet rs=st.executeQuery(sql);
+            while(rs.next()){
                 txtMaNV.setText(rs.getString("MaNV"));
                 dcNgaySinh.setDate(new SimpleDateFormat("dd-MM-yyyy").parse(rs.getString("NgaySinh")));
                 txtTen.setText(rs.getString("HoTen"));
@@ -102,40 +97,36 @@ public class TTNV extends javax.swing.JFrame {
                 txtDiaChi.setText(rs.getString("DiaChi"));
                 if (rs.getString("TenCV").equals("admin")) {
                     cbChucVu.setSelectedIndex(0);
-                } else if (rs.getString("TenCV").equals("Lễ tân")) {
+                }else if(rs.getString("TenCV").equals("Lễ tân")){
                     cbChucVu.setSelectedIndex(1);
-                } else if (rs.getString("TenCV").equals("Nhân viên bảo dưỡng")) {
+                }else if(rs.getString("TenCV").equals("Nhân viên bảo dưỡng")){
                     cbChucVu.setSelectedIndex(2);
                 }
                 txtQueQuan.setText(rs.getString("QueQuan"));
-                byte[] img = rs.getBytes("HinhAnh");
+                byte[] img=rs.getBytes("HinhAnh");
                 ImageIcon imageicon = new ImageIcon(new ImageIcon(img).getImage().getScaledInstance(lbAnh.getWidth(), lbAnh.getHeight(), Image.SCALE_SMOOTH));
                 lbAnh.setIcon(imageicon);
                 switch (rs.getInt("GioiTinh")) {
-                    case 1 ->
-                        rbtnNam.setSelected(true);
-                    case 2 ->
-                        rbtnNu.setSelected(true);
-                    default ->
-                        rbtnKhac.setSelected(true);
+                    case 1 -> rbtnNam.setSelected(true);
+                    case 2 -> rbtnNu.setSelected(true);
+                    default -> rbtnKhac.setSelected(true);
                 }
-                if (rs.getInt("TrangThai") == 0) {
+                if (rs.getInt("TrangThai")==0) {
                     rbtnDaNghi.setSelected(true);
-                } else if (rs.getInt("TrangThai") == 1) {
+                }else if (rs.getInt("TrangThai")==1) {
                     rbtnDangLam.setSelected(true);
                 }
-
-            }
-            rs.close();
-            st.close();
-            con.close();
+                
+          }
+                rs.close();
+                st.close();
+                con.close();
         } catch (SQLException ex) {
             Logger.getLogger(TTNV.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParseException ex) {
             Logger.getLogger(TTNV.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -153,6 +144,7 @@ public class TTNV extends javax.swing.JFrame {
         btnChinhSuaTT = new javax.swing.JButton();
         btnPhat = new javax.swing.JButton();
         btnHopDong = new javax.swing.JButton();
+        lbTieude = new javax.swing.JLabel();
         txtMaNV = new javax.swing.JTextField();
         btnQuayLai1 = new javax.swing.JButton();
         btnThuong = new javax.swing.JButton();
@@ -192,7 +184,7 @@ public class TTNV extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBackground(new java.awt.Color(69, 69, 69));
+        jPanel1.setBackground(new java.awt.Color(232, 69, 69));
         jPanel1.setForeground(new java.awt.Color(51, 51, 0));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -248,6 +240,7 @@ public class TTNV extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnHopDong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 320, 190, 50));
+        jPanel1.add(lbTieude, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 50));
 
         txtMaNV.setBackground(new java.awt.Color(144, 55, 73));
         txtMaNV.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
@@ -625,15 +618,15 @@ public class TTNV extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnChinhSuaTTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnChinhSuaTTMouseClicked
-        //chucNang.setPanelEnabled(pnTT, true);
-        txtCMND.setEditable(true);
+       //chucNang.setPanelEnabled(pnTT, true);
+       txtCMND.setEditable(true);
         cbChucVu.setEnabled(true);
         txtDanToc.setEditable(true);
         txtDiaChi.setEditable(true);
         txtQueQuan.setEditable(true);
         txtSDT.setEditable(true);
         txtTen.setEditable(true);
-        dcNgaySinh.setEnabled(true);
+       dcNgaySinh.setEnabled(true);
         btnLuu.setVisible(true);
         btnHuy.setVisible(true);
         btnTaiAnh.setVisible(true);
@@ -661,42 +654,42 @@ public class TTNV extends javax.swing.JFrame {
         rbtnKhac.setEnabled(false);
         rbtnNam.setEnabled(false);
         rbtnNu.setEnabled(false);
-
+        
     }//GEN-LAST:event_btnHuyMouseClicked
 
     private void btnLuuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLuuMouseClicked
-        if (lbAnh.getIcon() == null) {
+        if (lbAnh.getIcon()==null) {
             JOptionPane.showMessageDialog(rootPane, "Xin hãy chọn ảnh");
         }
-        if (txtTen.getText() == null) {
+        if (txtTen.getText()==null) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống họ tên");
-        } else if (txtTen.getText().matches("^[^0-9]{7,}$")) {
+        }else if (txtTen.getText().matches("^[^0-9]{7,}$")) {
             JOptionPane.showMessageDialog(rootPane, "Họ tên không đúng xin kiểm tra lại.");
         }
-        if (txtQueQuan.getText() == null) {
+        if (txtQueQuan.getText()==null) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống quê quán");
-        } else if (txtQueQuan.getText().matches("^[^0-9]{7,}$")) {
+        }else if (txtQueQuan.getText().matches("^[^0-9]{7,}$")) {
             JOptionPane.showMessageDialog(rootPane, "Quê quán không đúng xin kiểm tra lại.");
         }
-        if (txtDanToc.getText() == null) {
+        if (txtDanToc.getText()==null) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống họ tên");
-        } else if (txtDanToc.getText().matches("^[^1-9]{7,}$")) {
+        }else if (txtDanToc.getText().matches("^[^1-9]{7,}$")) {
             JOptionPane.showMessageDialog(rootPane, "Dân tộc không đúng xin kiểm tra lại.");
         }
-        if (txtDiaChi.getText() == null) {
+        if (txtDiaChi.getText()==null) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống địa chỉ");
         }
-        if (txtCMND.getText() == null) {
+        if (txtCMND.getText()==null) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống CMND");
-        } else if (txtCMND.getText().matches("^[0-9]{9,12}$")) {
+        }else if (txtCMND.getText().matches("^[0-9]{9,12}$")) {
             JOptionPane.showMessageDialog(rootPane, "CMND không đúng xin kiểm tra lại.");
         }
-        if (txtSDT.getText() == null) {
+        if (txtSDT.getText()==null) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống số điện thoại");
-        } else if (txtSDT.getText().matches("^[0]{1}[0-9]{9}$")) {
+        }else if (txtSDT.getText().matches("^[0]{1}[0-9]{9}$")) {
             JOptionPane.showMessageDialog(rootPane, "Số điện thoại không đúng xin kiểm tra lại.");
         }
-        if (cbChucVu.getSelectedIndex() == -1) {
+        if (cbChucVu.getSelectedIndex()==-1) {
             JOptionPane.showMessageDialog(rootPane, "Xin hãy chọn một chức vụ");
         }
         luuChinhSuaNV();
@@ -706,8 +699,12 @@ public class TTNV extends javax.swing.JFrame {
         new HopDongForm().setVisible(true);
     }//GEN-LAST:event_btnHopDongMouseClicked
 
-    private void rbtnDaNghiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnDaNghiActionPerformed
+    private void btnPhatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPhatMouseClicked
+        this.dispose();
+    }//GEN-LAST:event_btnPhatMouseClicked
 
+    private void rbtnDaNghiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnDaNghiActionPerformed
+        
     }//GEN-LAST:event_rbtnDaNghiActionPerformed
 
     private void btnQuayLai1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnQuayLai1MouseClicked
@@ -725,7 +722,7 @@ public class TTNV extends javax.swing.JFrame {
 
     private void btnPhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPhatActionPerformed
         // TODO add your handling code here:
-        new PhanCongForm(this, rootPaneCheckingEnabled).setVisible(true);
+        new PhatForm(this, rootPaneCheckingEnabled).setVisible(true);
     }//GEN-LAST:event_btnPhatActionPerformed
 
     /**
@@ -795,6 +792,7 @@ public class TTNV extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JLabel lbAnh;
+    private javax.swing.JLabel lbTieude;
     private javax.swing.JPanel pnTT;
     private javax.swing.JRadioButton rbtnDaNghi;
     private javax.swing.JRadioButton rbtnDangLam;
