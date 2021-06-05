@@ -29,6 +29,8 @@ public class ThuongForm extends javax.swing.JDialog {
     public ThuongForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
         MaNVThuong = AdminForm.maNV;
         loadDaTa();
     }
@@ -212,13 +214,14 @@ public class ThuongForm extends javax.swing.JDialog {
             MaThuong = traVeMaThuong̣̣((String) CBKhenThuong.getSelectedItem());
         }
     }//GEN-LAST:event_CBKhenThuongActionPerformed
-    public void luuThuong() {
+    public boolean luuThuong() {
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
         String date = sdf1.format(ngayThuong.getDate());
         String tienThuong = jtienThuong.getText();
+        boolean tamp = false;
         if (ChamCongForm.kiemTraNhapSo(tienThuong)) {
             int Tien = Integer.parseInt(tienThuong);
-            String sql = "INSERT INTO CTTHUONG(MaNV,MaThuong,CTThuong,SoTien,NgayThuong)  VALUES(?,?,?,?,?)";
+            String sql = "INSERT INTO CTTHUONG(MaNV,MaThuong,CTThuong,SoTien,NgayThuong,MaCTThuong)  VALUES(?,?,?,?,?,?)";
             Connection ketNoi = KetNoiDB.getConnection();
             try {
                 PreparedStatement ps = ketNoi.prepareStatement(sql);
@@ -227,8 +230,10 @@ public class ThuongForm extends javax.swing.JDialog {
                 ps.setString(3, CTThuong.getText());
                 ps.setInt(4, Tien);
                 ps.setString(5, date);
+                ps.setString(6, MaNVThuong+MaThuong+date);
                 if (ps.executeUpdate() > 0) {
                     JOptionPane.showMessageDialog(rootPane, "Thưởng thành công");
+                    tamp = true;
                 } else {
                     JOptionPane.showMessageDialog(rootPane, "Thưởng thất bại");
                 }
@@ -239,13 +244,16 @@ public class ThuongForm extends javax.swing.JDialog {
             }
         } else {
             JOptionPane.showMessageDialog(rootPane, "Nhập vào phải là số nguyên");
+           
         }
-
+        return tamp;
     }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        luuThuong();
+        if(luuThuong()){
+            this.dispose();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
