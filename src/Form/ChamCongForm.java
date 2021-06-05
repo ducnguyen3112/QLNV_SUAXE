@@ -73,8 +73,9 @@ public class ChamCongForm extends javax.swing.JDialog {
         layDuLieuCong();
         String sql = "insert into THANHTOANLUONG(MaTTL,MaNV,MaCong,ThucLinh,MaHD,TrangThai) values(?,?,?,?,?,?)";
         Connection ketNoi = KetNoiDB.getConnection();
+        for (Object i : NVvoiMaCong.keySet()) {
         try {
-                for (Object i : NVvoiMaCong.keySet()) {
+                
                     PreparedStatement ps = ketNoi.prepareStatement(sql);
                     String MaCong = (String) NVvoiMaCong.get(i);
                     String MaTTL = "TTL"+MaCong;
@@ -89,11 +90,26 @@ public class ChamCongForm extends javax.swing.JDialog {
                     ps.setInt(6, 0);
                     ps.executeQuery();
                     ps.close();
-            }
          ketNoi.close();
         } catch (Exception e) {
         }
-
+        }
+    }
+      public void updateLuong(String MaCong , String maNv,int ngayLamViec){
+        String sql = "UPDATE THANHTOANLUONG SET THUCLINH = ? where MaTTL = ?";
+        Connection ketNoi = KetNoiDB.getConnection();
+        //for (Object i : NVvoiMaCong.keySet()) 
+        try {
+                    PreparedStatement ps = ketNoi.prepareStatement(sql);
+                    String MaTTL = "TTL"+MaCong;
+                    int ThucLinh = luongCB * TTLForm.traVeHeSoLuong(maNv) * ngayLamViec + TTLForm.traVeTienThuong(maNv)- TTLForm.traVeTienPhat(maNv);
+                    ps.setInt(1, ThucLinh);
+                    ps.setString(2, MaTTL);
+                    ps.executeQuery();
+                    ps.close();
+                    ketNoi.close();
+        } catch (Exception e) {
+        }
     }
     public static boolean kiemTraNhapSo(String so){
             Pattern pattern = Pattern.compile("\\d*");
@@ -281,7 +297,6 @@ public class ChamCongForm extends javax.swing.JDialog {
     }
     private void tiemKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tiemKiemActionPerformed
         // TODO add your handling code here:
-        
         nam = Integer.parseInt(txtNam.getText());
         thang = cbThang.getMonth() + 1;
         if((thang == 4 || thang == 6 || thang == 9 ||thang == 11)){
@@ -300,6 +315,7 @@ public class ChamCongForm extends javax.swing.JDialog {
                     themCong((String) ListNV.get(i));
                  }
                 hienThiData();    
+                tinhToanLuong();
             } else if (thang < localDate.getMonthValue()){
                 hienThiData();
             }
@@ -356,7 +372,7 @@ public class ChamCongForm extends javax.swing.JDialog {
                             ketNoi.close();
                      } catch (Exception e) {
                         }
-                   tinhToanLuong();
+                   updateLuong(tampCong,maNV,ngayLamViec);
                   } 
             }
            else {

@@ -722,7 +722,7 @@ public class TTNV extends javax.swing.JFrame {
 
     private void btnPhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPhatActionPerformed
         // TODO add your handling code here:
-        new PhanCongForm(this, rootPaneCheckingEnabled).setVisible(true);
+        new PhatForm(this, rootPaneCheckingEnabled).setVisible(true);
     }//GEN-LAST:event_btnPhatActionPerformed
 
     /**
