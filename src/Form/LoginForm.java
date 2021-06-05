@@ -27,57 +27,56 @@ public class LoginForm extends javax.swing.JFrame {
         setTitle("Đăng nhập");
         setLocationRelativeTo(null);
     }
-    public static String  ten="";
-     public static String  MaNV="";
-    private void kiemTraTaiKhoan(){
-        Connection con=KetNoiDB.getConnection();
-        String sql="select * from NHANVIEN,TAIKHOAN where " +
-"TAIKHOAN.MaNV=NHANVIEN.MaNV AND TAIKHOAN.MaNV = '"+txtMaTK.getText()+"'";
-        String usr="";
-        String pass="";
-        String ChucVu="";
+    public static String ten = "";
+    public static String MaNV = "";
+
+    private void kiemTraTaiKhoan() {
+        Connection con = KetNoiDB.getConnection();
+        String sql = "select * from NHANVIEN,TAIKHOAN where "
+                + "TAIKHOAN.MaNV=NHANVIEN.MaNV AND TAIKHOAN.MaNV = '" + txtMaTK.getText() + "'";
+        String usr = "";
+        String pass = "";
+        String ChucVu = "";
         char[] mkcx;
         try {
-            Statement st=con.createStatement();
-            ResultSet rs=st.executeQuery(sql);
-            while(rs.next()){
-                usr=rs.getString(13);
-                pass=rs.getString(14);
-                ChucVu=rs.getString(12);
-                ten=rs.getString(2);
-                
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                usr = rs.getString(13);
+                pass = rs.getString(14);
+                ChucVu = rs.getString(12);
+                ten = rs.getString(2);
+
             }
-            MaNV=usr;
+            MaNV = usr;
             rs.close();
             st.close();
             con.close();
-            
+
         } catch (SQLException ex) {
-           ex.printStackTrace();
+            ex.printStackTrace();
         }
-        mkcx=new char[pass.length()];
-            for (int i = 0; i < pass.length(); i++) {
+        mkcx = new char[pass.length()];
+        for (int i = 0; i < pass.length(); i++) {
             mkcx[i] = pass.charAt(i);
         }
-        if(usr.equals(txtMaTK.getText())&&Arrays.equals(txtMK.getPassword(), mkcx)){
-        Arrays.fill(mkcx, '0');
-        if(ChucVu.equals("0")){
-        this.dispose();
-        new AdminForm().setVisible(true);
+        if (usr.equals(txtMaTK.getText()) && Arrays.equals(txtMK.getPassword(), mkcx)) {
+            Arrays.fill(mkcx, '0');
+            if (ChucVu.equals("0")) {
+                this.dispose();
+                new AdminForm().setVisible(true);
+            } else if (ChucVu.equals("1")) {
+                this.dispose();
+                new LeTanform().setVisible(true);
+            } else if (ChucVu.equals("2")) {
+                this.dispose();
+                new NVSX_Form().setVisible(true);
             }
-        else if(ChucVu.equals("1")){
-            this.dispose();
-            new LeTanform().setVisible(true);
-        }
-        else if (ChucVu.equals("2")) {
-                 this.dispose();
-            new NVSX_Form().setVisible(true);
-            }
-        }
-        else{
+        } else {
             JOptionPane.showMessageDialog(this, "Sai tên đăng nhập hoặc mật khẩu!Vui lòng thử lại.");
         }
     }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -224,18 +223,18 @@ public class LoginForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDongMouseClicked
 
     private void btnDangNhapMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDangNhapMouseClicked
-        
+
         kiemTraTaiKhoan();
     }//GEN-LAST:event_btnDangNhapMouseClicked
 
     private void txtMaTKKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMaTKKeyPressed
-        if (evt.getKeyCode()==KeyEvent.VK_ENTER) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             txtMK.requestFocus();
         }
     }//GEN-LAST:event_txtMaTKKeyPressed
 
     private void txtMKKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMKKeyPressed
-        if (evt.getKeyCode()==KeyEvent.VK_ENTER) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             kiemTraTaiKhoan();
         }
         //System.out.println(txtMK.getText());

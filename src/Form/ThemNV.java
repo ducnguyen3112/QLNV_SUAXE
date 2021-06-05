@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 
@@ -27,21 +28,22 @@ import javax.swing.JFileChooser;
  * @author StarScream
  */
 public class ThemNV extends javax.swing.JDialog {
+
     String filename = null;
     byte[] person_image = null;
     /** Creates new form ThemNV */
     SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yyyy");
-    public ThemNV(java.awt.Frame parent,boolean model) {
-        super(parent,model);
+
+    public ThemNV(java.awt.Frame parent, boolean model) {
+        super(parent, model);
+        Date date = new Date();
         initComponents();
         setLocationRelativeTo(null);
         rbtnNam.setSelected(true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        txtNgayKiHD.setText(sdf2.format(new java.util.Date()));
-        txtNgayKiHD.setEditable(false);
+        dcNgayKi.setDate(date);
     }
 
-   
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -52,6 +54,7 @@ public class ThemNV extends javax.swing.JDialog {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
         pnTT = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -81,7 +84,7 @@ public class ThemNV extends javax.swing.JDialog {
         jLabel15 = new javax.swing.JLabel();
         txtHSL = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
-        txtNgayKiHD = new javax.swing.JTextField();
+        dcNgayKi = new com.toedter.calendar.JDateChooser();
         jPanel1 = new javax.swing.JPanel();
         lbHinhAnh = new javax.swing.JLabel();
         btTaiAnh = new javax.swing.JButton();
@@ -114,16 +117,19 @@ public class ThemNV extends javax.swing.JDialog {
         jLabel5.setText("Giới tính:");
 
         rbtnNam.setBackground(new java.awt.Color(144, 55, 73));
+        buttonGroup2.add(rbtnNam);
         rbtnNam.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         rbtnNam.setForeground(new java.awt.Color(255, 255, 255));
         rbtnNam.setText("Nam");
 
         rbtnNu.setBackground(new java.awt.Color(144, 55, 73));
+        buttonGroup2.add(rbtnNu);
         rbtnNu.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         rbtnNu.setForeground(new java.awt.Color(255, 255, 255));
         rbtnNu.setText("Nữ");
 
         rbtnKhac.setBackground(new java.awt.Color(144, 55, 73));
+        buttonGroup2.add(rbtnKhac);
         rbtnKhac.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         rbtnKhac.setForeground(new java.awt.Color(255, 255, 255));
         rbtnKhac.setText("Khác");
@@ -319,11 +325,8 @@ public class ThemNV extends javax.swing.JDialog {
         jLabel16.setText("Ngày kí:");
         jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 80, -1, -1));
 
-        txtNgayKiHD.setBackground(new java.awt.Color(144, 55, 73));
-        txtNgayKiHD.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        txtNgayKiHD.setForeground(new java.awt.Color(255, 255, 255));
-        txtNgayKiHD.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jPanel2.add(txtNgayKiHD, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 100, 174, 20));
+        dcNgayKi.setDateFormatString("dd-MM-yyyy");
+        jPanel2.add(dcNgayKi, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 100, 190, -1));
 
         javax.swing.GroupLayout pnTTLayout = new javax.swing.GroupLayout(pnTT);
         pnTT.setLayout(pnTTLayout);
@@ -430,88 +433,98 @@ public class ThemNV extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
+
     private void btnLuuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLuuMouseClicked
 
-        check:  if (lbHinhAnh.getIcon()==null) {
+        check:
+        if (lbHinhAnh.getIcon() == null) {
             JOptionPane.showMessageDialog(rootPane, "Xin hãy chọn ảnh");
             return;
         }
         if (txtTen.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống họ tên");
-           return;
-        }else if (!txtTen.getText().matches("^[^0-9]{7,}$")) {
+            return;
+        } else if (!txtTen.getText().matches("^[^0-9]{7,}$")) {
             JOptionPane.showMessageDialog(rootPane, "Họ tên không đúng xin kiểm tra lại.");
-           return;
-        }if (txtQueQuan.getText().equals("")) {
+            return;
+        }
+        if (txtQueQuan.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống quê quán");
             return;
-        }else if (!txtQueQuan.getText().matches("^[^0-9]{3,}$")) {
+        } else if (!txtQueQuan.getText().matches("^[^0-9]{3,}$")) {
             JOptionPane.showMessageDialog(rootPane, "Quê quán không đúng xin kiểm tra lại.");
             return;
-        }if (txtDanToc.getText().equals("")) {
+        }
+        if (txtDanToc.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống dân tộc");
             return;
-        }else if (!txtDanToc.getText().matches("^[^1-9]{3,}$")) {
+        } else if (!txtDanToc.getText().matches("^[^1-9]{3,}$")) {
             JOptionPane.showMessageDialog(rootPane, "Dân tộc không đúng xin kiểm tra lại.");
             return;
-        }if (txtDiaChi.getText().equals("")) {
+        }
+        if (txtDiaChi.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống địa chỉ");
             return;
-        }if (txtCMND.getText().equals("")) {
+        }
+        if (txtCMND.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống CMND");
             return;
-        }if (!txtCMND.getText().matches("^[0-9]{9,12}$")) {
+        }
+        if (!txtCMND.getText().matches("^[0-9]{9,12}$")) {
             JOptionPane.showMessageDialog(rootPane, "CMND không đúng xin kiểm tra lại.");
             return;
-        }if (txtSDT.getText().equals("")) {
+        }
+        if (txtSDT.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống số điện thoại");
             return;
-        }else if (!txtSDT.getText().matches("^[0]{1}[0-9]{9}$")) {
+        } else if (!txtSDT.getText().matches("^[0]{1}[0-9]{9}$")) {
             JOptionPane.showMessageDialog(rootPane, "Số điện thoại không đúng xin kiểm tra lại.");
             return;
-        }if (txtHSL.getText().equals("")) {
+        }
+        if (txtHSL.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống hệ số lương");
             return;
-        }else if(!txtHSL.getText().matches("^[0-9]{1}[.]{1}[0-9]{1,}$")){
+        } else if (!txtHSL.getText().matches("^[0-9]{1}[.]{1}[0-9]{1,}$")) {
             JOptionPane.showMessageDialog(rootPane, "Hệ số lương không đúng xin kiểm tra lại");
             return;
         }
-        if (cbChucVu.getSelectedIndex()==-1) {
+        if (cbChucVu.getSelectedIndex() == -1) {
             JOptionPane.showMessageDialog(rootPane, "Xin hãy chọn một chức vụ");
             return;
         }
-        if (dcNgaySinh.getDate()==null) {
+        if (dcNgaySinh.getDate() == null) {
             JOptionPane.showMessageDialog(rootPane, "Xin hãy chọn ngày sinh");
             return;
         }
-        if(dcNgayHetHan.getDate()==null){
+        if (dcNgayHetHan.getDate() == null) {
             JOptionPane.showMessageDialog(rootPane, "Xin hãy chọn ngày hết hạn hợp đồng");
             return;
         }
         String sql = "INSERT INTO NHANVIEN (MaNV,HoTen,NgaySinh,GioiTinh,SDT,DanToc,QueQuan,HinhAnh,CMND,DiaChi,TrangThai,ChucVu)" + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
         String str;
-         
-          SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-          String date;
+
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+        String date;
         try {
             //THÊM vào dbo NHANVIEN
-            Connection con=KetNoiDB.getConnection();
+            Connection con = KetNoiDB.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
-            str =KetNoiDB.taoMaNV(cbChucVu.getSelectedIndex());
+            str = KetNoiDB.taoMaNV(cbChucVu.getSelectedIndex());
             ps.setString(1, str);
             ps.setString(2, txtTen.getText());
             date = sdf1.format(dcNgaySinh.getDate());
             ps.setString(3, date);
-            
-            if(rbtnNam.isSelected())
+
+            if (rbtnNam.isSelected()) {
                 ps.setInt(4, 0);
-            else if(rbtnNu.isSelected())
+            }
+            if (rbtnNu.isSelected()) {
                 ps.setInt(4, 1);
-            else if (rbtnKhac.isSelected()) 
+            }
+            if (rbtnKhac.isSelected()) {
                 ps.setInt(4, 2);
-            
-            
+            }
+
             ps.setString(5, txtSDT.getText());
             ps.setString(6, txtDanToc.getText());
             ps.setString(7, txtQueQuan.getText());
@@ -520,30 +533,29 @@ public class ThemNV extends javax.swing.JDialog {
             ps.setString(10, txtDiaChi.getText());
             ps.setInt(11, 1);
             ps.setInt(12, cbChucVu.getSelectedIndex());
-            if (ps.executeUpdate()>0) {
+            System.out.println(cbChucVu.getSelectedIndex());
+            if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!");
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(this, "Lỗi! Thêm nhân viên không thành công");
             }
-            
+
             //thêm bào table TAIKHOAN
             String sql2 = "INSERT INTO TAIKHOAN (MaNV,MatKhau)" + "VALUES(?,?)";
-            
+
             ps = con.prepareStatement(sql2);
             ps.setString(1, str);
             ps.setString(2, "123456");
-            
+
             ps.execute();
-            
-                         
+
             //thêm vào dboHOPDONG
-            String sql3 = "INSERT INTO HOPDONG (MaHD,NgayKy,HanHD,MaNV,HSL)" + "VALUES(?,?,?,?,?)" ;
+            String sql3 = "INSERT INTO HOPDONG (MaHD,NgayKy,HanHD,MaNV,HSL)" + "VALUES(?,?,?,?,?)";
             PreparedStatement ps3 = con.prepareStatement(sql3);
-            String maHD="hd"+str;
-            ps3.setString(1,maHD );
-            ps3.setString(2, sdf1.format(new java.util.Date()));
-            date = sdf1.format(dcNgayHetHan.getDate());
-            ps3.setString(3, date);
+            String maHD = "hd" + str;
+            ps3.setString(1, maHD);
+            ps3.setString(2, sdf1.format(dcNgayKi.getDate()));
+            ps3.setString(3, sdf1.format(dcNgayHetHan.getDate()));
             ps3.setString(4, str);
             ps3.setFloat(5, Float.parseFloat(txtHSL.getText()));
             ps3.execute();
@@ -553,9 +565,10 @@ public class ThemNV extends javax.swing.JDialog {
         } catch (SQLException ex) {
             Logger.getLogger(ThemNV.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, ex);
+            ex.printStackTrace();
         }
         this.dispose();
-        
+
     }//GEN-LAST:event_btnLuuMouseClicked
 
     private void btnHuyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHuyMouseClicked
@@ -563,24 +576,25 @@ public class ThemNV extends javax.swing.JDialog {
     }//GEN-LAST:event_btnHuyMouseClicked
 
     private void btTaiAnhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btTaiAnhMouseClicked
-       JFileChooser chooser = new JFileChooser();
+        JFileChooser chooser = new JFileChooser();
         chooser.showOpenDialog(null);
         File f = chooser.getSelectedFile();
         filename = f.getAbsolutePath();
         ImageIcon imageicon = new ImageIcon(new ImageIcon(filename).getImage().getScaledInstance(lbHinhAnh.getWidth(), lbHinhAnh.getHeight(), Image.SCALE_SMOOTH));
         lbHinhAnh.setIcon(imageicon);
-        
+
         try {
             File image = new File(filename);
             FileInputStream fis = new FileInputStream(image);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            byte [] buf = new byte [1024];
-            
-            for(int readNum;(readNum = fis.read(buf))!=-1;)
-                bos.write(buf,0,readNum);
-            
+            byte[] buf = new byte[1024];
+
+            for (int readNum; (readNum = fis.read(buf)) != -1;) {
+                bos.write(buf, 0, readNum);
+            }
+
             person_image = bos.toByteArray();
-            
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
@@ -615,9 +629,10 @@ public class ThemNV extends javax.swing.JDialog {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
-                      ThemNV dialog = new ThemNV(new javax.swing.JFrame(), true);
-                      dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                ThemNV dialog = new ThemNV(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
                         System.exit(0);
@@ -633,8 +648,10 @@ public class ThemNV extends javax.swing.JDialog {
     private javax.swing.JButton btnHuy;
     private javax.swing.JButton btnLuu;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JComboBox<String> cbChucVu;
     private com.toedter.calendar.JDateChooser dcNgayHetHan;
+    private com.toedter.calendar.JDateChooser dcNgayKi;
     private com.toedter.calendar.JDateChooser dcNgaySinh;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
@@ -661,7 +678,6 @@ public class ThemNV extends javax.swing.JDialog {
     private javax.swing.JTextField txtDanToc;
     private javax.swing.JTextField txtDiaChi;
     private javax.swing.JTextField txtHSL;
-    private javax.swing.JTextField txtNgayKiHD;
     private javax.swing.JTextField txtQueQuan;
     private javax.swing.JTextField txtSDT;
     private javax.swing.JTextField txtTen;

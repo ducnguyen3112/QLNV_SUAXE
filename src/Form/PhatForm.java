@@ -22,9 +22,10 @@ import javax.swing.JOptionPane;
 public class PhatForm extends javax.swing.JDialog {
 
     /** Creates new form PhatForm */
-    private String MaNVPhat="";
-    private String MaPhat="";
-    private HashMap ListPhat; 
+    private String MaNVPhat = "";
+    private String MaPhat = "";
+    private HashMap ListPhat;
+
     public PhatForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -33,33 +34,36 @@ public class PhatForm extends javax.swing.JDialog {
         setLocationRelativeTo(null);
 
     }
-    public void loadPhat(){
-         CBPhat.removeAllItems();
-         ListPhat= new HashMap();
-         ListPhat.clear();
-         String sql = "select MaLoi,TenLoi from PHAT";
-         Connection ketNoi = KetNoiDB.getConnection();
-         try {
-             Statement st = ketNoi.createStatement();
-             ResultSet rs = st.executeQuery(sql);
-             while(rs.next()){
-                 ListPhat.put(rs.getString("MaLoi"), rs.getString("TenLoi"));
-                 CBPhat.addItem(rs.getString("TenLoi"));
-             }
-             CBPhat.addItem("Thêm loại phạt");
-             st.close();
-             rs.close();
-             ketNoi.close();
-         } catch (Exception e) {
-         }
- 
-       }
-     public void loadDaTa(){
-           txtMaNV.setText(MaNVPhat);
-           txtTen.setText(PhanCongForm.getTenNhanVien(MaNVPhat));
-           loadPhat();
-           
-       }
+
+    public void loadPhat() {
+        CBPhat.removeAllItems();
+        ListPhat = new HashMap();
+        ListPhat.clear();
+        String sql = "select MaLoi,TenLoi from PHAT";
+        Connection ketNoi = KetNoiDB.getConnection();
+        try {
+            Statement st = ketNoi.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                ListPhat.put(rs.getString("MaLoi"), rs.getString("TenLoi"));
+                CBPhat.addItem(rs.getString("TenLoi"));
+            }
+            CBPhat.addItem("Thêm loại phạt");
+            st.close();
+            rs.close();
+            ketNoi.close();
+        } catch (Exception e) {
+        }
+
+    }
+
+    public void loadDaTa() {
+        txtMaNV.setText(MaNVPhat);
+        txtTen.setText(PhanCongForm.getTenNhanVien(MaNVPhat));
+        loadPhat();
+
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -167,89 +171,89 @@ public class PhatForm extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void jTienPhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTienPhatActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTienPhatActionPerformed
 
-    public void themPhat(String s){
-            String sql = "insert into PHAT(MaLoi,TenLoi) values(?,?)";
-            Connection ketNoi = KetNoiDB.getConnection();
-            Random rd = new Random();
-            MaPhat = "Phat" + (String.valueOf(rd.nextInt(1000)));
-            try {
+    public void themPhat(String s) {
+        String sql = "insert into PHAT(MaLoi,TenLoi) values(?,?)";
+        Connection ketNoi = KetNoiDB.getConnection();
+        Random rd = new Random();
+        MaPhat = "Phat" + (String.valueOf(rd.nextInt(1000)));
+        try {
             PreparedStatement ps = ketNoi.prepareStatement(sql);
             ps.setString(1, MaPhat);
-            ps.setString(2,s);
-            if (ps.executeUpdate()>0) {
+            ps.setString(2, s);
+            if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(this, "Thêm thành công!");
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(this, "Lỗi!Không thành công");
             }
-           ps.close();
-           ketNoi.close();
+            ps.close();
+            ketNoi.close();
         } catch (Exception e) {
         }
-        
+
     }
-    public  String traVeMaPhaṭ̣(String s){
-            for (Object i : ListPhat.keySet()) {
-                    if(s.equals(ListPhat.get(i)))
-                            return (String) i;
-                
+
+    public String traVeMaPhaṭ̣(String s) {
+        for (Object i : ListPhat.keySet()) {
+            if (s.equals(ListPhat.get(i))) {
+                return (String) i;
             }
-       return null;
-    }    
-    public void luuDuLieu(){
-       SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-       String date = sdf1.format(ngayPhat.getDate());
-       String soTien = jTienPhat.getText();
-       if (ChamCongForm.kiemTraNhapSo(soTien)){
-           int Tien = Integer.parseInt(soTien);
-           String sql ="INSERT INTO CTPHAT(MaNV,MaLoi,CTPL,SoTien,NgayPhat)  VALUES(?,?,?,?,?)";
-           Connection ketNoi =KetNoiDB.getConnection();
-        try {
-                     PreparedStatement ps = ketNoi.prepareStatement(sql);
-                     ps.setString(1, MaNVPhat);
-                     ps.setString(2,MaPhat);
-                     ps.setString(3,moTa.getText());
-                     ps.setInt(4, Tien);
-                     ps.setString(5, date);
-                   if(ps.executeUpdate() > 0 )
-                       JOptionPane.showMessageDialog(rootPane, "Hoàn thành phạt");
-                   else 
-                      JOptionPane.showMessageDialog(rootPane, "Thất bại");
-                   ps.close();                   
-                   ketNoi.close();
-                   this.dispose();
-        } catch (Exception e) {
-                   JOptionPane.showMessageDialog(rootPane, e);
+
         }
-       }
-       else {
-           JOptionPane.showMessageDialog(rootPane, "Nhập vào phải là số nguyên");
-       }
-       
+        return null;
+    }
+
+    public void luuDuLieu() {
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+        String date = sdf1.format(ngayPhat.getDate());
+        String soTien = jTienPhat.getText();
+        if (ChamCongForm.kiemTraNhapSo(soTien)) {
+            int Tien = Integer.parseInt(soTien);
+            String sql = "INSERT INTO CTPHAT(MaNV,MaLoi,CTPL,SoTien,NgayPhat)  VALUES(?,?,?,?,?)";
+            Connection ketNoi = KetNoiDB.getConnection();
+            try {
+                PreparedStatement ps = ketNoi.prepareStatement(sql);
+                ps.setString(1, MaNVPhat);
+                ps.setString(2, MaPhat);
+                ps.setString(3, moTa.getText());
+                ps.setInt(4, Tien);
+                ps.setString(5, date);
+                if (ps.executeUpdate() > 0) {
+                    JOptionPane.showMessageDialog(rootPane, "Hoàn thành phạt");
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Thất bại");
+                }
+                ps.close();
+                ketNoi.close();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(rootPane, e);
+            }
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Nhập vào phải là số nguyên");
+        }
+
     }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         luuDuLieu();
-      
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void CBPhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CBPhatActionPerformed
         // TODO add your handling code here:
-        if(CBPhat.getSelectedItem().equals("Thêm loại phạt")){
-                 String  inputPhat = JOptionPane.showInputDialog("Thêm hình phạt");
-                 if(inputPhat != null)
-                 {
-                     themPhat(inputPhat);
-                     loadPhat();
-                 }
+        if (CBPhat.getSelectedItem().equals("Thêm loại phạt")) {
+            String inputPhat = JOptionPane.showInputDialog("Thêm hình phạt");
+            if (inputPhat != null) {
+                themPhat(inputPhat);
+                loadPhat();
             }
-       else{
-                   MaPhat= traVeMaPhaṭ̣((String) CBPhat.getSelectedItem());     
-            } 
+        } else {
+            MaPhat = traVeMaPhaṭ̣((String) CBPhat.getSelectedItem());
+        }
     }//GEN-LAST:event_CBPhatActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
