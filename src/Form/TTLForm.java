@@ -72,7 +72,7 @@ public class TTLForm extends javax.swing.JDialog {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 30, 80, 20));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 30, 80, 30));
 
         jButton2.setText("Thoát");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -80,22 +80,22 @@ public class TTLForm extends javax.swing.JDialog {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 420, 70, 30));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 410, 70, 30));
 
         chonNam.setMaximum(9999);
         chonNam.setMinimum(1900);
-        jPanel1.add(chonNam, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 30, 90, 20));
+        jPanel1.add(chonNam, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 30, 90, 30));
 
         chonThang.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jPanel1.add(chonThang, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 30, 100, 20));
+        jPanel1.add(chonThang, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 30, 100, 30));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Chọn tháng:");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 30, 80, 20));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 30, 80, 30));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Chọn năm:");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 30, 70, 20));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 30, 70, 30));
 
         bangLuong.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -125,12 +125,12 @@ public class TTLForm extends javax.swing.JDialog {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(467, Short.MAX_VALUE))
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 440, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addGap(0, 62, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGap(0, 90, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         pack();

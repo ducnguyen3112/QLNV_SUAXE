@@ -76,9 +76,14 @@ public class KetNoiDB {
     public static void xoaNhanVien(JTable table) {
         Connection con = getConnection();
         int op = JOptionPane.showConfirmDialog(null, "Bạn có Chắc Chắn Muốn Xóa ?");
+        int r = table.getSelectedRow();
+        String data = table.getModel().getValueAt(r, 0).toString();
+        if (data.equals("ad0")) {
+            JOptionPane.showMessageDialog(table, "Không thể xoá nhân viên này!");
+            return;
+        }
         if (op == 0) {
-            int r = table.getSelectedRow();
-            String data = table.getModel().getValueAt(r, 0).toString();
+            
             String sql1 = "select * from CT_SDDV where MaNV = '" + data + "'";
             try {
                 Statement st = con.createStatement();

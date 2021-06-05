@@ -166,6 +166,8 @@ public class ThemNV extends javax.swing.JDialog {
         jLabel12.setText("Chức vụ:");
 
         dcNgaySinh.setDateFormatString("dd-MM-yyyy");
+        dcNgaySinh.setMaxSelectableDate(new java.util.Date(1104516076000L));
+        dcNgaySinh.setMinSelectableDate(new java.util.Date(-5364683924000L));
 
         cbChucVu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Lễ Tân", "Nhân viên bảo dưỡng" }));
         cbChucVu.setSelectedIndex(-1);
