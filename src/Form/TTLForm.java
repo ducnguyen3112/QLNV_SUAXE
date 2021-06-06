@@ -283,9 +283,9 @@ public class TTLForm extends javax.swing.JDialog {
             ketNoi.close();
         } catch (Exception e) {
         }
-        if (ktraHienThi == 0) {
+        /*if (ktraHienThi == 0) {
             JOptionPane.showMessageDialog(rootPane, "Không được vượt qua tháng hiện tại");
-        }
+        }*/
     }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
