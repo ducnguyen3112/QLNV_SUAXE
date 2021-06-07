@@ -163,7 +163,7 @@ public class ThuongForm extends javax.swing.JDialog {
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, -1, 20));
 
         jtienThuong.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        getContentPane().add(jtienThuong, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 320, 210, 30));
+        getContentPane().add(jtienThuong, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 320, 230, 30));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel7.setText("Ngày khen thưởng:");
@@ -236,6 +236,7 @@ public class ThuongForm extends javax.swing.JDialog {
                     tamp = true;
                 } else {
                     JOptionPane.showMessageDialog(rootPane, "Thưởng thất bại");
+                      this.dispose();
                 }
                 ps.close();
                 ketNoi.close();

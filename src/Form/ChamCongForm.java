@@ -23,7 +23,6 @@ import java.util.regex.Pattern;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableCellEditor;
-import jdk.nashorn.api.tree.BreakTree;
 
 /**
  *
@@ -138,32 +137,38 @@ public class ChamCongForm extends javax.swing.JDialog {
     private void initComponents() {
 
         jLabel4 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtNam = new javax.swing.JTextField();
-        cbThang = new com.toedter.calendar.JMonthChooser();
+        jPanel1 = new javax.swing.JPanel();
+        huy = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         bangCong = new javax.swing.JTable();
         tiemKiem = new javax.swing.JButton();
-        huy = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        txtNam = new javax.swing.JTextField();
+        cbThang = new com.toedter.calendar.JMonthChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(477, 567, -1, -1));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel1.setText("Chọn tháng:");
-
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel2.setText("Chọn năm:");
-
+        jLabel3.setBackground(new java.awt.Color(217, 156, 121));
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("BẢNG CHẤM CÔNG");
+        jLabel3.setOpaque(true);
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 688, 90));
 
-        txtNam.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jPanel1.setBackground(new java.awt.Color(217, 156, 121));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        cbThang.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        cbThang.setMonth(0);
+        huy.setText("Quay lại");
+        huy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                huyActionPerformed(evt);
+            }
+        });
+        jPanel1.add(huy, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 453, 80, 30));
 
         bangCong.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -180,72 +185,32 @@ public class ChamCongForm extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(bangCong);
 
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 668, 325));
+
         tiemKiem.setText("Tìm Kiếm");
         tiemKiem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tiemKiemActionPerformed(evt);
             }
         });
+        jPanel1.add(tiemKiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 80, -1, 30));
 
-        huy.setText("Exit");
-        huy.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                huyActionPerformed(evt);
-            }
-        });
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel2.setText("Chọn năm:");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 80, -1, 30));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtNam, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cbThang, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(tiemKiem)
-                .addContainerGap(208, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(211, 211, 211))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(huy)
-                        .addGap(44, 44, 44))))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1)
-                        .addComponent(jLabel2)
-                        .addComponent(txtNam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(tiemKiem, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-                    .addComponent(cbThang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(17, 17, 17)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(huy)
-                .addGap(1, 1, 1)
-                .addComponent(jLabel4)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel1.setText("Chọn tháng:");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 80, -1, 30));
+
+        txtNam.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jPanel1.add(txtNam, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 80, 130, 30));
+
+        cbThang.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        cbThang.setMonth(0);
+        jPanel1.add(cbThang, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 80, -1, 30));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 688, 500));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -472,6 +437,7 @@ public class ChamCongForm extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton tiemKiem;
     private javax.swing.JTextField txtNam;

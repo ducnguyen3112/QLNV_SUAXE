@@ -4,26 +4,35 @@
  * and open the template in the editor.
  */
 package Form;
+
 import Form.Xuli.KetNoiDB;
 import java.awt.Image;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author StarScream
  */
 public class TTNV extends javax.swing.JFrame {
-    
+
     /** Creates new form TTNV */
     public TTNV() {
         initComponents();
         setLocationRelativeTo(null);
-       loadDB();
+        loadDB();
+        lbMaNV.setText(AdminForm.maNV);
         btnLuu.setVisible(false);
         btnHuy.setVisible(false);
         btnTaiAnh.setVisible(false);
@@ -35,59 +44,63 @@ public class TTNV extends javax.swing.JFrame {
         txtQueQuan.setEditable(false);
         txtSDT.setEditable(false);
         txtTen.setEditable(false);
-        
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE );
+
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
-    private void luuChinhSuaNV(){
+    String filename = null;
+    byte[] person_image = null;
+    public void luuChinhSuaNV() {
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-          String date;
-        String sql="update NHANVIEN set HoTen=?,NgaySinh=?,GioiTinh=?,SDT=?,DanToc=?,"
-                + " QueQuan=?,CMND=?,DiaChi=?,TrangThai=?,ChucVu=? where MaNV= '"+AdminForm.maNV+"'";
-        Connection con=KetNoiDB.getConnection();
+        String date;
+        String sql = "update NHANVIEN set HoTen=?,NgaySinh=?,GioiTinh=?,SDT=?,DanToc=?,"
+                + " QueQuan=?,HinhAnh=?,CMND=?,DiaChi=?,ChucVu=?,TrangThai=? where MaNV= '" + AdminForm.maNV + "'";
+        Connection con = KetNoiDB.getConnection();
         try {
-            PreparedStatement ps =con.prepareStatement(sql);
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, txtTen.getText());
             date = sdf1.format(dcNgaySinh.getDate());
             ps.setString(2, date);
             if (rbtnNam.isSelected()) {
+                ps.setInt(3, 0);
+            } else if (rbtnNu.isSelected()) {
                 ps.setInt(3, 1);
-            }else if (rbtnNu.isSelected()) {
+            } else if (rbtnKhac.isSelected()) {
                 ps.setInt(3, 2);
-            }else if (rbtnKhac.isSelected()) {
-                 ps.setInt(3, 3);
             }
             ps.setString(4, txtSDT.getText());
             ps.setString(5, txtDanToc.getText());
-            ps.setString(6,txtQueQuan.getText());
-            ps.setString(7,txtCMND.getText());
-            ps.setString(8,txtDiaChi.getText());
+            ps.setString(6, txtQueQuan.getText());
+            ps.setBytes(7, person_image);
+            ps.setString(8, txtCMND.getText());
+            ps.setString(9, txtDiaChi.getText());
+            ps.setInt(10, cbChucVu.getSelectedIndex());
             if (rbtnDangLam.isSelected()) {
-               ps.setInt(10, 1);
-            }else if (rbtnDaNghi.isSelected()) {
-                ps.setInt(10, 0);
+                ps.setInt(11, 1);
+            } else if (rbtnDaNghi.isSelected()) {
+                ps.setInt(11, 0);
             }
-            ps.setInt(9, cbChucVu.getSelectedIndex());
-            int i=ps.executeUpdate();
-            if (i>0) {
+            int i = ps.executeUpdate();
+            if (i > 0) {
                 JOptionPane.showMessageDialog(this, "Chỉnh sửa thông tin nhân viên thành công.");
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(this, "Lỗi!");
             }
         } catch (SQLException ex) {
             Logger.getLogger(TTNV.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    private void loadDB(){
-        String sql="select MaNV,HoTen,CONVERT(varchar, NgaySinh, 105) as NgaySinh,"
+   
+    private void loadDB() {
+        String sql = "select MaNV,HoTen,CONVERT(varchar, NgaySinh, 105) as NgaySinh,"
                 + " GioiTinh,ChucVu,TrangThai,TenCV,SDT,CMND,DanToc,DiaChi,QueQuan,"
-                + "HinhAnh from NHANVIEN,CHUCVU where NHANVIEN.ChucVu=CHUCVU.MaCV" 
-                + " and NHANVIEN.MaNV= '"+AdminForm.maNV+ "'";
+                + "HinhAnh from NHANVIEN,CHUCVU where NHANVIEN.ChucVu=CHUCVU.MaCV"
+                + " and NHANVIEN.MaNV= '" + AdminForm.maNV + "'";
         try {
-           Connection con=KetNoiDB.getConnection();
-            Statement st=con.createStatement();
-            ResultSet rs=st.executeQuery(sql);
-            while(rs.next()){
+            Connection con = KetNoiDB.getConnection();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
                 txtMaNV.setText(rs.getString("MaNV"));
                 dcNgaySinh.setDate(new SimpleDateFormat("dd-MM-yyyy").parse(rs.getString("NgaySinh")));
                 txtTen.setText(rs.getString("HoTen"));
@@ -97,36 +110,42 @@ public class TTNV extends javax.swing.JFrame {
                 txtDiaChi.setText(rs.getString("DiaChi"));
                 if (rs.getString("TenCV").equals("admin")) {
                     cbChucVu.setSelectedIndex(0);
-                }else if(rs.getString("TenCV").equals("Lễ tân")){
+                } else if (rs.getString("TenCV").equals("Lễ tân")) {
                     cbChucVu.setSelectedIndex(1);
-                }else if(rs.getString("TenCV").equals("Nhân viên bảo dưỡng")){
+                } else if (rs.getString("TenCV").equals("Nhân viên bảo dưỡng")) {
                     cbChucVu.setSelectedIndex(2);
                 }
                 txtQueQuan.setText(rs.getString("QueQuan"));
-                byte[] img=rs.getBytes("HinhAnh");
+                byte[] img = rs.getBytes("HinhAnh");
+                if (img!=null) {
                 ImageIcon imageicon = new ImageIcon(new ImageIcon(img).getImage().getScaledInstance(lbAnh.getWidth(), lbAnh.getHeight(), Image.SCALE_SMOOTH));
                 lbAnh.setIcon(imageicon);
-                switch (rs.getInt("GioiTinh")) {
-                    case 1 -> rbtnNam.setSelected(true);
-                    case 2 -> rbtnNu.setSelected(true);
-                    default -> rbtnKhac.setSelected(true);
                 }
-                if (rs.getInt("TrangThai")==0) {
+                switch (rs.getInt("GioiTinh")) {
+                    case 0 ->
+                        rbtnNam.setSelected(true);
+                    case 1 ->
+                        rbtnNu.setSelected(true);
+                    case 2 ->
+                        rbtnKhac.setSelected(true);
+                }
+                if (rs.getInt("TrangThai") == 0) {
                     rbtnDaNghi.setSelected(true);
-                }else if (rs.getInt("TrangThai")==1) {
+                } else if (rs.getInt("TrangThai") == 1) {
                     rbtnDangLam.setSelected(true);
                 }
-                
-          }
-                rs.close();
-                st.close();
-                con.close();
+
+            }
+            rs.close();
+            st.close();
+            con.close();
         } catch (SQLException ex) {
             Logger.getLogger(TTNV.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParseException ex) {
             Logger.getLogger(TTNV.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -144,7 +163,6 @@ public class TTNV extends javax.swing.JFrame {
         btnChinhSuaTT = new javax.swing.JButton();
         btnPhat = new javax.swing.JButton();
         btnHopDong = new javax.swing.JButton();
-        lbTieude = new javax.swing.JLabel();
         txtMaNV = new javax.swing.JTextField();
         btnQuayLai1 = new javax.swing.JButton();
         btnThuong = new javax.swing.JButton();
@@ -168,6 +186,7 @@ public class TTNV extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         dcNgaySinh = new com.toedter.calendar.JDateChooser();
         cbChucVu = new javax.swing.JComboBox<>();
+        lbMaNV = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         txtQueQuan = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
@@ -184,7 +203,7 @@ public class TTNV extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBackground(new java.awt.Color(232, 69, 69));
+        jPanel1.setBackground(new java.awt.Color(69, 69, 69));
         jPanel1.setForeground(new java.awt.Color(51, 51, 0));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -195,6 +214,11 @@ public class TTNV extends javax.swing.JFrame {
         btnTaiAnh.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btnTaiAnh.setForeground(new java.awt.Color(255, 255, 255));
         btnTaiAnh.setText("Tải ảnh lên");
+        btnTaiAnh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTaiAnhActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnTaiAnh, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 120, 20));
 
         btnChinhSuaTT.setBackground(new java.awt.Color(83, 53, 74));
@@ -216,11 +240,6 @@ public class TTNV extends javax.swing.JFrame {
         btnPhat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_soccer_yellow_card_50px.png"))); // NOI18N
         btnPhat.setText("XỬ PHẠT");
         btnPhat.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btnPhat.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnPhatMouseClicked(evt);
-            }
-        });
         btnPhat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPhatActionPerformed(evt);
@@ -240,7 +259,6 @@ public class TTNV extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnHopDong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 320, 190, 50));
-        jPanel1.add(lbTieude, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 50));
 
         txtMaNV.setBackground(new java.awt.Color(144, 55, 73));
         txtMaNV.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
@@ -267,11 +285,6 @@ public class TTNV extends javax.swing.JFrame {
         btnThuong.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8_medal_first_place_50px.png"))); // NOI18N
         btnThuong.setText("KHEN THƯỞNG");
         btnThuong.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btnThuong.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnThuongMouseClicked(evt);
-            }
-        });
         btnThuong.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnThuongActionPerformed(evt);
@@ -371,19 +384,23 @@ public class TTNV extends javax.swing.JFrame {
         cbChucVu.setSelectedIndex(-1);
         cbChucVu.setEnabled(false);
 
+        lbMaNV.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        lbMaNV.setForeground(new java.awt.Color(255, 255, 255));
+        lbMaNV.setText("jLabel1");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(txtSDT, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(txtTen, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING))
-                    .addComponent(jLabel8))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtSDT, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtTen)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel8)
+                    .addComponent(lbMaNV, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(31, 31, 31)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
@@ -396,7 +413,7 @@ public class TTNV extends javax.swing.JFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtCMND, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(dcNgaySinh, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
-                            .addComponent(cbChucVu, javax.swing.GroupLayout.Alignment.LEADING, 0, 192, Short.MAX_VALUE))
+                            .addComponent(cbChucVu, javax.swing.GroupLayout.Alignment.LEADING, 0, 190, Short.MAX_VALUE))
                         .addGap(179, 179, 179)))
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtDanToc, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -425,7 +442,9 @@ public class TTNV extends javax.swing.JFrame {
                             .addComponent(jLabel2)
                             .addComponent(jLabel4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dcNgaySinh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(dcNgaySinh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbMaNV, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(44, 44, 44)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
@@ -618,15 +637,15 @@ public class TTNV extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnChinhSuaTTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnChinhSuaTTMouseClicked
-       //chucNang.setPanelEnabled(pnTT, true);
-       txtCMND.setEditable(true);
+        //chucNang.setPanelEnabled(pnTT, true);
+        txtCMND.setEditable(true);
         cbChucVu.setEnabled(true);
         txtDanToc.setEditable(true);
         txtDiaChi.setEditable(true);
         txtQueQuan.setEditable(true);
         txtSDT.setEditable(true);
         txtTen.setEditable(true);
-       dcNgaySinh.setEnabled(true);
+        dcNgaySinh.setEnabled(true);
         btnLuu.setVisible(true);
         btnHuy.setVisible(true);
         btnTaiAnh.setVisible(true);
@@ -654,76 +673,122 @@ public class TTNV extends javax.swing.JFrame {
         rbtnKhac.setEnabled(false);
         rbtnNam.setEnabled(false);
         rbtnNu.setEnabled(false);
-        
+
     }//GEN-LAST:event_btnHuyMouseClicked
 
     private void btnLuuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLuuMouseClicked
-        if (lbAnh.getIcon()==null) {
+       if (lbAnh.getIcon() == null) {
             JOptionPane.showMessageDialog(rootPane, "Xin hãy chọn ảnh");
+            return;
         }
-        if (txtTen.getText()==null) {
+        if (txtTen.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống họ tên");
-        }else if (txtTen.getText().matches("^[^0-9]{7,}$")) {
+            return;
+        } else if (!txtTen.getText().matches("^[^0-9]{7,}$")) {
             JOptionPane.showMessageDialog(rootPane, "Họ tên không đúng xin kiểm tra lại.");
+            return;
         }
-        if (txtQueQuan.getText()==null) {
+        if (txtQueQuan.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống quê quán");
-        }else if (txtQueQuan.getText().matches("^[^0-9]{7,}$")) {
+            return;
+        } else if (!txtQueQuan.getText().matches("^[^0-9]{3,}$")) {
             JOptionPane.showMessageDialog(rootPane, "Quê quán không đúng xin kiểm tra lại.");
+            return;
         }
-        if (txtDanToc.getText()==null) {
-            JOptionPane.showMessageDialog(rootPane, "Không được để trống họ tên");
-        }else if (txtDanToc.getText().matches("^[^1-9]{7,}$")) {
+        if (txtDanToc.getText().equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Không được để trống dân tộc");
+            return;
+        } else if (!txtDanToc.getText().matches("^[^1-9]{3,}$")) {
             JOptionPane.showMessageDialog(rootPane, "Dân tộc không đúng xin kiểm tra lại.");
+            return;
         }
-        if (txtDiaChi.getText()==null) {
+        if (txtDiaChi.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống địa chỉ");
+            return;
         }
-        if (txtCMND.getText()==null) {
+        if (txtCMND.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống CMND");
-        }else if (txtCMND.getText().matches("^[0-9]{9,12}$")) {
+            return;
+        }
+        if (!txtCMND.getText().matches("^[0-9]{9,12}$")) {
             JOptionPane.showMessageDialog(rootPane, "CMND không đúng xin kiểm tra lại.");
+            return;
         }
-        if (txtSDT.getText()==null) {
+        if (txtSDT.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống số điện thoại");
-        }else if (txtSDT.getText().matches("^[0]{1}[0-9]{9}$")) {
+            return;
+        } else if (!txtSDT.getText().matches("^[0]{1}[0-9]{9}$")) {
             JOptionPane.showMessageDialog(rootPane, "Số điện thoại không đúng xin kiểm tra lại.");
+            return;
         }
-        if (cbChucVu.getSelectedIndex()==-1) {
+        
+        if (cbChucVu.getSelectedIndex() == -1) {
             JOptionPane.showMessageDialog(rootPane, "Xin hãy chọn một chức vụ");
+            return;
         }
+        if (dcNgaySinh.getDate() == null) {
+            JOptionPane.showMessageDialog(rootPane, "Xin hãy chọn ngày sinh");
+            return;
+        }
+        
         luuChinhSuaNV();
+        btnLuu.setVisible(false);
+        btnHuy.setVisible(false);
+        btnTaiAnh.setVisible(false);
+        txtCMND.setEditable(false);
+        cbChucVu.setEnabled(false);
+        txtDanToc.setEditable(false);
+        txtDiaChi.setEditable(false);
+        txtMaNV.setEditable(false);
+        txtQueQuan.setEditable(false);
+        txtSDT.setEditable(false);
+        txtTen.setEditable(false);
     }//GEN-LAST:event_btnLuuMouseClicked
 
     private void btnHopDongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHopDongMouseClicked
         new HopDongForm().setVisible(true);
     }//GEN-LAST:event_btnHopDongMouseClicked
 
-    private void btnPhatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPhatMouseClicked
-        this.dispose();
-    }//GEN-LAST:event_btnPhatMouseClicked
-
     private void rbtnDaNghiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnDaNghiActionPerformed
-        
+
     }//GEN-LAST:event_rbtnDaNghiActionPerformed
 
     private void btnQuayLai1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnQuayLai1MouseClicked
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_btnQuayLai1MouseClicked
 
-    private void btnThuongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThuongMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnThuongMouseClicked
-
     private void btnThuongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThuongActionPerformed
-        // TODO add your handling code here:
         new ThuongForm(this, rootPaneCheckingEnabled).setVisible(true);
     }//GEN-LAST:event_btnThuongActionPerformed
 
     private void btnPhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPhatActionPerformed
-        // TODO add your handling code here:
         new PhatForm(this, rootPaneCheckingEnabled).setVisible(true);
     }//GEN-LAST:event_btnPhatActionPerformed
+
+    private void btnTaiAnhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaiAnhActionPerformed
+         JFileChooser chooser = new JFileChooser();
+        chooser.showOpenDialog(null);
+        File f = chooser.getSelectedFile();
+        filename = f.getAbsolutePath();
+        ImageIcon imageicon = new ImageIcon(new ImageIcon(filename).getImage().getScaledInstance(lbAnh.getWidth(), lbAnh.getHeight(), Image.SCALE_SMOOTH));
+        lbAnh.setIcon(imageicon);
+
+        try {
+            File image = new File(filename);
+            FileInputStream fis = new FileInputStream(image);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            byte[] buf = new byte[1024];
+
+            for (int readNum; (readNum = fis.read(buf)) != -1;) {
+                bos.write(buf, 0, readNum);
+            }
+
+            person_image = bos.toByteArray();
+
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_btnTaiAnhActionPerformed
 
     /**
      * @param args the command line arguments
@@ -792,7 +857,7 @@ public class TTNV extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JLabel lbAnh;
-    private javax.swing.JLabel lbTieude;
+    private javax.swing.JLabel lbMaNV;
     private javax.swing.JPanel pnTT;
     private javax.swing.JRadioButton rbtnDaNghi;
     private javax.swing.JRadioButton rbtnDangLam;
