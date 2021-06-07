@@ -150,9 +150,6 @@ public class TTLForm extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    public void themMaThucLinh() {
-
-    }
 
     public void layDuLieuCong() {
         String sql = "select MaCong,MaNV,NgayCong from CONG where (Thang = " + thangDuocChon + "and Nam =" + namDuocChon + ")";
@@ -248,10 +245,11 @@ public class TTLForm extends javax.swing.JDialog {
     }
 
     public void hienThiLuong() {
+        layDuLieuCong();
         Connection ketNoi = KetNoiDB.getConnection();
         DefaultTableModel model = (DefaultTableModel) bangLuong.getModel();
         model.setRowCount(0);
-        int ktraHienThi = 0;
+        int ktHienThi = 0;
         try {
             for (Object i : NVvoiMaCong.keySet()) {
                 String sql = "select MaNV,ThucLinh,TrangThai from THANHTOANLUONG where MaTTL = 'TTL" + NVvoiMaCong.get(i) + "'";
@@ -275,7 +273,8 @@ public class TTLForm extends javax.swing.JDialog {
                             break;
                     }
                     model.addRow(tamp);
-                    ktraHienThi = 1;
+                    ktHienThi = 1;
+                 
                 }
                 st.close();
                 rs.close();
@@ -283,16 +282,23 @@ public class TTLForm extends javax.swing.JDialog {
             ketNoi.close();
         } catch (Exception e) {
         }
-        /*if (ktraHienThi == 0) {
-            JOptionPane.showMessageDialog(rootPane, "Không được vượt qua tháng hiện tại");
-        }*/
+       if(ktHienThi == 0 ){
+           JOptionPane.showMessageDialog(rootPane, "No data");
+       } 
     }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         namDuocChon = chonNam.getValue();
         thangDuocChon = chonThang.getMonth() + 1;
-        layDuLieuCong();
         hienThiLuong();
+         LocalDate localDate = LocalDate.now();
+            if(thangDuocChon <= localDate.getMonthValue()){
+                hienThiLuong();
+            }
+            else{
+                JOptionPane.showMessageDialog(rootPane, "Vượt quá ngày của hiện tại");
+            }
+
     }//GEN-LAST:event_jButton1ActionPerformed
     public void thanhToanLuong(String maCong) {
         String sql = "UPDATE THANHTOANLUONG SET TrangThai = ? where MaTTL = ?";

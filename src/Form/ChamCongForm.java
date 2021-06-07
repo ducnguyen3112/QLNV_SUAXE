@@ -42,6 +42,18 @@ public class ChamCongForm extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
+        LocalDate localDate = LocalDate.now();
+        if (localDate.getMonthValue() == 1 )
+        {
+            int tamp = localDate.getYear() - 1;
+            txtNam.setText(String.valueOf(tamp));
+            cbThang.setMonth(11);
+        }
+        txtNam.setText(String.valueOf(localDate.getYear()));
+        cbThang.setMonth(localDate.getMonthValue() - 2);
+        nam = Integer.parseInt(txtNam.getText());
+        thang = cbThang.getMonth() + 1; 
+        hienThiData();
     }
 
     /** This method is called from within the constructor to
@@ -242,6 +254,7 @@ public class ChamCongForm extends javax.swing.JDialog {
         DefaultTableModel model=(DefaultTableModel) bangCong.getModel();
         model.setRowCount(0);
         DanhSachTraLuong.clear();
+        int ktHienThi = 0;
         try {
             Statement st = ketNoi.createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -253,12 +266,16 @@ public class ChamCongForm extends javax.swing.JDialog {
                  data.addElement(PhanCongForm.getTenNhanVien(rs.getString("MaNV")));
                  data.addElement(rs.getString("NgayCong"));
                  model.addRow(data);    
+                 ktHienThi = 1;
             }
             rs.close();
             st.close();
             ketNoi.close();
         } catch (SQLException e) {
                      }
+        if(ktHienThi == 0 ){
+         JOptionPane.showMessageDialog(rootPane, "No data");
+        }
     }
     private void tiemKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tiemKiemActionPerformed
         // TODO add your handling code here:
@@ -351,7 +368,7 @@ public class ChamCongForm extends javax.swing.JDialog {
            
    }
     public void themNgayCong(){
-            LocalDate localDate = LocalDate.now();
+        LocalDate localDate = LocalDate.now();
         if (thang == localDate.getMonthValue()){
             themSoNgayLamViec();
             hienThiData();

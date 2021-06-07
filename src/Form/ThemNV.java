@@ -438,7 +438,7 @@ public class ThemNV extends javax.swing.JDialog {
 
     private void btnLuuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLuuMouseClicked
 
-        check:
+        
         if (lbHinhAnh.getIcon() == null) {
             JOptionPane.showMessageDialog(rootPane, "Xin hãy chọn ảnh");
             return;

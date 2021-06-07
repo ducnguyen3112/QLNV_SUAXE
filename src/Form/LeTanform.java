@@ -600,8 +600,8 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
             ketNoi.close();
         } catch (SQLException e) {
         }
-        return tamp.substring(0, tamp.length() - 2);
-
+        
+           return tamp.substring(0, tamp.length() - 2);
     }
 
     public void loadDataPhanCong() {

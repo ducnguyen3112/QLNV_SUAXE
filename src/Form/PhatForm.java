@@ -29,9 +29,11 @@ public class PhatForm extends javax.swing.JDialog {
     public PhatForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
         MaNVPhat = AdminForm.maNV;
         loadDaTa();
-        setLocationRelativeTo(null);
+      
 
     }
 
@@ -206,13 +208,14 @@ public class PhatForm extends javax.swing.JDialog {
         return null;
     }
 
-    public void luuDuLieu() {
+    public boolean  luuDuLieu() {
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
         String date = sdf1.format(ngayPhat.getDate());
         String soTien = jTienPhat.getText();
+        boolean tamp = false;
         if (ChamCongForm.kiemTraNhapSo(soTien)) {
             int Tien = Integer.parseInt(soTien);
-            String sql = "INSERT INTO CTPHAT(MaNV,MaLoi,CTPL,SoTien,NgayPhat)  VALUES(?,?,?,?,?)";
+            String sql = "INSERT INTO CTPHAT(MaNV,MaLoi,CTPL,SoTien,NgayPhat,MaCTPhat)  VALUES(?,?,?,?,?,?)";
             Connection ketNoi = KetNoiDB.getConnection();
             try {
                 PreparedStatement ps = ketNoi.prepareStatement(sql);
@@ -221,8 +224,10 @@ public class PhatForm extends javax.swing.JDialog {
                 ps.setString(3, moTa.getText());
                 ps.setInt(4, Tien);
                 ps.setString(5, date);
+                ps.setString(6, MaNVPhat+MaPhat+date);
                 if (ps.executeUpdate() > 0) {
                     JOptionPane.showMessageDialog(rootPane, "Hoàn thành phạt");
+                    tamp = true;
                 } else {
                     JOptionPane.showMessageDialog(rootPane, "Thất bại");
                       this.dispose();
@@ -236,12 +241,14 @@ public class PhatForm extends javax.swing.JDialog {
         } else {
             JOptionPane.showMessageDialog(rootPane, "Nhập vào phải là số nguyên");
         }
-
+        return tamp;
     }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        luuDuLieu();
-      
+        if(luuDuLieu())
+        {
+            this.dispose();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void CBPhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CBPhatActionPerformed
