@@ -42,6 +42,7 @@ public class ThemNV extends javax.swing.JDialog {
         rbtnNam.setSelected(true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         dcNgayKi.setDate(date);
+        dcNgayHetHan.setDate(date);
     }
 
     /** This method is called from within the constructor to
@@ -502,6 +503,15 @@ public class ThemNV extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(rootPane, "Xin hãy chọn ngày hết hạn hợp đồng");
             return;
         }
+        else if (dcNgayHetHan.getDate().before(dcNgayKi.getDate())) {
+            JOptionPane.showMessageDialog(rootPane, "Ngày hết hạn phải sau ngày kí");
+            return;
+        }
+//        }else if (dc) {
+//            
+//        }
+            
+        
         String sql = "INSERT INTO NHANVIEN (MaNV,HoTen,NgaySinh,GioiTinh,SDT,DanToc,QueQuan,HinhAnh,CMND,DiaChi,TrangThai,ChucVu)" + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
         String str;
 
