@@ -55,7 +55,7 @@ public class NVSX_Form extends javax.swing.JFrame {
 
     public void loadDataPhanCong() {
         //them ma nhan vien vao
-        String sql = "select BienSoXe, MaDV,NgayGiolamDV,NgayGioHT,MoTa from CT_SDDV";
+        String sql = "select BienSoXe, MaDV,NgayGiolamDV,NgayGioHT,MoTa from CT_SDDV where MaNV = '"+LoginForm.MaNV+"'";
         Connection ketNoi = KetNoiDB.getConnection();
         tbPhanCongNV.setDefaultEditor(Object.class, null);
         DefaultTableModel model = (DefaultTableModel) tbPhanCongNV.getModel();
@@ -74,7 +74,6 @@ public class NVSX_Form extends javax.swing.JFrame {
                     data.addElement(traVeDongXe(tamBienSoXe));
                     String tenDv = traVeTenDichVu(rs.getString("BienSoXe"));
                     data.addElement(tenDv);
-
                     data.addElement(rs.getString("NgayGiolamDV"));
                     data.addElement(rs.getString("MoTa"));
                     model.addRow(data);
@@ -91,7 +90,7 @@ public class NVSX_Form extends javax.swing.JFrame {
 
     public void loadDataHoanThanh() {
         //them ma nhan vien vao
-        String sql = "select BienSoXe, MaDV,NgayGioHT,MoTa from CT_SDDV";
+        String sql = "select BienSoXe, MaDV,NgayGioHT,MoTa from CT_SDDV where MaNV = '"+LoginForm.MaNV+"'";
         Connection ketNoi = KetNoiDB.getConnection();
         tbHoanThanh.setDefaultEditor(Object.class, null);
         DefaultTableModel model = (DefaultTableModel) tbHoanThanh.getModel();

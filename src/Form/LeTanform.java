@@ -502,13 +502,16 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
 
     public Vector KtMaNV() {
         Connection ketNoi = KetNoiDB.getConnection();
-        String sql = "select MaNV from CT_SDDV";
+        String sql = "select MaNV,NgayGioHT from CT_SDDV";
         Vector data = new Vector();
         try {
             Statement st = ketNoi.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
-                data.add(rs.getString("MaNV"));
+                if(rs.getString("NgayGioHT")==null)
+                {
+                    data.add(rs.getString("MaNV"));
+                }
             }
             rs.close();
             st.close();
@@ -605,7 +608,7 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
     }
 
     public void loadDataPhanCong() {
-        String sql = "select BienSoXe, MaNV, MaDV,NgayGiolamDV from CT_SDDV";
+        String sql = "select BienSoXe, MaNV, MaDV,NgayGiolamDV,NgayGioHT from CT_SDDV";
         Connection ketNoi = KetNoiDB.getConnection();
         tbPhanCong.setDefaultEditor(Object.class, null);
         DefaultTableModel model = (DefaultTableModel) tbPhanCong.getModel();
@@ -619,15 +622,17 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
             while (rs.next()) {
                 String tamBienSoXe = rs.getString("BienSoXe");
                 if (!locBienSoXe.contains(tamBienSoXe)) {
-                    data = new Vector();
-                    data.addElement(tamBienSoXe);
-                    data.addElement(rs.getString("MaNV"));
-                    data.addElement(PhanCongForm.getTenNhanVien(rs.getString("MaNV")));
-                    String tenDv = traVeTenDichVu(rs.getString("BienSoXe"));
-                    data.addElement(tenDv);
-                    data.addElement(rs.getString("NgayGiolamDV"));
-                    model.addRow(data);
-                    locBienSoXe.add(tamBienSoXe);
+                    if(rs.getString("NgayGioHT")==null) {
+                        data = new Vector();
+                        data.addElement(tamBienSoXe);
+                        data.addElement(rs.getString("MaNV"));
+                        data.addElement(PhanCongForm.getTenNhanVien(rs.getString("MaNV")));
+                        String tenDv = traVeTenDichVu(tamBienSoXe);
+                        data.addElement(tenDv);
+                        data.addElement(rs.getString("NgayGiolamDV"));
+                        model.addRow(data);
+                        locBienSoXe.add(tamBienSoXe);
+                    }
                 }
             }
             rs.close();
