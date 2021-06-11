@@ -4,7 +4,15 @@
  * and open the template in the editor.
  */
 package Form;
-
+import Form.Xuli.KetNoiDB;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 /**
  *
  * @author StarScream
@@ -17,7 +25,36 @@ public class DoiMKForm extends javax.swing.JDialog {
         initComponents();
         setLocationRelativeTo(null);
     }
-
+    private String getMK(){
+        String mk="";
+        String sql="select MatKhau from TAIKHOAN where TAIKHOAN.MaNV='"+LoginForm.MaNV+"'";
+        Connection con=KetNoiDB.getConnection();
+        try {
+            Statement st=con.createStatement();
+            ResultSet rs=st.executeQuery(sql);
+            while(rs.next()){
+                mk=rs.getString(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DoiMKForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return mk;
+    }
+    private void capNhatMKMoi(){
+        String sql = "update TAIKHOAN set MatKhau=? where MaNV='"+LoginForm.MaNV+"'";
+        Connection con = KetNoiDB.getConnection();
+        try {
+            PreparedStatement ps=con.prepareStatement(sql);
+            ps.setString(1, txtMKMoi.getText());
+            if (ps.executeUpdate()>0) {
+                JOptionPane.showMessageDialog(rootPane, "Đổi mật khẩu thành công");
+            }else{
+                JOptionPane.showMessageDialog(rootPane, "Lỗi!Đổi mật khẩu không thành công.");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DoiMKForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -30,12 +67,12 @@ public class DoiMKForm extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        btnLuu = new javax.swing.JButton();
+        btnHuy = new javax.swing.JButton();
+        txtMKMoi = new javax.swing.JTextField();
+        txtNLMK = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txtMKCu = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -50,25 +87,30 @@ public class DoiMKForm extends javax.swing.JDialog {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Nhập lại mật khẩu:");
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton1.setText("Lưu");
-
-        jButton2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton2.setText("Huỷ");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnLuu.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnLuu.setText("Lưu");
+        btnLuu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnLuuActionPerformed(evt);
             }
         });
 
-        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnHuy.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnHuy.setText("Huỷ");
+        btnHuy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHuyActionPerformed(evt);
+            }
+        });
 
-        jTextField2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtMKMoi.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
+        txtNLMK.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("Mật khẩu cũ:");
 
-        jTextField3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtMKCu.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -83,14 +125,14 @@ public class DoiMKForm extends javax.swing.JDialog {
                             .addComponent(jLabel4)
                             .addComponent(jLabel3)
                             .addComponent(jLabel2)
-                            .addComponent(jTextField2)
-                            .addComponent(jTextField1)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtNLMK)
+                            .addComponent(txtMKMoi)
+                            .addComponent(txtMKCu, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(34, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnLuu, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnHuy, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(42, 42, 42))))
         );
         layout.setVerticalGroup(
@@ -100,28 +142,49 @@ public class DoiMKForm extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtMKCu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtMKMoi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtNLMK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(btnLuu)
+                    .addComponent(btnHuy))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnHuyActionPerformed
+
+    private void btnLuuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLuuActionPerformed
+        if (txtMKCu.getText().length()<6||txtMKMoi.getText().length()<6||txtNLMK.getText().length()<6) {
+            JOptionPane.showMessageDialog(rootPane, "Mật khẩu phải trên 6 kí tự!");
+            return;
+        }
+         if (txtMKCu.getText().length()>50||txtMKMoi.getText().length()>50||txtNLMK.getText().length()>50) {
+            JOptionPane.showMessageDialog(rootPane, "Mật khẩu phải dưới 50 kí tự!");
+            return;
+        }
+        if (!txtMKCu.getText().equals(getMK())) {
+            JOptionPane.showMessageDialog(rootPane, "Mật khẩu không đúng!");
+            return;
+        }
+        if (!txtMKMoi.getText().equals(txtNLMK.getText())) {
+            JOptionPane.showMessageDialog(rootPane, "Mật khẩu mới không trùng nhau!");
+            return;
+        }
+        capNhatMKMoi();
+        this.dispose();
+    }//GEN-LAST:event_btnLuuActionPerformed
 
     /**
      * @param args the command line arguments
@@ -152,6 +215,7 @@ public class DoiMKForm extends javax.swing.JDialog {
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 DoiMKForm dialog = new DoiMKForm(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -166,14 +230,14 @@ public class DoiMKForm extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnHuy;
+    private javax.swing.JButton btnLuu;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField txtMKCu;
+    private javax.swing.JTextField txtMKMoi;
+    private javax.swing.JTextField txtNLMK;
     // End of variables declaration//GEN-END:variables
 }

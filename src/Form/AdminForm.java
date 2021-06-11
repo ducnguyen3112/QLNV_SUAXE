@@ -48,6 +48,9 @@ public class AdminForm extends javax.swing.JFrame {
         setSize(1168, 650);
         lbTenDN.setText(LoginForm.ten);
         setLocationRelativeTo(null);
+        tbDSNV.setAutoCreateRowSorter(true);
+        tbLuong.setAutoCreateRowSorter(true);
+        tbSoXeDaSua.setAutoCreateRowSorter(true);
     }
     Connection con = null;
     Statement st = null;

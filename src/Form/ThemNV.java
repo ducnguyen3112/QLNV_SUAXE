@@ -447,7 +447,7 @@ public class ThemNV extends javax.swing.JDialog {
         if (txtTen.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống họ tên");
             return;
-        } else if (!txtTen.getText().matches("^[^0-9]{7,}$")) {
+        } else if (!txtTen.getText().matches("^[^0-9]{7,50}$")) {
             JOptionPane.showMessageDialog(rootPane, "Họ tên không đúng xin kiểm tra lại.");
             return;
         }
@@ -461,7 +461,7 @@ public class ThemNV extends javax.swing.JDialog {
         if (txtDanToc.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống dân tộc");
             return;
-        } else if (!txtDanToc.getText().matches("^[^1-9]{3,}$")) {
+        } else if (!txtDanToc.getText().matches("^[^1-9]{3,50}$")) {
             JOptionPane.showMessageDialog(rootPane, "Dân tộc không đúng xin kiểm tra lại.");
             return;
         }
@@ -473,7 +473,7 @@ public class ThemNV extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống CMND");
             return;
         }
-        if (!txtCMND.getText().matches("^[0-9]{9,12}$")) {
+        if (!txtCMND.getText().matches("^[0-9]{9}$")) {
             JOptionPane.showMessageDialog(rootPane, "CMND không đúng xin kiểm tra lại.");
             return;
         }

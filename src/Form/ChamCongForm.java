@@ -157,7 +157,7 @@ public class ChamCongForm extends javax.swing.JDialog {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("BẢNG CHẤM CÔNG");
         jLabel3.setOpaque(true);
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 688, 90));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 710, 90));
 
         jPanel1.setBackground(new java.awt.Color(217, 156, 121));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -210,7 +210,7 @@ public class ChamCongForm extends javax.swing.JDialog {
         cbThang.setMonth(0);
         jPanel1.add(cbThang, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 80, -1, 30));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 688, 500));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 710, 510));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

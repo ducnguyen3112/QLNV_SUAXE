@@ -235,6 +235,18 @@ public class LoginForm extends javax.swing.JFrame {
 
     private void txtMKKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMKKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (txtMaTK.getText().equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "Không được bỏ trống tài khoản!");
+                return;
+            }
+            else if (txtMaTK.getText().length()>=20) {
+                JOptionPane.showMessageDialog(rootPane, "Tài khoản đăng nhập không vượt quá 20 kí tự!");
+                return;
+            }
+            if (txtMK.getPassword().length>=50||txtMK.getPassword().length<6) {
+                JOptionPane.showMessageDialog(rootPane, "Mật khẩu phải từ 6 đến 50 kí tự!");
+                return;
+            }
             kiemTraTaiKhoan();
         }
         //System.out.println(txtMK.getText());
