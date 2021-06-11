@@ -291,20 +291,17 @@ public class ChamCongForm extends javax.swing.JDialog {
             date = nam+"-"+thang+"-28";
         }  
         LocalDate localDate = LocalDate.now();
-            if(thang == localDate.getMonthValue()){
-                timkiemTheoNgayThang();
+        timkiemTheoNgayThang();
+            if(thang <= localDate.getMonthValue()){
                 for (int i = 0; i < ListNV.size(); i++) {
                     themCong((String) ListNV.get(i));
                  }
                 hienThiData();    
                 tinhToanLuong();
-            } else if (thang < localDate.getMonthValue()){
-                hienThiData();
-            }
+            }    
             else{
                 JOptionPane.showMessageDialog(rootPane, "Vượt quá ngày của hiện tại");
             }
-      
         
     }//GEN-LAST:event_tiemKiemActionPerformed
     public String traVeMaCong(String NV){
