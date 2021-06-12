@@ -152,7 +152,7 @@ public class PhanCongForm extends javax.swing.JDialog {
         if (check > 0) {
             JOptionPane.showMessageDialog(this, "Đã phân công nhân viên thành công!");
         } else {
-            JOptionPane.showMessageDialog(this, "Lỗi !! Không thành công!");
+            JOptionPane.showMessageDialog(this, "Lỗi !! Chưa thêm dịch vụ!");
         }
 
     }
