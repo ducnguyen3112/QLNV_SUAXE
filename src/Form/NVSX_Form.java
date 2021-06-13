@@ -97,6 +97,9 @@ public class NVSX_Form extends javax.swing.JFrame {
         model.setRowCount(0);
         ArrayList<String> locBienSoXe = new ArrayList<String>();
         locBienSoXe.clear();
+        java.util.Date date = new java.util.Date();
+        SimpleDateFormat datefm = new SimpleDateFormat("yyyy-MM-dd");
+        String ngayHienTai = datefm.format(date);
         try {
             Statement st = ketNoi.createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -104,16 +107,21 @@ public class NVSX_Form extends javax.swing.JFrame {
             while (rs.next()) {
                 String tamBienSoXe = rs.getString("BienSoXe");
                 if (!locBienSoXe.contains(tamBienSoXe) & (rs.getString("NgayGioHT") != null)) {
-                    data = new Vector();
-                    data.addElement(tamBienSoXe);
-                    data.addElement(traVeDongXe(tamBienSoXe));
-                    String tenDv = traVeTenDichVu(rs.getString("BienSoXe"));
-                    data.addElement(tenDv);
-                    data.addElement(rs.getString("NgayGioHT"));
-                    data.addElement(rs.getString("MoTa"));
-                    model.addRow(data);
-                    locBienSoXe.add(tamBienSoXe);
+                    String ngay = rs.getString("NgayGioHT");
+                    int index = ngay.indexOf(" ");
+                    String ngayHoanThanh =ngay.substring(0,index);
+                    if(ngayHienTai.equals(ngayHoanThanh)){
+                            data = new Vector();
+                            data.addElement(tamBienSoXe);
+                            data.addElement(traVeDongXe(tamBienSoXe));
+                            String tenDv = traVeTenDichVu(rs.getString("BienSoXe"));
+                            data.addElement(tenDv);
+                            data.addElement(rs.getString("NgayGioHT"));
+                            data.addElement(rs.getString("MoTa"));
+                            model.addRow(data);
+                            locBienSoXe.add(tamBienSoXe);
                 }
+               }
             }
             rs.close();
             st.close();
