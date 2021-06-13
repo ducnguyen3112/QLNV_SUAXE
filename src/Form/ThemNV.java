@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.text.ParseException;
 import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -36,13 +37,14 @@ public class ThemNV extends javax.swing.JDialog {
 
     public ThemNV(java.awt.Frame parent, boolean model) {
         super(parent, model);
-        Date date = new Date();
-        initComponents();
-        setLocationRelativeTo(null);
-        rbtnNam.setSelected(true);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        dcNgayKi.setDate(date);
-        dcNgayHetHan.setDate(date);
+    
+            Date date = new Date();
+            initComponents();
+            setLocationRelativeTo(null);
+            rbtnNam.setSelected(true);
+            setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            dcNgayKi.setDate(date);
+           
     }
 
     /** This method is called from within the constructor to
@@ -507,11 +509,14 @@ public class ThemNV extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(rootPane, "Ngày hết hạn phải sau ngày kí");
             return;
         }
-//        }else if (dc) {
-//            
-//        }
-            
         
+        long diff = dcNgayHetHan.getDate().getTime() - dcNgayKi.getDate().getTime();
+            long diffHours = diff / (60 * 60 * 1000);
+            
+            if (diffHours<4320) {
+                JOptionPane.showMessageDialog(rootPane, "Thời hạn hợp đồng bắt buộc hơn 6 tháng.");
+                return;
+            }
         String sql = "INSERT INTO NHANVIEN (MaNV,HoTen,NgaySinh,GioiTinh,SDT,DanToc,QueQuan,HinhAnh,CMND,DiaChi,TrangThai,ChucVu)" + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
         String str;
 
@@ -562,6 +567,7 @@ public class ThemNV extends javax.swing.JDialog {
             ps.execute();
 
             //thêm vào dboHOPDONG
+            
             String sql3 = "INSERT INTO HOPDONG (MaHD,NgayKy,HanHD,MaNV,HSL)" + "VALUES(?,?,?,?,?)";
             PreparedStatement ps3 = con.prepareStatement(sql3);
             String maHD = "hd" + str;

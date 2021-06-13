@@ -44,7 +44,6 @@ public class TTNV extends javax.swing.JFrame {
         txtQueQuan.setEditable(false);
         txtSDT.setEditable(false);
         txtTen.setEditable(false);
-
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
     String filename = null;

@@ -370,7 +370,7 @@ public class ChamCongForm extends javax.swing.JDialog {
             themSoNgayLamViec();
             hienThiData();
         }
-        if (thang < localDate.getMonthValue()){
+        if (thang+1 < localDate.getMonthValue()){
             JOptionPane.showMessageDialog(rootPane, "Không được sửa công của tháng :"+thang)    ;
         }
     }

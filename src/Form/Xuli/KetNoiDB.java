@@ -91,6 +91,7 @@ public class KetNoiDB {
                 if (rs.next()) {
                     JOptionPane.showMessageDialog(table, "Nhân viên " + data + " đang "
                             + "làm việc không thể xoá!");
+                    return;
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(KetNoiDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -102,6 +103,7 @@ public class KetNoiDB {
                 if (rs.next()) {
                     JOptionPane.showMessageDialog(table, "Nhân viên " + data + " đang "
                             + "làm việc không thể xoá!");
+                    return;
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(KetNoiDB.class.getName()).log(Level.SEVERE, null, ex);
