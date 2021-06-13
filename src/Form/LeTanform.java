@@ -9,6 +9,7 @@ import Form.Xuli.KetNoiDB;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Vector;
@@ -172,7 +173,7 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
 
             },
             new String [] {
-                "Biển số xe", "Mã nhân viên", "Tên nhân viên", "Dịch vụ", "Thời gian đem vào"
+                "Biển số xe", "Mã nhân viên", "Tên nhân viên", "Dịch vụ", "Thời gian đem vào", "Thời gian hoàn thành"
             }
         ));
         tbPhanCong.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -436,7 +437,7 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
     }
     private void tbPhanCongKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbPhanCongKeyPressed
         // TODO add your handling code here:
-        if (evt.getKeyCode() == KeyEvent.VK_DELETE) {
+       /* if (evt.getKeyCode() == KeyEvent.VK_DELETE) {
             if (dataBangPhanCong.equals("")) {
                 JOptionPane.showConfirmDialog(rootPane, "Chưa chọn dữ liệu phân công để xóa");
             } else {
@@ -446,7 +447,7 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
                     showDataPhanCong();
                 }
             }
-        }
+        }*/
     }//GEN-LAST:event_tbPhanCongKeyPressed
 
 
@@ -642,6 +643,9 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
         model.setRowCount(0);
         ArrayList<String> locBienSoXe = new ArrayList<String>();
         locBienSoXe.clear();
+        java.util.Date date = new java.util.Date();
+        SimpleDateFormat datefm = new SimpleDateFormat("yyyy-MM-dd");
+        String ngayHienTai = datefm.format(date);
         try {
             Statement st = ketNoi.createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -657,8 +661,26 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
                         String tenDv = traVeTenDichVu(tamBienSoXe);
                         data.addElement(tenDv);
                         data.addElement(rs.getString("NgayGiolamDV"));
+                        data.addElement("Chưa hoàn thành");
                         model.addRow(data);
                         locBienSoXe.add(tamBienSoXe);
+                    }
+                    else {
+                        String ngay = rs.getString("NgayGioHT");
+                        int index = ngay.indexOf(" ");
+                        String ngayHoanThanh =ngay.substring(0,index);
+                        if(ngayHienTai.equals(ngayHoanThanh)){
+                         data = new Vector();
+                        data.addElement(tamBienSoXe);
+                        data.addElement(rs.getString("MaNV"));
+                        data.addElement(PhanCongForm.getTenNhanVien(rs.getString("MaNV")));
+                        String tenDv = traVeTenDichVu(tamBienSoXe);
+                        data.addElement(tenDv);
+                        data.addElement(rs.getString("NgayGiolamDV"));
+                        data.addElement(rs.getString("NgayGioHT"));
+                        model.addRow(data);
+                        locBienSoXe.add(tamBienSoXe);
+                        }
                     }
                 }
             }
