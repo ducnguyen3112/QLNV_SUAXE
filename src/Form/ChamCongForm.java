@@ -315,6 +315,7 @@ public class ChamCongForm extends javax.swing.JDialog {
     public  void themSoNgayLamViec(){
           // String  tam = JOptionPane.showInputDialog("Số ngày làm việc");
     bangCong.getModel().addTableModelListener(new TableModelListener() {
+             @Override
              public void tableChanged(TableModelEvent tableModelEvent) {
              if(bangCong.isEditing()){
                int index =bangCong.getSelectedRow();
@@ -322,6 +323,7 @@ public class ChamCongForm extends javax.swing.JDialog {
                String tam = (String) bangCong.getValueAt(index, 2);
                if(kiemTraNhapSo(tam)){
                int ngayLamViec = Integer.parseInt(tam);
+                   System.out.println(ngayLamViec);
                if((thang == 4 || thang == 6 || thang == 9 ||thang == 11) && ngayLamViec > 31){
                    JOptionPane.showMessageDialog(rootPane, "Số ngày vượt quá 31 ngày");
                    bangCong.getModel().removeTableModelListener(this);

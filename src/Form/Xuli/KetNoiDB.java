@@ -27,9 +27,9 @@ public class KetNoiDB {
 
     public static Connection getConnection() {
         Connection con = null;
-        String url = "jdbc:sqlserver://localhost:1433;databaseName=QLNV_SUAXE";
+        String url = "jdbc:sqlserver://;databaseName=QLNV_SUAXE";
         String user = "sa";
-        String passwd = "123";
+        String passwd = "123456";
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             con = DriverManager.getConnection(url, user, passwd);

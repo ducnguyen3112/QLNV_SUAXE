@@ -109,6 +109,7 @@ public class HopDongForm extends javax.swing.JFrame {
 
         txtNgayKi.setEditable(false);
         txtNgayKi.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        txtNgayKi.setEnabled(false);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel4.setText("Ngày hết hạn:");

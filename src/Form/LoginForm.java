@@ -37,6 +37,7 @@ public class LoginForm extends javax.swing.JFrame {
         String usr = "";
         String pass = "";
         String ChucVu = "";
+        int trangthai=1;
         char[] mkcx;
         try {
             Statement st = con.createStatement();
@@ -45,6 +46,7 @@ public class LoginForm extends javax.swing.JFrame {
                 usr = rs.getString(13);
                 pass = rs.getString(14);
                 ChucVu = rs.getString(12);
+                trangthai=rs.getInt("TrangThai");
                 ten = rs.getString(2);
 
             }
@@ -60,7 +62,7 @@ public class LoginForm extends javax.swing.JFrame {
         for (int i = 0; i < pass.length(); i++) {
             mkcx[i] = pass.charAt(i);
         }
-        if (usr.equals(txtMaTK.getText()) && Arrays.equals(txtMK.getPassword(), mkcx)) {
+        if (usr.equals(txtMaTK.getText()) && Arrays.equals(txtMK.getPassword(), mkcx)&& trangthai==1) {
             Arrays.fill(mkcx, '0');
             if (ChucVu.equals("0")) {
                 this.dispose();

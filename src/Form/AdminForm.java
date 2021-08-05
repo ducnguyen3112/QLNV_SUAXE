@@ -277,7 +277,7 @@ public class AdminForm extends javax.swing.JFrame {
     private void bangTKLuong(String nam, String thang) {
         String sql = "select NHANVIEN.MaNV,HoTen,NgayCong,THUCLINH "
                 + "from NHANVIEN,THANHTOANLUONG,CONG "
-                + "where THANHTOANLUONG.MaNV=NHANVIEN.MaNV and THANHTOANLUONG.MaNV=CONG.MaNV "
+                + "where THANHTOANLUONG.MaNV=NHANVIEN.MaNV and THANHTOANLUONG.MaCong=CONG.MaCong "
                 + "and CONG.Thang=" + thang
                 + " and CONG.Nam=" + nam
                 + " and THANHTOANLUONG.TrangThai=1";
@@ -457,6 +457,11 @@ public class AdminForm extends javax.swing.JFrame {
         btnChamCong.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnChamCongMouseClicked(evt);
+            }
+        });
+        btnChamCong.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChamCongActionPerformed(evt);
             }
         });
         pnMenu.add(btnChamCong);
@@ -1024,13 +1029,15 @@ public class AdminForm extends javax.swing.JFrame {
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         String thang = sdf.format(date).substring(3, 5);
+        int m=Integer.parseInt(thang);
+        thang=String.valueOf(m-1);
         String nam = sdf.format(date).substring(6);
         bangSoXeDaSua(nam, thang);
         bangTKLuong(nam, thang);
         txtNamSX.setText(nam);
-        cbThangSX.setSelectedItem(thang);
+        cbThangSX.setSelectedIndex(m-2);
         txtNamL.setText(nam);
-        cbThangL.setSelectedItem(thang);
+        cbThangL.setSelectedIndex(m-2);
         bieuDoGioiTinh();
         bieuDoChucVu();
         bieuDoSLNVvsTuoi();
@@ -1078,6 +1085,10 @@ public class AdminForm extends javax.swing.JFrame {
     private void btnCapNhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapNhatActionPerformed
         showDuLieu();
     }//GEN-LAST:event_btnCapNhatActionPerformed
+
+    private void btnChamCongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChamCongActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnChamCongActionPerformed
 
     /**
      * @param args the command line arguments

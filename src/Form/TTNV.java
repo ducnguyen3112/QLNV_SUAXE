@@ -5,6 +5,7 @@
  */
 package Form;
 
+import static Form.LoginForm.ten;
 import Form.Xuli.KetNoiDB;
 import java.awt.Image;
 import java.io.ByteArrayOutputStream;
@@ -51,6 +52,18 @@ public class TTNV extends javax.swing.JFrame {
     public void luuChinhSuaNV() {
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
         String date;
+        
+        String ha="select HinhAnh from NHANVIEN where MaNV='"+AdminForm.maNV + "'";
+        Connection con1=KetNoiDB.getConnection();
+        try {
+            PreparedStatement ps=con1.prepareStatement(ha);
+            ResultSet rs=ps.executeQuery();
+            while (rs.next()) {
+                person_image=rs.getBytes("HinhAnh");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(TTNV.class.getName()).log(Level.SEVERE, null, ex);
+        }
         String sql = "update NHANVIEN set HoTen=?,NgaySinh=?,GioiTinh=?,SDT=?,DanToc=?,"
                 + " QueQuan=?,HinhAnh=?,CMND=?,DiaChi=?,ChucVu=?,TrangThai=? where MaNV= '" + AdminForm.maNV + "'";
         Connection con = KetNoiDB.getConnection();
@@ -91,6 +104,8 @@ public class TTNV extends javax.swing.JFrame {
     }
    
     private void loadDB() {
+        LocalDate localDate = LocalDate.now();
+        Date datenow = java.sql.Date.valueOf(localDate);
         String sql = "select MaNV,HoTen,CONVERT(varchar, NgaySinh, 105) as NgaySinh,"
                 + " GioiTinh,ChucVu,TrangThai,TenCV,SDT,CMND,DanToc,DiaChi,QueQuan,"
                 + "HinhAnh from NHANVIEN,CHUCVU where NHANVIEN.ChucVu=CHUCVU.MaCV"
@@ -133,7 +148,7 @@ public class TTNV extends javax.swing.JFrame {
                 } else if (rs.getInt("TrangThai") == 1) {
                     rbtnDangLam.setSelected(true);
                 }
-
+               
             }
             rs.close();
             st.close();
