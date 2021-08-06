@@ -43,7 +43,6 @@ public class TTLForm extends javax.swing.JDialog {
         chonThang.setMonth(localDate.getMonthValue() - 2);
         namDuocChon = chonNam.getValue();
         thangDuocChon = chonThang.getMonth() + 1; 
-        layDuLieuCong();
         hienThiLuong();
         
     }
@@ -208,8 +207,19 @@ public class TTLForm extends javax.swing.JDialog {
 
     }
 
-    public static int traVeTienThuong(String maNv) {
-        String sql = "select SoTien from CTTHUONG where MaNV = '" + maNv + "'";
+    public static int traVeTienThuong(String maNv,int nam,int thang) {
+        String ngayTruoc;
+        if((thang == 4 || thang == 6 || thang == 9 ||thang == 11)){
+            ngayTruoc = nam+"-"+thang+"-31";  
+        }
+        if ((thang == 1 || thang == 3 || thang == 5 ||thang == 7 ||thang  == 8 || thang == 10 || thang == 12)){
+            ngayTruoc= nam+"-"+thang+"-30";  
+        }
+        else {
+            ngayTruoc = nam+"-"+thang+"-28";
+        }  
+        String ngaySau = nam+"-"+thang+"-01"; 
+        String sql = "select SoTien from CTTHUONG where MaNV = '" + maNv + "' and NgayThuong <= '"+ngayTruoc+"'and NgayThuong >= '"+ngaySau+"'";
         Connection ketNoi = KetNoiDB.getConnection();
         int tamp = 0;
         try {
@@ -226,8 +236,19 @@ public class TTLForm extends javax.swing.JDialog {
         return tamp;
     }
 
-    public static int traVeTienPhat(String maNv) {
-        String sql = "select SoTien from CTPHAT where MaNV = '" + maNv + "'";
+    public static int traVeTienPhat(String maNv,int nam,int thang) {
+        String ngayTruoc;
+        if((thang == 4 || thang == 6 || thang == 9 ||thang == 11)){
+            ngayTruoc = nam+"-"+thang+"-31";  
+        }
+        if ((thang == 1 || thang == 3 || thang == 5 ||thang == 7 ||thang  == 8 || thang == 10 || thang == 12)){
+            ngayTruoc= nam+"-"+thang+"-30";  
+        }
+        else {
+            ngayTruoc = nam+"-"+thang+"-28";
+        }  
+        String ngaySau = nam+"-"+thang+"-01"; 
+        String sql = "select SoTien from CTPHAT where MaNV = '" + maNv + "' and NgayPhat <= '"+ngayTruoc+"'and NgayPhat >= '"+ngaySau+"'";
         Connection ketNoi = KetNoiDB.getConnection();
         int tamp = 0;
         try {
@@ -290,13 +311,13 @@ public class TTLForm extends javax.swing.JDialog {
         // TODO add your handling code here:
         namDuocChon = chonNam.getValue();
         thangDuocChon = chonThang.getMonth() + 1;
-        hienThiLuong();
          LocalDate localDate = LocalDate.now();
             if(thangDuocChon <= localDate.getMonthValue()){
                 hienThiLuong();
             }
             else{
                 JOptionPane.showMessageDialog(rootPane, "Vượt quá ngày của hiện tại");
+                hienThiLuong();
             }
 
     }//GEN-LAST:event_jButton1ActionPerformed
