@@ -58,6 +58,7 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
         btnQuayLai = new javax.swing.JButton();
         btnTiepNhan = new javax.swing.JButton();
         btnPhanCong1 = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -86,11 +87,24 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
         lbTiepTan.setToolTipText("");
         lbTiepTan.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         lbTiepTan.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jPanel1.add(lbTiepTan, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 29, 200, 137));
+        jPanel1.add(lbTiepTan, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 200, 137));
 
         lbTenLT.setForeground(new java.awt.Color(255, 255, 255));
         lbTenLT.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jPanel1.add(lbTenLT, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 172, 200, 21));
+        lbTenLT.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                lbTenLTMouseMoved(evt);
+            }
+        });
+        lbTenLT.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbTenLTMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lbTenLTMouseExited(evt);
+            }
+        });
+        jPanel1.add(lbTenLT, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 200, 21));
 
         btnSua.setBackground(new java.awt.Color(51, 0, 51));
         btnSua.setForeground(new java.awt.Color(255, 255, 255));
@@ -143,6 +157,7 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
             }
         });
         jPanel1.add(btnPhanCong1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 200, -1));
+        jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 160, -1));
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.WEST);
 
@@ -440,6 +455,18 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
         this.dispose();
     }//GEN-LAST:event_btnQuayLaiActionPerformed
 
+    private void lbTenLTMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbTenLTMouseMoved
+        lbTenLT.setForeground(Color.BLUE);
+    }//GEN-LAST:event_lbTenLTMouseMoved
+
+    private void lbTenLTMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbTenLTMouseExited
+        lbTenLT.setForeground(Color.WHITE);
+    }//GEN-LAST:event_lbTenLTMouseExited
+
+    private void lbTenLTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbTenLTMouseClicked
+        new TuyChinhFrom(this, rootPaneCheckingEnabled).setVisible(true);
+    }//GEN-LAST:event_lbTenLTMouseClicked
+
     public static Vector KtBienSoXe() {
         Connection ketNoi = KetNoiDB.getConnection();
         String sql = "select BienSoXe from CT_SDDV";
@@ -714,6 +741,7 @@ public final class LeTanform extends javax.swing.JFrame implements showData {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lbTenLT;
     private javax.swing.JLabel lbTiepTan;
     private javax.swing.JTable tbNVBD;

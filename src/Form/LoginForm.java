@@ -37,6 +37,7 @@ public class LoginForm extends javax.swing.JFrame {
         String usr = "";
         String pass = "";
         String ChucVu = "";
+        int trangthai=1;
         char[] mkcx;
         try {
             Statement st = con.createStatement();
@@ -45,6 +46,7 @@ public class LoginForm extends javax.swing.JFrame {
                 usr = rs.getString(13);
                 pass = rs.getString(14);
                 ChucVu = rs.getString(12);
+                trangthai=rs.getInt("TrangThai");
                 ten = rs.getString(2);
 
             }
@@ -60,7 +62,7 @@ public class LoginForm extends javax.swing.JFrame {
         for (int i = 0; i < pass.length(); i++) {
             mkcx[i] = pass.charAt(i);
         }
-        if (usr.equals(txtMaTK.getText()) && Arrays.equals(txtMK.getPassword(), mkcx)) {
+        if (usr.equals(txtMaTK.getText()) && Arrays.equals(txtMK.getPassword(), mkcx)&& trangthai==1) {
             Arrays.fill(mkcx, '0');
             if (ChucVu.equals("0")) {
                 this.dispose();
@@ -235,6 +237,18 @@ public class LoginForm extends javax.swing.JFrame {
 
     private void txtMKKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMKKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (txtMaTK.getText().equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "Không được bỏ trống tài khoản!");
+                return;
+            }
+            else if (txtMaTK.getText().length()>=20) {
+                JOptionPane.showMessageDialog(rootPane, "Tài khoản đăng nhập không vượt quá 20 kí tự!");
+                return;
+            }
+            if (txtMK.getPassword().length>=50||txtMK.getPassword().length<6) {
+                JOptionPane.showMessageDialog(rootPane, "Mật khẩu phải từ 6 đến 50 kí tự!");
+                return;
+            }
             kiemTraTaiKhoan();
         }
         //System.out.println(txtMK.getText());

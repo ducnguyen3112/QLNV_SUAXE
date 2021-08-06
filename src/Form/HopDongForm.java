@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -53,7 +54,22 @@ public class HopDongForm extends javax.swing.JFrame {
         }
 
     }
-
+    private void suaHD(){
+        String sql="update HOPDONG set HanHD=?,HSL=? where HOPDONG.MaNV= '" + AdminForm.maNV + "'";
+        Connection con=KetNoiDB.getConnection();
+        try {
+            PreparedStatement ps=con.prepareStatement(sql);
+            ps.setString(1, new SimpleDateFormat("dd-MM-yyyy").format(dcNgayHH.getDate()));
+            
+            ps.setFloat(2, Float.parseFloat(txtHSL.getText()));
+            if (ps.executeUpdate()>0) {
+                JOptionPane.showMessageDialog(rootPane, "Lưu hợp đồng thành công!");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(HopDongForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -93,6 +109,7 @@ public class HopDongForm extends javax.swing.JFrame {
 
         txtNgayKi.setEditable(false);
         txtNgayKi.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        txtNgayKi.setEnabled(false);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel4.setText("Ngày hết hạn:");
@@ -194,14 +211,18 @@ public class HopDongForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHuyMouseClicked
 
     private void btnSuaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSuaMouseClicked
-        txtHoTen.setEditable(true);
+
         txtHSL.setEditable(true);
-        txtNgayKi.setEditable(true);
         dcNgayHH.setEnabled(true);
     }//GEN-LAST:event_btnSuaMouseClicked
 
     private void btnLuuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLuuMouseClicked
-
+        if (!txtHSL.getText().matches("^[0-9]{1}[.]{1}[0-9]{1,}$")) {
+            JOptionPane.showMessageDialog(rootPane, "HSL không đúng định dạng(chữ số và dấu chấm)!");
+            return;
+        }
+        suaHD();
+        this.dispose();
     }//GEN-LAST:event_btnLuuMouseClicked
 
     /**

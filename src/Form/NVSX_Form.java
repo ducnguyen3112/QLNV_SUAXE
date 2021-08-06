@@ -7,6 +7,7 @@ package Form;
 
 import static Form.LeTanform.traVeTenDichVu;
 import Form.Xuli.KetNoiDB;
+import java.awt.Color;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -145,6 +146,7 @@ public class NVSX_Form extends javax.swing.JFrame {
         lbTenNVSX = new javax.swing.JLabel();
         btnHoanThanh = new javax.swing.JButton();
         btnSuaDichVu = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -171,6 +173,19 @@ public class NVSX_Form extends javax.swing.JFrame {
         lbTenNVSX.setForeground(new java.awt.Color(255, 255, 255));
         lbTenNVSX.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbTenNVSX.setText("jLabel2");
+        lbTenNVSX.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                lbTenNVSXMouseMoved(evt);
+            }
+        });
+        lbTenNVSX.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbTenNVSXMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lbTenNVSXMouseExited(evt);
+            }
+        });
         jPanel1.add(lbTenNVSX, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 174, 200, -1));
 
         btnHoanThanh.setBackground(new java.awt.Color(0, 0, 36));
@@ -198,6 +213,7 @@ public class NVSX_Form extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnSuaDichVu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 200, -1));
+        jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 160, -1));
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.WEST);
 
@@ -334,6 +350,18 @@ public class NVSX_Form extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnHoanThanhActionPerformed
 
+    private void lbTenNVSXMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbTenNVSXMouseMoved
+        lbTenNVSX.setForeground(Color.blue);
+    }//GEN-LAST:event_lbTenNVSXMouseMoved
+
+    private void lbTenNVSXMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbTenNVSXMouseExited
+        lbTenNVSX.setForeground(Color.WHITE);
+    }//GEN-LAST:event_lbTenNVSXMouseExited
+
+    private void lbTenNVSXMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbTenNVSXMouseClicked
+       new TuyChinhFrom(this, rootPaneCheckingEnabled).setVisible(true);
+    }//GEN-LAST:event_lbTenNVSXMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -363,6 +391,7 @@ public class NVSX_Form extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new NVSX_Form().setVisible(true);
             }
@@ -379,6 +408,7 @@ public class NVSX_Form extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lbTenNVSX;
     private javax.swing.JTable tbHoanThanh;
     private javax.swing.JTable tbPhanCongNV;

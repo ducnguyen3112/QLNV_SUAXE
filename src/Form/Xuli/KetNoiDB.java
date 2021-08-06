@@ -27,7 +27,7 @@ public class KetNoiDB {
 
     public static Connection getConnection() {
         Connection con = null;
-        String url = "jdbc:sqlserver://localhost:1433;databaseName=QLNV_SUAXE";
+        String url = "jdbc:sqlserver://;databaseName=QLNV_SUAXE";
         String user = "sa";
         String passwd = "123";
         try {
@@ -91,6 +91,7 @@ public class KetNoiDB {
                 if (rs.next()) {
                     JOptionPane.showMessageDialog(table, "Nhân viên " + data + " đang "
                             + "làm việc không thể xoá!");
+                    return;
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(KetNoiDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -102,6 +103,7 @@ public class KetNoiDB {
                 if (rs.next()) {
                     JOptionPane.showMessageDialog(table, "Nhân viên " + data + " đang "
                             + "làm việc không thể xoá!");
+                    return;
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(KetNoiDB.class.getName()).log(Level.SEVERE, null, ex);

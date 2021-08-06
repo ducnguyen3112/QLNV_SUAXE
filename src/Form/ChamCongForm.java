@@ -155,7 +155,7 @@ public class ChamCongForm extends javax.swing.JDialog {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("BẢNG CHẤM CÔNG");
         jLabel3.setOpaque(true);
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 688, 90));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 710, 90));
 
         jPanel1.setBackground(new java.awt.Color(217, 156, 121));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -208,7 +208,7 @@ public class ChamCongForm extends javax.swing.JDialog {
         cbThang.setMonth(0);
         jPanel1.add(cbThang, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 80, -1, 30));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 688, 500));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 710, 510));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -290,7 +290,7 @@ public class ChamCongForm extends javax.swing.JDialog {
         }  
         LocalDate localDate = LocalDate.now();
         timkiemTheoNgayThang();
-            if(thang <= localDate.getMonthValue() ){
+            if(thang <= localDate.getMonthValue() - 1){
                 for (int i = 0; i < ListNV.size(); i++) {
                     themCong((String) ListNV.get(i));
                  }
@@ -299,7 +299,8 @@ public class ChamCongForm extends javax.swing.JDialog {
             }    
             else{
                 JOptionPane.showMessageDialog(rootPane, "Vượt quá ngày của hiện tại");
-                 hienThiData();
+                 DefaultTableModel model=(DefaultTableModel) bangCong.getModel();
+        model.setRowCount(0);
             }
         
     }//GEN-LAST:event_tiemKiemActionPerformed
@@ -314,6 +315,7 @@ public class ChamCongForm extends javax.swing.JDialog {
     public  void themSoNgayLamViec(){
           // String  tam = JOptionPane.showInputDialog("Số ngày làm việc");
     bangCong.getModel().addTableModelListener(new TableModelListener() {
+             @Override
              public void tableChanged(TableModelEvent tableModelEvent) {
              if(bangCong.isEditing()){
                int index =bangCong.getSelectedRow();
@@ -321,6 +323,7 @@ public class ChamCongForm extends javax.swing.JDialog {
                String tam = (String) bangCong.getValueAt(index, 2);
                if(kiemTraNhapSo(tam)){
                int ngayLamViec = Integer.parseInt(tam);
+                   System.out.println(ngayLamViec);
                if((thang == 4 || thang == 6 || thang == 9 ||thang == 11) && ngayLamViec > 31){
                    JOptionPane.showMessageDialog(rootPane, "Số ngày vượt quá 31 ngày");
                    bangCong.getModel().removeTableModelListener(this);
@@ -370,7 +373,7 @@ public class ChamCongForm extends javax.swing.JDialog {
             hienThiData();
         }
         else {
-            JOptionPane.showMessageDialog(rootPane, "Không được sửa công của tháng :"+thang)    ;
+        JOptionPane.showMessageDialog(rootPane, "Không được sửa công của tháng :"+thang)    ;
         }
     }
     private void bangCongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bangCongMouseClicked

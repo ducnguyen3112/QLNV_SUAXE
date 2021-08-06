@@ -29,43 +29,44 @@ public class TuyChinhFrom extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnDangXuat = new javax.swing.JButton();
+        btnHuy = new javax.swing.JButton();
+        btnDoiMK = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        btnTTCN = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new java.awt.CardLayout());
 
         jPanel1.setBackground(new java.awt.Color(1, 19, 39));
 
-        jButton1.setBackground(new java.awt.Color(240, 129, 15));
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(1, 26, 39));
-        jButton1.setText("ĐĂNG XUẤT");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnDangXuat.setBackground(new java.awt.Color(240, 129, 15));
+        btnDangXuat.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnDangXuat.setForeground(new java.awt.Color(1, 26, 39));
+        btnDangXuat.setText("ĐĂNG XUẤT");
+        btnDangXuat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnDangXuatActionPerformed(evt);
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(240, 129, 15));
-        jButton2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(1, 26, 39));
-        jButton2.setText("HUỶ");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnHuy.setBackground(new java.awt.Color(240, 129, 15));
+        btnHuy.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnHuy.setForeground(new java.awt.Color(1, 26, 39));
+        btnHuy.setText("HUỶ");
+        btnHuy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnHuyActionPerformed(evt);
             }
         });
 
-        jButton3.setBackground(new java.awt.Color(240, 129, 15));
-        jButton3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(1, 26, 39));
-        jButton3.setText("ĐỔI MẬT KHẨU");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnDoiMK.setBackground(new java.awt.Color(240, 129, 15));
+        btnDoiMK.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnDoiMK.setForeground(new java.awt.Color(1, 26, 39));
+        btnDoiMK.setText("ĐỔI MẬT KHẨU");
+        btnDoiMK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnDoiMKActionPerformed(evt);
             }
         });
 
@@ -73,6 +74,16 @@ public class TuyChinhFrom extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(230, 223, 68));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("TUỲ CHỈNH");
+
+        btnTTCN.setBackground(new java.awt.Color(240, 129, 15));
+        btnTTCN.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnTTCN.setForeground(new java.awt.Color(1, 26, 39));
+        btnTTCN.setText("THÔNG TIN CÁ NHÂN");
+        btnTTCN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTTCNActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -82,21 +93,24 @@ public class TuyChinhFrom extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE))
+                    .addComponent(btnHuy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnDangXuat, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnDoiMK, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
+                    .addComponent(btnTTCN, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnTTCN, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnDoiMK, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnDangXuat, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnHuy, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24))
         );
 
@@ -105,22 +119,27 @@ public class TuyChinhFrom extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnDoiMKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoiMKActionPerformed
         new DoiMKForm(this, rootPaneCheckingEnabled).setVisible(true);
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnDoiMKActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyActionPerformed
         this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnHuyActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnDangXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangXuatActionPerformed
 
         int op = JOptionPane.showConfirmDialog(rootPane, "Bạn có muốn đăng xuất không?");
         if (op == 0) {
             System.exit(0);
         }
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnDangXuatActionPerformed
+
+    private void btnTTCNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTTCNActionPerformed
+
+        new TTCN_From(this, rootPaneCheckingEnabled).setVisible(true);
+    }//GEN-LAST:event_btnTTCNActionPerformed
 
     /**
      * @param args the command line arguments
@@ -152,6 +171,7 @@ public class TuyChinhFrom extends javax.swing.JFrame {
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 TuyChinhFrom dialog = new TuyChinhFrom(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -166,9 +186,10 @@ public class TuyChinhFrom extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton btnDangXuat;
+    private javax.swing.JButton btnDoiMK;
+    private javax.swing.JButton btnHuy;
+    private javax.swing.JButton btnTTCN;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables

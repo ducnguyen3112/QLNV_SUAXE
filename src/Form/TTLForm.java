@@ -303,9 +303,7 @@ public class TTLForm extends javax.swing.JDialog {
             ketNoi.close();
         } catch (Exception e) {
         }
-       if(ktHienThi == 0 ){
-           JOptionPane.showMessageDialog(rootPane, "No data");
-       } 
+       
     }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:

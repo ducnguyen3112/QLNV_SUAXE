@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.text.ParseException;
 import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -36,12 +37,14 @@ public class ThemNV extends javax.swing.JDialog {
 
     public ThemNV(java.awt.Frame parent, boolean model) {
         super(parent, model);
-        Date date = new Date();
-        initComponents();
-        setLocationRelativeTo(null);
-        rbtnNam.setSelected(true);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        dcNgayKi.setDate(date);
+    
+            Date date = new Date();
+            initComponents();
+            setLocationRelativeTo(null);
+            rbtnNam.setSelected(true);
+            setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            dcNgayKi.setDate(date);
+           
     }
 
     /** This method is called from within the constructor to
@@ -446,7 +449,7 @@ public class ThemNV extends javax.swing.JDialog {
         if (txtTen.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống họ tên");
             return;
-        } else if (!txtTen.getText().matches("^[^0-9]{7,}$")) {
+        } else if (!txtTen.getText().matches("^[^0-9]{7,50}$")) {
             JOptionPane.showMessageDialog(rootPane, "Họ tên không đúng xin kiểm tra lại.");
             return;
         }
@@ -460,7 +463,7 @@ public class ThemNV extends javax.swing.JDialog {
         if (txtDanToc.getText().equals("")) {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống dân tộc");
             return;
-        } else if (!txtDanToc.getText().matches("^[^1-9]{3,}$")) {
+        } else if (!txtDanToc.getText().matches("^[^1-9]{3,50}$")) {
             JOptionPane.showMessageDialog(rootPane, "Dân tộc không đúng xin kiểm tra lại.");
             return;
         }
@@ -472,7 +475,7 @@ public class ThemNV extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(rootPane, "Không được để trống CMND");
             return;
         }
-        if (!txtCMND.getText().matches("^[0-9]{9,12}$")) {
+        if (!txtCMND.getText().matches("^[0-9]{9}$")) {
             JOptionPane.showMessageDialog(rootPane, "CMND không đúng xin kiểm tra lại.");
             return;
         }
@@ -502,6 +505,18 @@ public class ThemNV extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(rootPane, "Xin hãy chọn ngày hết hạn hợp đồng");
             return;
         }
+        else if (dcNgayHetHan.getDate().before(dcNgayKi.getDate())) {
+            JOptionPane.showMessageDialog(rootPane, "Ngày hết hạn phải sau ngày kí");
+            return;
+        }
+        
+        long diff = dcNgayHetHan.getDate().getTime() - dcNgayKi.getDate().getTime();
+            long diffHours = diff / (60 * 60 * 1000);
+            
+            if (diffHours<4320) {
+                JOptionPane.showMessageDialog(rootPane, "Thời hạn hợp đồng bắt buộc hơn 6 tháng.");
+                return;
+            }
         String sql = "INSERT INTO NHANVIEN (MaNV,HoTen,NgaySinh,GioiTinh,SDT,DanToc,QueQuan,HinhAnh,CMND,DiaChi,TrangThai,ChucVu)" + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
         String str;
 
@@ -552,6 +567,7 @@ public class ThemNV extends javax.swing.JDialog {
             ps.execute();
 
             //thêm vào dboHOPDONG
+            
             String sql3 = "INSERT INTO HOPDONG (MaHD,NgayKy,HanHD,MaNV,HSL)" + "VALUES(?,?,?,?,?)";
             PreparedStatement ps3 = con.prepareStatement(sql3);
             String maHD = "hd" + str;
